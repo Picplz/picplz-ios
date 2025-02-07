@@ -1,0 +1,572 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXContainerItemProxy section */
+		3DBF92BC2D55BB67009EF4C3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3DBF929D2D55BB65009EF4C3 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 3DBF92A42D55BB65009EF4C3;
+			remoteInfo = PicplzClient;
+		};
+		3DBF92C62D55BB67009EF4C3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3DBF929D2D55BB65009EF4C3 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 3DBF92A42D55BB65009EF4C3;
+			remoteInfo = PicplzClient;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		3DBF92A52D55BB65009EF4C3 /* PicplzClient.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PicplzClient.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		3DBF92BB2D55BB67009EF4C3 /* PicplzClientTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PicplzClientTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		3DBF92C52D55BB67009EF4C3 /* PicplzClientUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PicplzClientUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		3DBF92CD2D55BB67009EF4C3 /* Exceptions for "PicplzClient" folder in "PicplzClient" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 3DBF92A42D55BB65009EF4C3 /* PicplzClient */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		3DBF92A72D55BB65009EF4C3 /* PicplzClient */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				3DBF92CD2D55BB67009EF4C3 /* Exceptions for "PicplzClient" folder in "PicplzClient" target */,
+			);
+			path = PicplzClient;
+			sourceTree = "<group>";
+		};
+		3DBF92BE2D55BB67009EF4C3 /* PicplzClientTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = PicplzClientTests;
+			sourceTree = "<group>";
+		};
+		3DBF92C82D55BB67009EF4C3 /* PicplzClientUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = PicplzClientUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		3DBF92A22D55BB65009EF4C3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3DBF92B82D55BB67009EF4C3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3DBF92C22D55BB67009EF4C3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		3DBF929C2D55BB65009EF4C3 = {
+			isa = PBXGroup;
+			children = (
+				3DBF92A72D55BB65009EF4C3 /* PicplzClient */,
+				3DBF92BE2D55BB67009EF4C3 /* PicplzClientTests */,
+				3DBF92C82D55BB67009EF4C3 /* PicplzClientUITests */,
+				3DBF92A62D55BB65009EF4C3 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		3DBF92A62D55BB65009EF4C3 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				3DBF92A52D55BB65009EF4C3 /* PicplzClient.app */,
+				3DBF92BB2D55BB67009EF4C3 /* PicplzClientTests.xctest */,
+				3DBF92C52D55BB67009EF4C3 /* PicplzClientUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		3DBF92A42D55BB65009EF4C3 /* PicplzClient */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3DBF92CE2D55BB67009EF4C3 /* Build configuration list for PBXNativeTarget "PicplzClient" */;
+			buildPhases = (
+				3DBF92A12D55BB65009EF4C3 /* Sources */,
+				3DBF92A22D55BB65009EF4C3 /* Frameworks */,
+				3DBF92A32D55BB65009EF4C3 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				3DBF92A72D55BB65009EF4C3 /* PicplzClient */,
+			);
+			name = PicplzClient;
+			packageProductDependencies = (
+			);
+			productName = PicplzClient;
+			productReference = 3DBF92A52D55BB65009EF4C3 /* PicplzClient.app */;
+			productType = "com.apple.product-type.application";
+		};
+		3DBF92BA2D55BB67009EF4C3 /* PicplzClientTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3DBF92D32D55BB67009EF4C3 /* Build configuration list for PBXNativeTarget "PicplzClientTests" */;
+			buildPhases = (
+				3DBF92B72D55BB67009EF4C3 /* Sources */,
+				3DBF92B82D55BB67009EF4C3 /* Frameworks */,
+				3DBF92B92D55BB67009EF4C3 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				3DBF92BD2D55BB67009EF4C3 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				3DBF92BE2D55BB67009EF4C3 /* PicplzClientTests */,
+			);
+			name = PicplzClientTests;
+			packageProductDependencies = (
+			);
+			productName = PicplzClientTests;
+			productReference = 3DBF92BB2D55BB67009EF4C3 /* PicplzClientTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		3DBF92C42D55BB67009EF4C3 /* PicplzClientUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3DBF92D62D55BB67009EF4C3 /* Build configuration list for PBXNativeTarget "PicplzClientUITests" */;
+			buildPhases = (
+				3DBF92C12D55BB67009EF4C3 /* Sources */,
+				3DBF92C22D55BB67009EF4C3 /* Frameworks */,
+				3DBF92C32D55BB67009EF4C3 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				3DBF92C72D55BB67009EF4C3 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				3DBF92C82D55BB67009EF4C3 /* PicplzClientUITests */,
+			);
+			name = PicplzClientUITests;
+			packageProductDependencies = (
+			);
+			productName = PicplzClientUITests;
+			productReference = 3DBF92C52D55BB67009EF4C3 /* PicplzClientUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		3DBF929D2D55BB65009EF4C3 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1600;
+				LastUpgradeCheck = 1600;
+				TargetAttributes = {
+					3DBF92A42D55BB65009EF4C3 = {
+						CreatedOnToolsVersion = 16.0;
+					};
+					3DBF92BA2D55BB67009EF4C3 = {
+						CreatedOnToolsVersion = 16.0;
+						TestTargetID = 3DBF92A42D55BB65009EF4C3;
+					};
+					3DBF92C42D55BB67009EF4C3 = {
+						CreatedOnToolsVersion = 16.0;
+						TestTargetID = 3DBF92A42D55BB65009EF4C3;
+					};
+				};
+			};
+			buildConfigurationList = 3DBF92A02D55BB65009EF4C3 /* Build configuration list for PBXProject "PicplzClient" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 3DBF929C2D55BB65009EF4C3;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 3DBF92A62D55BB65009EF4C3 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				3DBF92A42D55BB65009EF4C3 /* PicplzClient */,
+				3DBF92BA2D55BB67009EF4C3 /* PicplzClientTests */,
+				3DBF92C42D55BB67009EF4C3 /* PicplzClientUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		3DBF92A32D55BB65009EF4C3 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3DBF92B92D55BB67009EF4C3 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3DBF92C32D55BB67009EF4C3 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		3DBF92A12D55BB65009EF4C3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3DBF92B72D55BB67009EF4C3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3DBF92C12D55BB67009EF4C3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		3DBF92BD2D55BB67009EF4C3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 3DBF92A42D55BB65009EF4C3 /* PicplzClient */;
+			targetProxy = 3DBF92BC2D55BB67009EF4C3 /* PBXContainerItemProxy */;
+		};
+		3DBF92C72D55BB67009EF4C3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 3DBF92A42D55BB65009EF4C3 /* PicplzClient */;
+			targetProxy = 3DBF92C62D55BB67009EF4C3 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		3DBF92CF2D55BB67009EF4C3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = XS9UN8F2AX;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = PicplzClient/Info.plist;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.hm.picplz.PicplzClient;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		3DBF92D02D55BB67009EF4C3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = XS9UN8F2AX;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = PicplzClient/Info.plist;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.hm.picplz.PicplzClient;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		3DBF92D12D55BB67009EF4C3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		3DBF92D22D55BB67009EF4C3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		3DBF92D42D55BB67009EF4C3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = XS9UN8F2AX;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.hm.picplz.PicplzClientTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PicplzClient.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/PicplzClient";
+			};
+			name = Debug;
+		};
+		3DBF92D52D55BB67009EF4C3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = XS9UN8F2AX;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.hm.picplz.PicplzClientTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PicplzClient.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/PicplzClient";
+			};
+			name = Release;
+		};
+		3DBF92D72D55BB67009EF4C3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = XS9UN8F2AX;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.hm.picplz.PicplzClientUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = PicplzClient;
+			};
+			name = Debug;
+		};
+		3DBF92D82D55BB67009EF4C3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = XS9UN8F2AX;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.hm.picplz.PicplzClientUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = PicplzClient;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		3DBF92A02D55BB65009EF4C3 /* Build configuration list for PBXProject "PicplzClient" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3DBF92D12D55BB67009EF4C3 /* Debug */,
+				3DBF92D22D55BB67009EF4C3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		3DBF92CE2D55BB67009EF4C3 /* Build configuration list for PBXNativeTarget "PicplzClient" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3DBF92CF2D55BB67009EF4C3 /* Debug */,
+				3DBF92D02D55BB67009EF4C3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		3DBF92D32D55BB67009EF4C3 /* Build configuration list for PBXNativeTarget "PicplzClientTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3DBF92D42D55BB67009EF4C3 /* Debug */,
+				3DBF92D52D55BB67009EF4C3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		3DBF92D62D55BB67009EF4C3 /* Build configuration list for PBXNativeTarget "PicplzClientUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3DBF92D72D55BB67009EF4C3 /* Debug */,
+				3DBF92D82D55BB67009EF4C3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 3DBF929D2D55BB65009EF4C3 /* Project object */;
+}
