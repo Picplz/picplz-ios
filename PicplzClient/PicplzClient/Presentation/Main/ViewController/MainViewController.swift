@@ -11,7 +11,7 @@ final class MainViewController: UIViewController {
     let label = UILabel()
     let logoutButton = UIButton()
     
-    var viewModel: MainViewModel!
+    var viewModel: MainViewModelProtocol!
     
     override func viewDidLoad() {
         super.viewDidLoad()

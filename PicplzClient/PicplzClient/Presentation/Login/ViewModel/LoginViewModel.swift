@@ -7,16 +7,8 @@
 
 import Combine
 
-protocol LoginViewModelDelegate: AnyObject {
-    func loggedIn()
-}
-
-final class LoginViewModel {
+final class LoginViewModel: LoginViewModelProtocol {
     weak var delegate: LoginViewModelDelegate?
-    
-    init(delegate: LoginViewModelDelegate) {
-        self.delegate = delegate
-    }
     
     func loginButtonTapped() {
         delegate?.loggedIn()

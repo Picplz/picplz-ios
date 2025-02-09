@@ -17,6 +17,7 @@ final class MainCoordinator: Coordinator {
     weak var delegate: MainCoordinatorDelegate?
     private let navigationController: UINavigationController
     private var log = Logger.of("MainCoordinator")
+    private let container = DIContainerProvider.shared.container
     
     init(navigationController: UINavigationController) {
         self.navigationController = navigationController
@@ -27,8 +28,11 @@ final class MainCoordinator: Coordinator {
     }
     
     func start() {
+        var viewModel = container.resolve(MainViewModelProtocol.self)
+        viewModel?.delegate = self
+        
         let viewController = MainViewController()
-        viewController.viewModel = MainViewModel(delegate: self)
+        viewController.viewModel = viewModel
         navigationController.viewControllers = [viewController]
     }
 }

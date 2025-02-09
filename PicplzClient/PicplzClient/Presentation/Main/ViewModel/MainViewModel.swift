@@ -7,16 +7,8 @@
 
 import Combine
 
-protocol MainViewModelDelegate: AnyObject {
-    func loggedOut()
-}
-
-final class MainViewModel {
+final class MainViewModel: MainViewModelProtocol {
     weak var delegate: MainViewModelDelegate?
-    
-    init(delegate: MainViewModelDelegate) {
-        self.delegate = delegate
-    }
     
     func logoutButtonTapped() {
         delegate?.loggedOut()

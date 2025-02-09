@@ -17,6 +17,7 @@ final class LoginCoordinator: Coordinator {
     weak var delegate: LoginCoordinatorDelegate?
     private let navigationController: UINavigationController
     private var log = Logger.of("LoginCoordinator")
+    private let container = DIContainerProvider.shared.container
     
     init(navigationController: UINavigationController) {
         self.navigationController = navigationController
@@ -27,8 +28,11 @@ final class LoginCoordinator: Coordinator {
     }
     
     func start() {
+        var viewModel = container.resolve(LoginViewModelProtocol.self)
+        viewModel?.delegate = self
+        
         let viewController = LoginViewController()
-        viewController.viewModel = LoginViewModel(delegate: self)
+        viewController.viewModel = viewModel
         navigationController.viewControllers = [viewController]
         
         log.debug("LoginCoordinator started")

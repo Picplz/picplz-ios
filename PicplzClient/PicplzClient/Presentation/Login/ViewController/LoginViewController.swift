@@ -11,7 +11,7 @@ final class LoginViewController: UIViewController {
     private let label = UILabel()
     private let loginButton = UIButton()
     
-    var viewModel: LoginViewModel!
+    var viewModel: LoginViewModelProtocol!
     
     override func viewDidLoad() {
         super.viewDidLoad()

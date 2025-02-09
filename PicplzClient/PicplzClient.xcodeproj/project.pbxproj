@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		3D42C7F72D58DA4D009A2256 /* Swinject in Frameworks */ = {isa = PBXBuildFile; productRef = 3D42C7F62D58DA4D009A2256 /* Swinject */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		3DBF92BC2D55BB67009EF4C3 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -65,6 +69,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3D42C7F72D58DA4D009A2256 /* Swinject in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -125,6 +130,8 @@
 			);
 			name = PicplzClient;
 			packageProductDependencies = (
+				3D42C7F62D58DA4D009A2256 /* Swinject */,
+				3D42C7F82D58DA4D009A2256 /* Swinject-Dynamic */,
 			);
 			productName = PicplzClient;
 			productReference = 3DBF92A52D55BB65009EF4C3 /* PicplzClient.app */;
@@ -208,6 +215,9 @@
 			);
 			mainGroup = 3DBF929C2D55BB65009EF4C3;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				3D42C7F52D58DA4D009A2256 /* XCRemoteSwiftPackageReference "Swinject" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 3DBF92A62D55BB65009EF4C3 /* Products */;
 			projectDirPath = "";
@@ -567,6 +577,30 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		3D42C7F52D58DA4D009A2256 /* XCRemoteSwiftPackageReference "Swinject" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Swinject/Swinject.git";
+			requirement = {
+				kind = exactVersion;
+				version = 2.9.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		3D42C7F62D58DA4D009A2256 /* Swinject */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3D42C7F52D58DA4D009A2256 /* XCRemoteSwiftPackageReference "Swinject" */;
+			productName = Swinject;
+		};
+		3D42C7F82D58DA4D009A2256 /* Swinject-Dynamic */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3D42C7F52D58DA4D009A2256 /* XCRemoteSwiftPackageReference "Swinject" */;
+			productName = "Swinject-Dynamic";
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 3DBF929D2D55BB65009EF4C3 /* Project object */;
 }
