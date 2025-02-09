@@ -9,6 +9,9 @@ import UIKit
 
 final class MainViewController: UIViewController {
     let label = UILabel()
+    let logoutButton = UIButton()
+    
+    var viewModel: MainViewModel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,6 +23,10 @@ final class MainViewController: UIViewController {
     private func setupStyle() {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "MainView"
+        
+        logoutButton.translatesAutoresizingMaskIntoConstraints = false
+        logoutButton.setTitle("로그아웃", for: .normal)
+        logoutButton.addTarget(self, action: #selector(logoutButtonTapped), for: .touchUpInside)
     }
     
     private func setupLayout() {
@@ -28,5 +35,15 @@ final class MainViewController: UIViewController {
             label.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             label.centerYAnchor.constraint(equalTo: view.centerYAnchor),
         ])
+        
+        view.addSubview(logoutButton)
+        NSLayoutConstraint.activate([
+            logoutButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            logoutButton.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 16)
+        ])
+    }
+    
+    @objc private func logoutButtonTapped() {
+        viewModel.logoutButtonTapped()
     }
 }

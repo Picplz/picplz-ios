@@ -9,7 +9,7 @@ import UIKit
 import OSLog
 
 protocol LoginCoordinatorDelegate: AnyObject {
-    func finished(coordinator: LoginCoordinator)
+    func finished(loginCoordinator: LoginCoordinator)
 }
 
 final class LoginCoordinator: Coordinator {
@@ -28,16 +28,16 @@ final class LoginCoordinator: Coordinator {
     
     func start() {
         let viewController = LoginViewController()
-        viewController.delegate = self
+        viewController.viewModel = LoginViewModel(delegate: self)
         navigationController.viewControllers = [viewController]
         
         log.debug("LoginCoordinator started")
     }
 }
 
-extension LoginCoordinator: LoginViewControllerDelegate {
+extension LoginCoordinator: LoginViewModelDelegate {
     func loggedIn() {
         log.debug("LoginCoordinator loggedIn called")
-        delegate?.finished(coordinator: self)
+        delegate?.finished(loginCoordinator: self)
     }
 }

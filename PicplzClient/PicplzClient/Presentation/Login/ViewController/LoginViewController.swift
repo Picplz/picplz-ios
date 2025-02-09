@@ -7,15 +7,11 @@
 
 import UIKit
 
-protocol LoginViewControllerDelegate: AnyObject {
-    func loggedIn()
-}
-
 final class LoginViewController: UIViewController {
     private let label = UILabel()
     private let loginButton = UIButton()
     
-    weak var delegate: LoginViewControllerDelegate?
+    var viewModel: LoginViewModel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,6 +44,6 @@ final class LoginViewController: UIViewController {
     }
     
     @objc private func loginButtonTapped() {
-        delegate?.loggedIn()
+        viewModel.loginButtonTapped()
     }
 }

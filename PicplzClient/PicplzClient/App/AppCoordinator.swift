@@ -49,15 +49,25 @@ final class AppCoordinator: Coordinator {
     func showMain() {
         let coordinator = MainCoordinator(navigationController: navigationController)
         childCoordinators.append(coordinator)
+        coordinator.delegate = self
         coordinator.start()
     }
 }
 
 extension AppCoordinator: LoginCoordinatorDelegate {
-    func finished(coordinator: LoginCoordinator) {
+    func finished(loginCoordinator: LoginCoordinator) {
         log.debug("AppCoordinator finished(loginCoordinator:) called")
         
-        childCoordinators = childCoordinators.filter { $0 !== coordinator }
+        childCoordinators = childCoordinators.filter { $0 !== loginCoordinator }
         showMain()
+    }
+}
+
+extension AppCoordinator: MainCoordinatorDelegate {
+    func finished(mainCoordinator: MainCoordinator) {
+        log.debug("AppCoordinator finished(mainCoordinator:) called")
+        
+        childCoordinators = childCoordinators.filter { $0 !== mainCoordinator }
+        showLogin()
     }
 }
