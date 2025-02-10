@@ -97,9 +97,6 @@ final class OnboardingViewController: UIViewController {
         
         contentView.collectionView.isScrollEnabled = false // disable vertical scroll
         
-        contentView.pageControl.pageIndicatorTintColor = .black
-        contentView.pageControl.currentPageIndicatorTintColor = .lightGray
-        
         contentView.loginButton.isHidden = true
     }
     

@@ -9,7 +9,7 @@ import UIKit
 
 final class OnboardingContentView: UIView {
     var collectionView: UICollectionView!
-    let pageControl = UIPageControl()
+    let pageControl = OnboardingPageControl()
     let loginButton = UIButton()
     
     func setupStyle() {
@@ -37,13 +37,13 @@ final class OnboardingContentView: UIView {
         
         addSubview(pageControl)
         NSLayoutConstraint.activate([
-            pageControl.topAnchor.constraint(equalTo: collectionView.bottomAnchor, constant: 12),
+            pageControl.topAnchor.constraint(equalToSystemSpacingBelow: collectionView.bottomAnchor, multiplier: 4.0),
             pageControl.centerXAnchor.constraint(equalTo: centerXAnchor),
         ])
         
         addSubview(loginButton)
         NSLayoutConstraint.activate([
-            loginButton.topAnchor.constraint(equalTo: pageControl.bottomAnchor, constant: 12),
+            loginButton.topAnchor.constraint(equalToSystemSpacingBelow: pageControl.bottomAnchor, multiplier: 4.0),
             loginButton.leftAnchor.constraint(equalToSystemSpacingAfter: leftAnchor, multiplier: 2),
             rightAnchor.constraint(equalToSystemSpacingAfter: loginButton.rightAnchor, multiplier: 2),
             loginButton.heightAnchor.constraint(equalToConstant: 60),
