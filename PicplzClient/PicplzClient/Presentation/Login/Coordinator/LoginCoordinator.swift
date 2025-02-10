@@ -28,11 +28,16 @@ final class LoginCoordinator: Coordinator {
     }
     
     func start() {
-        var viewModel = container.resolve(LoginViewModelProtocol.self)
-        viewModel?.delegate = self
+//        var viewModel = container.resolve(LoginViewModelProtocol.self)
+//        viewModel?.delegate = self
+//        
+//        let viewController = LoginViewController()
+//        viewController.viewModel = viewModel
         
-        let viewController = LoginViewController()
+        let viewModel = container.resolve(OnboardingViewModelProtocol.self)
+        let viewController = OnboardingViewController()
         viewController.viewModel = viewModel
+        
         navigationController.viewControllers = [viewController]
         
         log.debug("LoginCoordinator started")
