@@ -22,9 +22,11 @@ final class DIContainerProvider {
     private static func makeContainer() -> Container {
         let container = Container()
         
+        container.register(MainViewModelProtocol.self) { _ in MainViewModel() }
+        
         container.register(LoginViewModelProtocol.self) { _ in LoginViewModel() }
         
-        container.register(MainViewModelProtocol.self) { _ in MainViewModel() }
+        container.register(OnboardingViewModelProtocol.self) { _ in OnboardingViewModel() }
         
         return container
     }
