@@ -33,7 +33,6 @@ final class OnboardingContentView: UIView {
             collectionView.topAnchor.constraint(equalTo: topAnchor),
             collectionView.leftAnchor.constraint(equalTo: leftAnchor),
             collectionView.rightAnchor.constraint(equalTo: rightAnchor),
-//            collectionView.heightAnchor.constraint(equalToConstant: 565), // TODO: dynamic
         ])
         
         addSubview(pageControl)

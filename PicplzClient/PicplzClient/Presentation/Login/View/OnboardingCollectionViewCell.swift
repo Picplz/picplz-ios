@@ -43,6 +43,7 @@ final class OnboardingCollectionViewCell: UICollectionViewCell {
         NSLayoutConstraint.activate([
             onboardingMessageLabel.topAnchor.constraint(equalToSystemSpacingBelow: onboardingImageView.bottomAnchor, multiplier: 4),
             onboardingMessageLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
+            onboardingMessageLabel.bottomAnchor.constraint(equalTo: bottomAnchor),
         ])
     }
     

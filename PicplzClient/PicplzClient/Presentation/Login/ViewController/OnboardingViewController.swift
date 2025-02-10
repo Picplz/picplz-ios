@@ -26,7 +26,7 @@ final class OnboardingViewController: UIViewController {
         setupLayout()
         contentView.pageControl.numberOfPages = viewModel.onboardingPages.count
         
-        collectionViewHeightConstraint = contentView.collectionView.heightAnchor.constraint(equalToConstant: 565) // initial height
+        collectionViewHeightConstraint = contentView.collectionView.heightAnchor.constraint(equalToConstant: 600) // initial height
         collectionViewHeightConstraint.isActive = true
         updateCollectionViewHeight()
         
@@ -116,10 +116,10 @@ final class OnboardingViewController: UIViewController {
     }
     
     private func createCollectionViewLayout() -> UICollectionViewCompositionalLayout {
-        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(1))
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .estimated(600))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         
-        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .estimated(578))
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .estimated(600))
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
         
         let section = NSCollectionLayoutSection(group: group)
