@@ -87,6 +87,9 @@ final class OnboardingViewController: UIViewController {
             guard let index = index else { return }
             self?.viewModel.currentPageChanged(pageIndex: index)
         }
+        
+        // MARK: Kakao Login Handler
+        contentView.loginButton.addTarget(self, action: #selector(kakaoLoginTapped), for: .touchUpInside)
     }
     
     private func setupStyle() {
@@ -136,6 +139,10 @@ final class OnboardingViewController: UIViewController {
             self.collectionViewHeightConstraint.constant = maxHeight
             self.view.layoutIfNeeded()
         }
+    }
+    
+    @objc private func kakaoLoginTapped() {
+        viewModel.kakaoLoginButtonTapped()
     }
     
     enum Section {

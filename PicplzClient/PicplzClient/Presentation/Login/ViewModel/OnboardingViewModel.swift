@@ -8,6 +8,8 @@
 import Combine
 
 final class OnboardingViewModel: OnboardingViewModelProtocol {
+    var delegate: OnboardingViewModelDelegate?
+    
     @Published var currentPageIndex = 0
     var currentPageIndexPublisher: Published<Int>.Publisher {
         $currentPageIndex
@@ -23,5 +25,9 @@ final class OnboardingViewModel: OnboardingViewModelProtocol {
     func currentPageChanged(pageIndex: Int) {
         currentPageIndex = pageIndex
         showLoginButton = pageIndex == onboardingPages.count - 1
+    }
+    
+    func kakaoLoginButtonTapped() {
+        delegate?.goToLogin(authProvider: .kakao)
     }
 }

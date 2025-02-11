@@ -28,19 +28,27 @@ final class LoginCoordinator: Coordinator {
     }
     
     func start() {
-//        var viewModel = container.resolve(LoginViewModelProtocol.self)
-//        viewModel?.delegate = self
-//        
-//        let viewController = LoginViewController()
-//        viewController.viewModel = viewModel
-        
-        let viewModel = container.resolve(OnboardingViewModelProtocol.self)
+        var viewModel = container.resolve(OnboardingViewModelProtocol.self)
+        viewModel?.delegate = self
         let viewController = OnboardingViewController()
         viewController.viewModel = viewModel
         
         navigationController.viewControllers = [viewController]
         
         log.debug("LoginCoordinator started")
+    }
+}
+
+extension LoginCoordinator: OnboardingViewModelDelegate {
+    func goToLogin(authProvider: AuthProvider) {
+        log.debug("LoginCoordinator goToLogin called")
+        
+        var viewModel = container.resolve(LoginViewModelProtocol.self)
+        viewModel?.delegate = self
+        let viewController = LoginViewController()
+        viewController.viewModel = viewModel
+        
+        navigationController.pushViewController(viewController, animated: true)
     }
 }
 

@@ -8,6 +8,8 @@
 import Combine
 
 protocol OnboardingViewModelProtocol {
+    var delegate: OnboardingViewModelDelegate? { get set }
+    
     var currentPageIndex: Int { get }
     var currentPageIndexPublisher: Published<Int>.Publisher { get }
     
@@ -17,4 +19,9 @@ protocol OnboardingViewModelProtocol {
     var onboardingPages: [OnboardingPage] { get }
     
     func currentPageChanged(pageIndex: Int)
+    func kakaoLoginButtonTapped()
+}
+
+protocol OnboardingViewModelDelegate: AnyObject {
+    func goToLogin(authProvider: AuthProvider)
 }
