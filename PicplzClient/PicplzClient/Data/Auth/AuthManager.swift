@@ -8,7 +8,7 @@
 import Foundation
 import OSLog
 
-final class AuthManager: AuthManaging {
+final class AuthManager: AuthManaging {    
     private var accessTokenModel: AccessToken?
     private var currentUserModel: AuthUserModel?
     private var log = Logger.of("AuthManager")
@@ -16,7 +16,7 @@ final class AuthManager: AuthManaging {
     var accessToken: String? {
         guard let accessTokenModel = accessTokenModel else { return nil }
         
-        checkIsExpired()
+        let _ = validateToken()
         
         return accessTokenModel.token
     }
@@ -47,12 +47,15 @@ final class AuthManager: AuthManaging {
         currentUserModel = nil
     }
     
-    private func checkIsExpired() {
-        guard let expiresDate = accessTokenModel?.expiresDate else { return }
+    func validateToken() -> Bool {
+        guard let expiresDate = accessTokenModel?.expiresDate else { return false }
         
         if Date() > expiresDate {
             log.info("Token expired... currentDate=\(Date()) expiredDate=\(expiresDate)")
             reset()
+            return false
         }
+        
+        return true
     }
 }
