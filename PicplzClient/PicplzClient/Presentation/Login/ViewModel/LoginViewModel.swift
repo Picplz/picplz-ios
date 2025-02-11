@@ -45,7 +45,8 @@ final class LoginViewModel: LoginViewModelProtocol {
     }
     
     func didSetAuthProvider(authProvider: AuthProvider) {
-        authEntrypointUrl = URL(string: "http://3.36.183.87:8080/api/v1\(authProvider.getAuthEntrypointPath())")
+        authEntrypointUrl = URL(string: "\(Constants.serverBaseUrl)\(authProvider.getAuthEntrypointPath())")
+        print("-> \(Constants.serverBaseUrl)\(authProvider.getAuthEntrypointPath())")
     }
     
     /**

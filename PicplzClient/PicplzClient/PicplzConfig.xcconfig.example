@@ -1,0 +1,11 @@
+//
+//  PicplzConfig.xcconfig
+//  PicplzClient
+//
+//  Created by 임영택 on 2/11/25.
+//
+
+// Configuration settings file format documentation can be found at:
+// https://help.apple.com/xcode/#/dev745c5c974
+
+SERVER_BASE_URL=https:/$()/YOUR_SERVER_HOST/api/v1 // caution: any double slashed are treated as a starting of a comment
