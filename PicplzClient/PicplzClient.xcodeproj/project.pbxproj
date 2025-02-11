@@ -28,7 +28,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		3DBF92A52D55BB65009EF4C3 /* PicPlz.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PicPlz.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		3DBF92A52D55BB65009EF4C3 /* PicplzClient.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PicplzClient.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3DBF92BB2D55BB67009EF4C3 /* PicplzClientTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PicplzClientTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3DBF92C52D55BB67009EF4C3 /* PicplzClientUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PicplzClientUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -103,7 +103,7 @@
 		3DBF92A62D55BB65009EF4C3 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				3DBF92A52D55BB65009EF4C3 /* PicPlz.app */,
+				3DBF92A52D55BB65009EF4C3 /* PicplzClient.app */,
 				3DBF92BB2D55BB67009EF4C3 /* PicplzClientTests.xctest */,
 				3DBF92C52D55BB67009EF4C3 /* PicplzClientUITests.xctest */,
 			);
@@ -133,7 +133,7 @@
 				3D8449A42D59B54100AEFB66 /* Swinject */,
 			);
 			productName = PicplzClient;
-			productReference = 3DBF92A52D55BB65009EF4C3 /* PicPlz.app */;
+			productReference = 3DBF92A52D55BB65009EF4C3 /* PicplzClient.app */;
 			productType = "com.apple.product-type.application";
 		};
 		3DBF92BA2D55BB67009EF4C3 /* PicplzClientTests */ = {
@@ -312,7 +312,7 @@
 				);
 				MARKETING_VERSION = 0.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.hm.picplz.PicplzClient;
-				PRODUCT_NAME = PicPlz;
+				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -340,7 +340,7 @@
 				);
 				MARKETING_VERSION = 0.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.hm.picplz.PicplzClient;
-				PRODUCT_NAME = PicPlz;
+				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
