@@ -29,7 +29,7 @@ final class MainViewController: UIViewController {
     }
     
     private func setupStyle() {
-        view.backgroundColor = .white
+        view.backgroundColor = .picplzWhite
         
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "MainView"
@@ -37,7 +37,7 @@ final class MainViewController: UIViewController {
         
         logoutButton.translatesAutoresizingMaskIntoConstraints = false
         logoutButton.setTitle("로그아웃", for: .normal)
-        logoutButton.setTitleColor(.black, for: .normal)
+        logoutButton.setTitleColor(.picplzBlack, for: .normal)
         logoutButton.addTarget(self, action: #selector(logoutButtonTapped), for: .touchUpInside)
     }
     

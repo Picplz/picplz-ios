@@ -93,7 +93,7 @@ final class OnboardingViewController: UIViewController {
     }
     
     private func setupStyle() {
-        view.backgroundColor = .white
+        view.backgroundColor = .picplzWhite
         
         contentView.translatesAutoresizingMaskIntoConstraints = false
         contentView.setupStyle()

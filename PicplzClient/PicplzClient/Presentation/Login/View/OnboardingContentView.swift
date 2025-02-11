@@ -20,11 +20,11 @@ final class OnboardingContentView: UIView {
         pageControl.translatesAutoresizingMaskIntoConstraints = false
         
         loginButton.translatesAutoresizingMaskIntoConstraints = false
-        loginButton.backgroundColor = Colors.kakaoYellow
+        loginButton.backgroundColor = .kakaoYellow
         loginButton.setTitle("카카오로 계속하기", for: .normal)
         loginButton.titleLabel?.font = .buttonTitle
-        loginButton.setTitleColor(.black, for: .normal)
-        loginButton.setTitleColor(.black.withAlphaComponent(0.5), for: .highlighted)
+        loginButton.setTitleColor(.picplzBlack, for: .normal)
+        loginButton.setTitleColor(.picplzBlack.withAlphaComponent(0.5), for: .highlighted)
     }
     
     func setupLayout() {
