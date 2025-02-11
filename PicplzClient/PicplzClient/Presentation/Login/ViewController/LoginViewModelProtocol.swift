@@ -13,5 +13,6 @@ protocol LoginViewModelDelegate: AnyObject {
 
 protocol LoginViewModelProtocol {
     var delegate: LoginViewModelDelegate? { get set }
+    var loginUseCase: LoginUseCase? { get set }
     func loginFinished(resultUrl: URL)
 }
