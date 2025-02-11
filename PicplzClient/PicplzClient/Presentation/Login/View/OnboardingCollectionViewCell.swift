@@ -26,7 +26,7 @@ final class OnboardingCollectionViewCell: UICollectionViewCell {
         onboardingImageView.backgroundColor = Colors.grey1 // temp
         
         onboardingMessageLabel.translatesAutoresizingMaskIntoConstraints = false
-        onboardingMessageLabel.font = Fonts.titleBig
+        onboardingMessageLabel.font = .bigTitle
         onboardingMessageLabel.numberOfLines = 0
     }
     

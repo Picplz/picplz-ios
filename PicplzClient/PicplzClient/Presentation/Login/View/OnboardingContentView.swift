@@ -22,7 +22,7 @@ final class OnboardingContentView: UIView {
         loginButton.translatesAutoresizingMaskIntoConstraints = false
         loginButton.backgroundColor = Colors.kakaoYellow
         loginButton.setTitle("카카오로 계속하기", for: .normal)
-        loginButton.titleLabel?.font = Fonts.buttonTitle
+        loginButton.titleLabel?.font = .buttonTitle
         loginButton.setTitleColor(.black, for: .normal)
         loginButton.setTitleColor(.black.withAlphaComponent(0.5), for: .highlighted)
     }
