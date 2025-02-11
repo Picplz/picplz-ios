@@ -8,6 +8,7 @@
 import UIKit
 import WebKit
 import OSLog
+import Combine
 
 final class LoginViewController: UIViewController {
     private var webView = WKWebView()
@@ -16,15 +17,16 @@ final class LoginViewController: UIViewController {
     var authProvider: AuthProvider = .kakao
     private var log = Logger.of("LoginViewController")
     
+    private var subscriptions: Set<AnyCancellable> = []
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setup()
+        bind()
         
         webView.navigationDelegate = self
-        let initialUrl = URL(string: "http://3.36.183.87:8080/api/v1\(authProvider.getAuthEntrypointPath())")!
-        log.debug("set initialUrl: \(initialUrl)")
-        webView.load(URLRequest(url: initialUrl))
+        viewModel.didSetAuthProvider(authProvider: authProvider)
     }
     
     private func setup() {
@@ -39,6 +41,16 @@ final class LoginViewController: UIViewController {
             webView.rightAnchor.constraint(equalTo: view.rightAnchor),
             webView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
         ])
+    }
+    
+    private func bind() {
+        viewModel.authEntrypointUrlPublisher
+            .receive(on: RunLoop.main)
+            .compactMap { $0 }
+            .sink { [weak self] url in
+                self?.webView.load(URLRequest(url: url))
+            }
+            .store(in: &subscriptions)
     }
 }
 

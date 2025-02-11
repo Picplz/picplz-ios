@@ -14,5 +14,10 @@ protocol LoginViewModelDelegate: AnyObject {
 protocol LoginViewModelProtocol {
     var delegate: LoginViewModelDelegate? { get set }
     var loginUseCase: LoginUseCase? { get set }
+    
+    var authEntrypointUrl: URL? { get }
+    var authEntrypointUrlPublisher: Published<URL?>.Publisher { get }
+    
     func loginFinished(resultUrl: URL)
+    func didSetAuthProvider(authProvider: AuthProvider)
 }

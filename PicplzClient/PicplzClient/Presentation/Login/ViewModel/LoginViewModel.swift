@@ -12,6 +12,11 @@ final class LoginViewModel: LoginViewModelProtocol {
     weak var delegate: LoginViewModelDelegate?
     var loginUseCase: LoginUseCase?
     
+    @Published var authEntrypointUrl: URL?
+    var authEntrypointUrlPublisher: Published<URL?>.Publisher {
+        $authEntrypointUrl
+    }
+    
     func loginFinished(resultUrl: URL) {
         let urlComponents = URLComponents(url: resultUrl, resolvingAgainstBaseURL: false)
         
@@ -37,6 +42,10 @@ final class LoginViewModel: LoginViewModelProtocol {
         }
         
         delegate?.loggedIn()
+    }
+    
+    func didSetAuthProvider(authProvider: AuthProvider) {
+        authEntrypointUrl = URL(string: "http://3.36.183.87:8080/api/v1\(authProvider.getAuthEntrypointPath())")
     }
     
     /**
