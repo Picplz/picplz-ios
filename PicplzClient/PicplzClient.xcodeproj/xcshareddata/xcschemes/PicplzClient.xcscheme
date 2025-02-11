@@ -16,7 +16,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "3DBF92A42D55BB65009EF4C3"
-               BuildableName = "PicplzClient.app"
+               BuildableName = "PicPlz.app"
                BlueprintName = "PicplzClient"
                ReferencedContainer = "container:PicplzClient.xcodeproj">
             </BuildableReference>
@@ -69,7 +69,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "3DBF92A42D55BB65009EF4C3"
-            BuildableName = "PicplzClient.app"
+            BuildableName = "PicPlz.app"
             BlueprintName = "PicplzClient"
             ReferencedContainer = "container:PicplzClient.xcodeproj">
          </BuildableReference>
@@ -86,7 +86,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "3DBF92A42D55BB65009EF4C3"
-            BuildableName = "PicplzClient.app"
+            BuildableName = "PicPlz.app"
             BlueprintName = "PicplzClient"
             ReferencedContainer = "container:PicplzClient.xcodeproj">
          </BuildableReference>
