@@ -22,9 +22,39 @@ final class DIContainerProvider {
     private static func makeContainer() -> Container {
         let container = Container()
         
-        container.register(LoginViewModelProtocol.self) { _ in LoginViewModel() }
+        // MARK: Data
+        container.register(AuthManaging.self) { _ in
+            AuthManager()
+        }
+        .inObjectScope(.container)
         
-        container.register(MainViewModelProtocol.self) { _ in MainViewModel() }
+        // MARK: Domain
+        container.register(LoginUseCase.self) { r in
+            let authManaging = r.resolve(AuthManaging.self)!
+            return LoginUseCaseImpl(authManaging: authManaging)
+        }
+        container.register(LogoutUseCase.self) { r in
+            let authManaging = r.resolve(AuthManaging.self)!
+            return LogoutUseCaseImpl(authManaging: authManaging)
+        }
+        container.register(GetAuthInfoUseCase.self) { r in
+            let authManaging = r.resolve(AuthManaging.self)!
+            return GetAuthInfoUseCaseImpl(authManaging: authManaging)
+        }
+        
+        // MARK: Presentaion
+        container.register(MainViewModelProtocol.self) { r in
+            let viewModel = MainViewModel()
+            viewModel.logoutUseCase = r.resolve(LogoutUseCase.self)
+            viewModel.getAuthInfoUseCase = r.resolve(GetAuthInfoUseCase.self)
+            return viewModel
+        }
+        container.register(LoginViewModelProtocol.self) { r in
+            let viewModel = LoginViewModel()
+            viewModel.loginUseCase = r.resolve(LoginUseCase.self)!
+            return viewModel
+        }
+        container.register(OnboardingViewModelProtocol.self) { _ in OnboardingViewModel() }
         
         return container
     }

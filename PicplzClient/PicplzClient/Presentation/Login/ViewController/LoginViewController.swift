@@ -6,44 +6,64 @@
 //
 
 import UIKit
+import WebKit
+import OSLog
+import Combine
 
 final class LoginViewController: UIViewController {
-    private let label = UILabel()
-    private let loginButton = UIButton()
+    private var webView = WKWebView()
     
     var viewModel: LoginViewModelProtocol!
+    var authProvider: AuthProvider = .kakao
+    private var log = Logger.of("LoginViewController")
+    
+    private var subscriptions: Set<AnyCancellable> = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setupStyle()
-        setupLayout()
+        setup()
+        bind()
+        
+        webView.navigationDelegate = self
+        viewModel.didSetAuthProvider(authProvider: authProvider)
     }
     
-    private func setupStyle() {
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "LoginView"
+    private func setup() {
+        self.view.backgroundColor = .white
         
-        loginButton.translatesAutoresizingMaskIntoConstraints = false
-        loginButton.setTitle("로그인", for: .normal)
-        loginButton.addTarget(self, action: #selector(loginButtonTapped), for: .touchUpInside)
-    }
-    
-    private func setupLayout() {
-        view.addSubview(label)
-        NSLayoutConstraint.activate([
-            label.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            label.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-        ])
+        webView.translatesAutoresizingMaskIntoConstraints = false
         
-        view.addSubview(loginButton)
+        view.addSubview(webView)
         NSLayoutConstraint.activate([
-            loginButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            loginButton.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 16)
+            webView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            webView.leftAnchor.constraint(equalTo: view.leftAnchor),
+            webView.rightAnchor.constraint(equalTo: view.rightAnchor),
+            webView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
         ])
     }
     
-    @objc private func loginButtonTapped() {
-        viewModel.loginButtonTapped()
+    private func bind() {
+        viewModel.authEntrypointUrlPublisher
+            .receive(on: RunLoop.main)
+            .compactMap { $0 }
+            .sink { [weak self] url in
+                self?.webView.load(URLRequest(url: url))
+            }
+            .store(in: &subscriptions)
+    }
+}
+
+extension LoginViewController: WKNavigationDelegate {
+    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping @MainActor (WKNavigationActionPolicy) -> Void) {
+        if let url = navigationAction.request.url,
+           url.host == "localhost" {
+            log.debug("localhost - \(url)")
+            viewModel.loginFinished(resultUrl: url)
+            decisionHandler(.cancel)
+            return
+        }
+        
+        decisionHandler(.allow)
     }
 }

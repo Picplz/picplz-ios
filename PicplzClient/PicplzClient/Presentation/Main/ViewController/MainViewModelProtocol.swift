@@ -13,5 +13,10 @@ protocol MainViewModelDelegate: AnyObject {
 
 protocol MainViewModelProtocol {
     var delegate: MainViewModelDelegate? { get set }
+    
+    var accessToken: String? { get }
+    var accessTokenPublisher: Published<String?>.Publisher { get }
+    
     func logoutButtonTapped()
+    func viewPrepared()
 }
