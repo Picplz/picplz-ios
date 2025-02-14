@@ -2,7 +2,7 @@
 name: new-feature-issue
 about: 기능 구현
 title: 'feat: 기능 (IOS-1)'
-labels: ''
+labels: feature
 assignees: ''
 
 ---
