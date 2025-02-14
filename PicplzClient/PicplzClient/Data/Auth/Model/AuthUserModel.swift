@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct AuthUserModel {
+struct AuthUserModel: Codable {
     let name: String
     let nickname: String
     let birth: Date
