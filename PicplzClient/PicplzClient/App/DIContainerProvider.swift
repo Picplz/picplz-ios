@@ -43,6 +43,7 @@ final class DIContainerProvider {
         }
         
         // MARK: Presentaion
+        // MARK:              ...  View Models
         container.register(MainViewModelProtocol.self) { r in
             let viewModel = MainViewModel()
             viewModel.logoutUseCase = r.resolve(LogoutUseCase.self)
@@ -55,6 +56,19 @@ final class DIContainerProvider {
             return viewModel
         }
         container.register(OnboardingViewModelProtocol.self) { _ in OnboardingViewModel() }
+        
+        // MARK:              ...  View Controllers
+        container.register(OnboardingViewController.self) { r in
+            let vc = OnboardingViewController()
+            vc.viewModel = r.resolve(OnboardingViewModelProtocol.self)
+            return vc
+        }
+        container.register(MainViewController.self) { r in
+            let vc = MainViewController()
+            vc.viewModel = r.resolve(MainViewModelProtocol.self)
+            return vc
+        }
+        
         
         return container
     }
