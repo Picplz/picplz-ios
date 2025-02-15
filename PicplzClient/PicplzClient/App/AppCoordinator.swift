@@ -7,19 +7,30 @@
 
 import UIKit
 import OSLog
+import Swinject
 
 final class AppCoordinator: Coordinator {
     var childCoordinators: [any Coordinator] = []
     private let window: UIWindow
     private let navigationController: UINavigationController
-    private var isLoggedIn = false
+    private let container: Container
+    private let authManaging: AuthManaging
     private let log = Logger.of("AppCoordinator")
     
-    init?(window: UIWindow?) {
+    init?(window: UIWindow?, container: Container) {
         guard let window = window else { return nil }
         
         self.window = window
         navigationController = UINavigationController()
+        
+        self.container = container
+        
+        if let authManaging = container.resolve(AuthManaging.self) {
+            self.authManaging = authManaging
+        } else {
+            log.error("AuthManaging could not be resolved...")
+            preconditionFailure("AuthManaging could not be resolved...")
+        }
     }
     
     deinit {
@@ -27,7 +38,7 @@ final class AppCoordinator: Coordinator {
     }
     
     func start() {
-        if !isLoggedIn {
+        if !authManaging.isLogin {
             showLogin()
         } else {
             showMain()
@@ -40,14 +51,14 @@ final class AppCoordinator: Coordinator {
     }
     
     func showLogin() {
-        let coordinator = LoginCoordinator(navigationController: navigationController)
+        let coordinator = LoginCoordinator(navigationController: navigationController, container: container)
         childCoordinators.append(coordinator)
         coordinator.delegate = self
         coordinator.start()
     }
     
     func showMain() {
-        let coordinator = MainCoordinator(navigationController: navigationController)
+        let coordinator = MainCoordinator(navigationController: navigationController, container: container)
         childCoordinators.append(coordinator)
         coordinator.delegate = self
         coordinator.start()

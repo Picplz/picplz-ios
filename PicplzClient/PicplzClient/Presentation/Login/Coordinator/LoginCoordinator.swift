@@ -7,6 +7,7 @@
 
 import UIKit
 import OSLog
+import Swinject
 
 protocol LoginCoordinatorDelegate: AnyObject {
     func finished(loginCoordinator: LoginCoordinator)
@@ -16,11 +17,12 @@ final class LoginCoordinator: Coordinator {
     var childCoordinators: [any Coordinator] = []
     weak var delegate: LoginCoordinatorDelegate?
     private let navigationController: UINavigationController
+    private let container: Container
     private var log = Logger.of("LoginCoordinator")
-    private let container = DIContainerProvider.shared.container
     
-    init(navigationController: UINavigationController) {
+    init(navigationController: UINavigationController, container: Container) {
         self.navigationController = navigationController
+        self.container = container
     }
     
     deinit {
