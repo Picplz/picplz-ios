@@ -1,7 +1,7 @@
 ---
 name: bug-issue
-about: 결함 해결 이슈
-title: 'fix: 버그 (IOS-1)'
+about: 결함 제보
+title: 'bug: 버그 (IOS-1)'
 labels: bug
 assignees: ''
 

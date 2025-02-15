@@ -1,6 +1,6 @@
 ---
 name: new-feature-issue
-about: 기능 구현
+about: 기능 구현 요청
 title: 'feat: 기능 (IOS-1)'
 labels: feature
 assignees: ''
