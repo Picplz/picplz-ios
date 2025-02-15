@@ -1,7 +1,7 @@
 ---
 name: suggest-enhancement-issue
 about: 내부 개선 제안
-title: 'feat: 개선 (IOS-1)'
+title: 'enhance: 개선 (IOS-1)'
 labels: enhancement
 assignees: ''
 
