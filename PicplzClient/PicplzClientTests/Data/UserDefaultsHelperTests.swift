@@ -28,18 +28,12 @@ struct TestCustomStruct: Codable, Equatable {
     let yesOrNot: Bool
 }
 
-final class UserDefaultsHelperTest {
+struct UserDefaultsHelperTest {
     let userDefaultsHelper: UserDefaultsHelper
     let userDefaultsInstance = UserDefaults.standard
     
     init() {
         userDefaultsHelper = UserDefaultsHelper()
-    }
-    
-    deinit {
-        for key in userDefaultsInstance.dictionaryRepresentation().keys {
-            userDefaultsInstance.removeObject(forKey: key.description)
-        }
     }
     
     @Test("문자열을 잘 저장해야한다")
