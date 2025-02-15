@@ -13,13 +13,17 @@ final class AppCoordinator: Coordinator {
     private let window: UIWindow
     private let navigationController: UINavigationController
     private var isLoggedIn = false
+    private let container: Container
     private let log = Logger.of("AppCoordinator")
     
     init?(window: UIWindow?) {
+    init?(window: UIWindow?, container: Container) {
         guard let window = window else { return nil }
         
         self.window = window
         navigationController = UINavigationController()
+        
+        self.container = container
     }
     
     deinit {
