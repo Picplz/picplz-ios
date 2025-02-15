@@ -56,6 +56,12 @@ extension LoginCoordinator: OnboardingViewModelDelegate {
 extension LoginCoordinator: LoginViewModelDelegate {
     func loggedIn() {
         log.debug("LoginCoordinator loggedIn called")
-        delegate?.finished(loginCoordinator: self)
+//        delegate?.finished(loginCoordinator: self)
+        goToSignUp() // FIXME: temporary
+    }
+    
+    private func goToSignUp() {
+        let viewController = SignUpViewController()
+        navigationController.pushViewController(viewController, animated: true)
     }
 }
