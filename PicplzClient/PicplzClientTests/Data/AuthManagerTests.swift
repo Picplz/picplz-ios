@@ -15,7 +15,8 @@ struct AuthManagerTests {
     let dummyUser: AuthUser = .init(name: "테스터", nickname: "테스트 닉네임", birth: Date(), role: "GENERAL", kakaoEmail: "test@kakao.co.kr", profileImageUrl: "http://picplz.com/profile.jpg")
     
     init() {
-        authManager = AuthManager()
+        authManager = AuthManager(keychainStore: KeychainStore(),
+                                  userDefaultHelper: UserDefaultsHelper(userDefaults: UserDefaults())) // UserDefaults 분리
     }
     
     let dummyDate: Date = {

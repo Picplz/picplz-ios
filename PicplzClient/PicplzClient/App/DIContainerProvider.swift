@@ -24,7 +24,7 @@ final class DIContainerProvider {
         
         // MARK: Data
         container.register(AuthManaging.self) { _ in
-            AuthManager()
+            AuthManager(keychainStore: KeychainStore(), userDefaultHelper: UserDefaultsHelper())
         }
         .inObjectScope(.container)
         
