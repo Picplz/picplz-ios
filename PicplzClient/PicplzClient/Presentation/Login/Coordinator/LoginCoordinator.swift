@@ -30,12 +30,11 @@ final class LoginCoordinator: Coordinator {
     }
     
     func start() {
-        var viewModel = container.resolve(OnboardingViewModelProtocol.self)
-        viewModel?.delegate = self
-        let viewController = OnboardingViewController()
-        viewController.viewModel = viewModel
-        
-        navigationController.viewControllers = [viewController]
+        guard let rootViewController = container.resolve(OnboardingViewController.self) else {
+            preconditionFailure("viewController could not be resolved...")
+        }
+        rootViewController.viewModel.delegate = self
+        navigationController.viewControllers = [rootViewController]
         
         log.debug("LoginCoordinator started")
     }

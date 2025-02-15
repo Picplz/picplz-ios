@@ -30,12 +30,11 @@ final class MainCoordinator: Coordinator {
     }
     
     func start() {
-        var viewModel = container.resolve(MainViewModelProtocol.self)
-        viewModel?.delegate = self
-        
-        let viewController = MainViewController()
-        viewController.viewModel = viewModel
-        navigationController.viewControllers = [viewController]
+        guard let rootViewController = container.resolve(MainViewController.self) else {
+            preconditionFailure("viewController could not be resolved...")
+        }
+        rootViewController.viewModel.delegate = self
+        navigationController.viewControllers = [rootViewController]
     }
 }
 
