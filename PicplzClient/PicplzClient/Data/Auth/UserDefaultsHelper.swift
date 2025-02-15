@@ -99,6 +99,10 @@ final class UserDefaultsHelper {
         return nil
     }
     
+    func delete(for key: Key) {
+        userDefaults.removeObject(forKey: key.rawValue)
+    }
+    
     struct Key: RawRepresentable {
         let rawValue: String
         let expectedType: Any.Type

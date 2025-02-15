@@ -20,6 +20,7 @@ extension UserDefaultsHelper.Key {
     static let testLoadDouble = UserDefaultsHelper.Key(rawValue: "testLoadDouble", expectedType: Double.self)
     static let testLoadBool = UserDefaultsHelper.Key(rawValue: "testLoadBool", expectedType: Bool.self)
     static let testLoadStruct = UserDefaultsHelper.Key(rawValue: "testLoadStruct", expectedType: TestCustomStruct.self)
+    static let testDelete = UserDefaultsHelper.Key(rawValue: "testDelete", expectedType: String.self)
 }
 
 struct TestCustomStruct: Codable, Equatable {
@@ -136,5 +137,16 @@ struct UserDefaultsHelperTest {
         let savedObject: TestCustomStruct? = userDefaultsHelper.load(for: .testLoadStruct)
         
         #expect(willSaveValue == savedObject)
+    }
+    
+    @Test("아이템을 잘 삭제해야 한다")
+    func deleteItem() async throws {
+        let willSaveValue = "Hello, World"
+        userDefaultsInstance.set(willSaveValue, forKey: UserDefaultsHelper.Key.testDelete.rawValue)
+        
+        userDefaultsHelper.delete(for: UserDefaultsHelper.Key.testDelete)
+        
+        let loaded = userDefaultsInstance.string(forKey: UserDefaultsHelper.Key.testDelete.rawValue)
+        #expect(loaded == nil)
     }
 }
