@@ -61,7 +61,7 @@ extension LoginCoordinator: LoginViewModelDelegate {
     }
     
     private func goToSignUp() {
-        let viewController = SignUpViewController()
+        let viewController = container.resolve(SignUpViewController.self)!
         navigationController.pushViewController(viewController, animated: true)
     }
 }

@@ -12,11 +12,14 @@ final class SignUpCommonNicknameFormView: UIView {
     let nicknameTextField = UITextField()
     let errorMessageLabel = UILabel()
     let informationLabel = UILabel()
+    var nicknameDidUpdatedHandler = { (_ value: String) in }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         style()
         layout()
+        
+        nicknameTextField.addTarget(self, action: #selector(didTextFieldEditingChanged(_:)), for: .editingChanged)
     }
     
     required init?(coder: NSCoder) {
@@ -99,5 +102,9 @@ final class SignUpCommonNicknameFormView: UIView {
     
     override var intrinsicContentSize: CGSize {
         return CGSize(width: UIView.noIntrinsicMetric, height: 400)
+    }
+    
+    @objc private func didTextFieldEditingChanged(_ textField: UITextField) {
+        self.nicknameDidUpdatedHandler(textField.text ?? "")
     }
 }

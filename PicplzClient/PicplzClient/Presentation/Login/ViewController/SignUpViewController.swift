@@ -6,9 +6,13 @@
 //
 
 import UIKit
+import Combine
 import OSLog
 
 final class SignUpViewController: UIViewController {
+    var viewModel: SignUpViewModelProtocol!
+    private var subscriptions: Set<AnyCancellable> = []
+    
     private let contentView = SignUpCommonNicknameFormView()
     private let nextButton = UIButton()
     private var nextButtonBottomConstraint: NSLayoutConstraint?
@@ -21,6 +25,7 @@ final class SignUpViewController: UIViewController {
         title = "닉네임 설정하기"
         
         setup()
+        bind()
         registerKeyboardObserver()
         
         // hide keyboard when view tapped
@@ -38,6 +43,9 @@ final class SignUpViewController: UIViewController {
         view.backgroundColor = .picplzWhite
         
         // MARK: ContentView
+        contentView.nicknameDidUpdatedHandler = { [weak self] (_ value: String) in
+            self?.viewModel?.nicknameDidSet(nickname: value)
+        }
         contentView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(contentView)
         
@@ -63,6 +71,34 @@ final class SignUpViewController: UIViewController {
             view.rightAnchor.constraint(equalTo: nextButton.rightAnchor, constant: 15),
             nextButtonBottomConstraint!,
         ])
+    }
+
+    private func bind() {
+        viewModel.nextButtonEnabledPublisher
+            .receive(on: RunLoop.main)
+            .sink { [weak self] nextButtonEnabled in
+                if nextButtonEnabled {
+                    self?.nextButton.backgroundColor = .picplzBlack
+                    self?.nextButton.isEnabled = true
+                } else {
+                    self?.nextButton.backgroundColor = .grey3
+                }
+            }
+            .store(in: &subscriptions)
+        
+        viewModel.nicknameCheckResultPublisher
+            .receive(on: RunLoop.main)
+            .sink { [weak self] result in
+                switch result {
+                case .valid:
+                    self?.contentView.errorMessageLabel.text = " "
+                case .duplicated:
+                    self?.contentView.errorMessageLabel.text = "중복된 닉네임입니다."
+                case .invalidFormat:
+                    self?.contentView.errorMessageLabel.text = "닉네임을 다시 입력해주세요."
+                }
+            }
+            .store(in: &subscriptions)
     }
     
     @objc private func hideKeyboardWhenTapped() {
