@@ -26,12 +26,12 @@ final class SignUpViewModel: SignUpViewModelProtocol {
     
     func nicknameDidSet(nickname: String) {
         if validateNickname(for: nickname) {
-            log.debug("사용할 수 있는 닉네임 \(nickname)")
+            log.debug("사용할 수 있는 닉네임: \(nickname)")
             self.nicknameInput = nickname
             nextButtonEnabled = true
             nicknameCheckResult = .valid
         } else {
-            log.debug("사용 불가한 닉네임 \(nickname)")
+            log.debug("사용 불가한 닉네임: \(nickname)")
             self.nicknameInput = nil
             nextButtonEnabled = false
             nicknameCheckResult = .invalidFormat
