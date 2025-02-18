@@ -8,7 +8,7 @@
 import Combine
 import OSLog
 
-final class SignUpProfileImageSettingViewModel: SignUpProfileImageSettingViewModelProtocol {
+final class SignUpProfileImagePageViewModel: SignUpProfileImagePageViewModelProtocol {
     var delegate: SignUpViewModelDelegate?
     var currentPage: Int = 0
     var signUpSession: SignUpSession? {

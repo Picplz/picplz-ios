@@ -54,7 +54,7 @@ final class SignUpCoordinator: Coordinator {
             vc.viewModel.delegate = self
             nextVc = vc
         case .profileImageSetting:
-            guard let vc = container.resolve(SignUpProfileImageSettingViewController.self) else {
+            guard let vc = container.resolve(SignUpProfileImagePageViewController.self) else {
                 preconditionFailure("viewController could not be resolved...")
             }
             vc.viewModel.signUpSession = self.signUpSession

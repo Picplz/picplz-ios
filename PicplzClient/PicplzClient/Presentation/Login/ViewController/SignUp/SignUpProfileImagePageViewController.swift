@@ -11,8 +11,8 @@ import UIKit
 import Combine
 import OSLog
 
-final class SignUpProfileImageSettingViewController: UIViewController {
-    var viewModel: SignUpProfileImageSettingViewModelProtocol!
+final class SignUpProfileImagePageViewController: UIViewController {
+    var viewModel: SignUpProfileImagePageViewModelProtocol!
     private var subscriptions: Set<AnyCancellable> = []
     
     private let contentView = SignUpProfileImageSettingView()
@@ -129,7 +129,7 @@ final class SignUpProfileImageSettingViewController: UIViewController {
     }
 }
 
-extension SignUpProfileImageSettingViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+extension SignUpProfileImagePageViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         guard let image = info[.editedImage] as? UIImage else { return }
         

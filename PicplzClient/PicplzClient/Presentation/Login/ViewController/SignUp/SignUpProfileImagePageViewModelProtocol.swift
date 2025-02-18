@@ -8,7 +8,7 @@
 import Combine
 import Foundation
 
-protocol SignUpProfileImageSettingViewModelProtocol: SignUpVIewModelProtocol {
+protocol SignUpProfileImagePageViewModelProtocol: SignUpVIewModelProtocol {
     var nextButtonTitle: String { get }
     var nextButtonTitlePublisher: Published<String>.Publisher { get }
     
