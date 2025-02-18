@@ -28,8 +28,8 @@ extension UIFont {
     
     static let body = UIFont(name: FontFamily.pretendardRegular.rawValue, size: 14)!
     static let bigBody = UIFont(name: FontFamily.pretendardRegular.rawValue, size: 16)!
-    static let buttonTitle = UIFont(name: FontFamily.pretendardBold.rawValue, size: 18)!
-    static let title = UIFont(name: FontFamily.pretendardBold.rawValue, size: 24)!
+    static let buttonTitle = UIFont(name: FontFamily.pretendardBold.rawValue, size: 16)!
+    static let title = UIFont(name: FontFamily.pretendardBold.rawValue, size: 20)!
     static let bigTitle = UIFont(name: FontFamily.pretendardBold.rawValue, size: 24)!
     static let caption = UIFont(name: FontFamily.pretendardRegular.rawValue, size: 12)!
 }
