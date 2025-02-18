@@ -54,7 +54,11 @@ final class SignUpCoordinator: Coordinator {
             vc.viewModel.delegate = self
             nextVc = vc
         case .profileImageSetting:
-            nextVc = UIViewController() // TODO:
+            // TODO: inject vm
+            guard let vc = container.resolve(SignUpProfileImageSettingViewController.self) else {
+                preconditionFailure("viewController could not be resolved...")
+            }
+            nextVc = vc
         }
         
         navigationController.pushViewController(nextVc, animated: true)

@@ -13,11 +13,11 @@ final class SignUpNicknamePageViewController: UIViewController {
     var viewModel: SignUpNicknamePageViewModelProtocol!
     private var subscriptions: Set<AnyCancellable> = []
     
-    private let contentView = SignUpCommonNicknameFormView()
+    private let contentView = SignUpNicknameSettingView()
     private let nextButton = UIButton()
     private var nextButtonBottomConstraint: NSLayoutConstraint?
     
-    private var log = Logger.of("LoginViewController")
+    private var log = Logger.of("SignUpNicknamePageViewController")
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,6 +30,7 @@ final class SignUpNicknamePageViewController: UIViewController {
         
         // hide keyboard when view tapped
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(hideKeyboardWhenTapped))
+        tapGestureRecognizer.cancelsTouchesInView = false
         view.addGestureRecognizer(tapGestureRecognizer)
     }
     
@@ -56,8 +57,10 @@ final class SignUpNicknamePageViewController: UIViewController {
         ])
         
         // MARK: Next Button
+        // FIXME: Duplicated
         nextButton.setTitle("다음", for: .normal)
         nextButton.setTitleColor(.grey2, for: .normal)
+        nextButton.titleLabel?.font = .buttonTitle
         nextButton.backgroundColor = .grey3
         nextButton.layer.cornerRadius = 5.0
         nextButton.clipsToBounds = true

@@ -74,7 +74,9 @@ final class DIContainerProvider {
             vc.viewModel = r.resolve(SignUpNicknamePageViewModelProtocol.self)
             return vc
         }
-        
+        container.register(SignUpProfileImageSettingViewController.self) { r in
+            SignUpProfileImageSettingViewController()
+        }
         
         return container
     }
