@@ -20,6 +20,8 @@ final class LoginCoordinator: Coordinator {
     private let container: Container
     private var log = Logger.of("LoginCoordinator")
     
+    private var shouldSignUp = true // FIXME: Temporary
+    
     init(navigationController: UINavigationController, container: Container) {
         self.navigationController = navigationController
         self.container = container
@@ -56,12 +58,24 @@ extension LoginCoordinator: OnboardingViewModelDelegate {
 extension LoginCoordinator: LoginViewModelDelegate {
     func loggedIn() {
         log.debug("LoginCoordinator loggedIn called")
-//        delegate?.finished(loginCoordinator: self)
-        goToSignUp() // FIXME: temporary
+        if shouldSignUp {
+            showSignUp()
+        }
     }
     
-    private func goToSignUp() {
-        let viewController = container.resolve(SignUpViewController.self)!
-        navigationController.pushViewController(viewController, animated: true)
+    private func showSignUp() {
+        let coordinator = SignUpCoordinator(navigationController: navigationController, container: container)
+        childCoordinators.append(coordinator)
+        coordinator.delegate = self
+        coordinator.start()
+    }
+}
+
+extension LoginCoordinator: SignUpCoordinatorDelegate {
+    func finished(signUpCoordinator: SignUpCoordinator) {
+        log.debug("LoginCoordinator finished(signUpCoordinator:) called")
+        
+        childCoordinators = childCoordinators.filter { $0 !== signUpCoordinator }
+        delegate?.finished(loginCoordinator: self)
     }
 }

@@ -9,8 +9,8 @@ import UIKit
 import Combine
 import OSLog
 
-final class SignUpViewController: UIViewController {
-    var viewModel: SignUpViewModelProtocol!
+final class SignUpNicknamePageViewController: UIViewController {
+    var viewModel: SignUpNicknamePageViewModelProtocol!
     private var subscriptions: Set<AnyCancellable> = []
     
     private let contentView = SignUpCommonNicknameFormView()
@@ -62,6 +62,8 @@ final class SignUpViewController: UIViewController {
         nextButton.layer.cornerRadius = 5.0
         nextButton.clipsToBounds = true
         nextButton.translatesAutoresizingMaskIntoConstraints = false
+        nextButton.isEnabled = false
+        nextButton.addTarget(self, action: #selector(nextButtonTapped), for: .touchUpInside)
         view.addSubview(nextButton)
         
         nextButtonBottomConstraint = view.safeAreaLayoutGuide.bottomAnchor.constraint(equalTo: nextButton.bottomAnchor, constant: 47)
@@ -82,6 +84,7 @@ final class SignUpViewController: UIViewController {
                     self?.nextButton.isEnabled = true
                 } else {
                     self?.nextButton.backgroundColor = .grey3
+                    self?.nextButton.isEnabled = false
                 }
             }
             .store(in: &subscriptions)
@@ -126,5 +129,9 @@ final class SignUpViewController: UIViewController {
         } else {
             nextButtonBottomConstraint?.constant = 47
         }
+    }
+    
+    @objc private func nextButtonTapped() {
+        viewModel.nextButtonDidTapped()
     }
 }

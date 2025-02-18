@@ -1,5 +1,5 @@
 //
-//  SignUpViewModel.swift
+//  SignUpNicknamePageViewModel.swift
 //  PicplzClient
 //
 //  Created by 임영택 on 2/17/25.
@@ -9,7 +9,11 @@ import Foundation
 import Combine
 import OSLog
 
-final class SignUpViewModel: SignUpViewModelProtocol {
+final class SignUpNicknamePageViewModel: SignUpNicknamePageViewModelProtocol {
+    var delegate: SignUpViewModelDelegate?
+    var currentPage: Int = 0
+    var signUpSession: SignUpSession?
+    
     @Published var nextButtonEnabled = false
     var nextButtonEnabledPublisher: Published<Bool>.Publisher {
         $nextButtonEnabled
@@ -30,6 +34,7 @@ final class SignUpViewModel: SignUpViewModelProtocol {
             self.nicknameInput = nickname
             nextButtonEnabled = true
             nicknameCheckResult = .valid
+            signUpSession?.nickname = nickname
         } else {
             log.debug("사용 불가한 닉네임: \(nickname)")
             self.nicknameInput = nil
@@ -57,5 +62,10 @@ final class SignUpViewModel: SignUpViewModelProtocol {
         
         let range = NSRange(location: 0, length: nickname.utf16.count)
         return regex.firstMatch(in: nickname, options: [], range: range) != nil
+    }
+    
+    func nextButtonDidTapped() {
+        log.debug("SignUpNicknamePageViewModel nextButtonDidTapped")
+        delegate?.goToNextPage(current: currentPage, session: signUpSession)
     }
 }

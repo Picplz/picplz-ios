@@ -1,5 +1,5 @@
 //
-//  SignUpCustomerView.swift
+//  SignUpProfileImageSettingView.swift
 //  PicplzClient
 //
 //  Created by 임영택 on 2/15/25.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class SignUpCustomerView: UIView {
+final class SignUpProfileImageSettingView: UIView {
     let titleLabel = UILabel()
     let nicknameTextField = UITextField()
     let errorMessageLabel = UILabel()
