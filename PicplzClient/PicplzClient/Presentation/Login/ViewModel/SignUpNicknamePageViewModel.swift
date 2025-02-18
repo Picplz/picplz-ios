@@ -44,6 +44,10 @@ final class SignUpNicknamePageViewModel: SignUpNicknamePageViewModelProtocol {
     }
     
     func validateNickname(for nickname: String) -> Bool {
+        if nickname.count < 2 || nickname.count > 15 {
+            return false
+        }
+        
         if nickname.trimmingCharacters(in: .whitespaces).isEmpty {
             return false
         }
