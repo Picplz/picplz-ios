@@ -1,5 +1,5 @@
 //
-//  SignUpCommonNicknameFormView.swift
+//  SignUpNicknameSettingView.swift
 //  PicplzClient
 //
 //  Created by 임영택 on 2/15/25.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class SignUpCommonNicknameFormView: UIView {
+final class SignUpNicknameSettingView: UIView {
     let titleLabel = UILabel()
     let nicknameTextField = UITextField()
     let errorMessageLabel = UILabel()
