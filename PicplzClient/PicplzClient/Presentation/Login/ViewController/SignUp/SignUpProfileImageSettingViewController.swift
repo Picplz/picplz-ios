@@ -12,7 +12,7 @@ import Combine
 import OSLog
 
 final class SignUpProfileImageSettingViewController: UIViewController {
-//    var viewModel: SignUpProfileImageSettingViewModelProtocol!
+    var viewModel: SignUpProfileImageSettingViewModelProtocol!
     private var subscriptions: Set<AnyCancellable> = []
     
     private let contentView = SignUpProfileImageSettingView()
@@ -26,9 +26,7 @@ final class SignUpProfileImageSettingViewController: UIViewController {
         title = "프로필 이미지 업로드"
         
         setup()
-//        bind()
-        
-        contentView.setUserNickname(for: "임영택")
+        bind()
     }
     
     private func setup() {
@@ -69,11 +67,87 @@ final class SignUpProfileImageSettingViewController: UIViewController {
         ])
     }
     
+    private func bind() {
+        viewModel.nextButtonTitlePublisher
+            .receive(on: RunLoop.main)
+            .sink { [weak self] title in
+                self?.nextButton.setTitle(title, for: .normal)
+            }
+            .store(in: &subscriptions)
+        
+        viewModel.informationLabelTextPublisher
+            .receive(on: RunLoop.main)
+            .sink { [weak self] labelText in
+                self?.contentView.setInformationLabelText(labelText)
+            }
+            .store(in: &subscriptions)
+        
+        viewModel.userNicknamePublisher
+            .receive(on: RunLoop.main)
+            .sink { [weak self] nickname in
+                self?.contentView.setUserNickname(for: nickname)
+            }
+            .store(in: &subscriptions)
+        
+        viewModel.profileImagePathPublisher
+            .receive(on: RunLoop.main)
+            .sink { [weak self] profileImagePath in
+                let image = UIImage(contentsOfFile: profileImagePath.path)
+                self?.contentView.profileImageButton.setImage(image, for: .normal)
+            }
+            .store(in: &subscriptions)
+    }
+    
     @objc private func nextButtonTapped() {
-        log.debug("nextButtonTapped")
+        viewModel.nextButtonDidTapped()
     }
     
     @objc private func didSelectButtonTapped() {
-        log.debug("didSelectButtonTapped")
+        let defaultAction = UIAlertAction(title: "앨범에서 선택",
+                             style: .default) { [weak self] action in
+            self?.presentUIimagePicker()
+        }
+        
+        let cancelAction = UIAlertAction(title: "닫기",
+                             style: .cancel) { [weak self] action in
+            self?.log.debug("user canceled...")
+        }
+        
+        // Create and configure the alert controller.
+        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        alert.addAction(defaultAction)
+        alert.addAction(cancelAction)
+             
+        self.present(alert, animated: true)
+    }
+    
+    private func presentUIimagePicker() {
+        let picker = UIImagePickerController()
+        picker.allowsEditing = true
+        picker.delegate = self
+        present(picker, animated: true)
+    }
+}
+
+extension SignUpProfileImageSettingViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        guard let image = info[.editedImage] as? UIImage else { return }
+        
+        let imageName = "userProfile.jpg"
+        let imagePath = getDocumentsDirectory().appendingPathComponent(imageName)
+        
+        // FIXME: refactor as a Usecase
+        if let jpegData = image.jpegData(compressionQuality: 0.8) {
+            try? jpegData.write(to: imagePath)
+            log.debug("saved image to \(imagePath)")
+        }
+        
+        viewModel.profileImageSelected(path: imagePath)
+        dismiss(animated: true)
+    }
+    
+    func getDocumentsDirectory() -> URL {
+        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        return paths[0]
     }
 }

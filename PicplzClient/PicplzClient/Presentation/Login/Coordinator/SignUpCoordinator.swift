@@ -54,10 +54,12 @@ final class SignUpCoordinator: Coordinator {
             vc.viewModel.delegate = self
             nextVc = vc
         case .profileImageSetting:
-            // TODO: inject vm
             guard let vc = container.resolve(SignUpProfileImageSettingViewController.self) else {
                 preconditionFailure("viewController could not be resolved...")
             }
+            vc.viewModel.signUpSession = self.signUpSession
+            vc.viewModel.currentPage = 2
+            vc.viewModel.delegate = self
             nextVc = vc
         }
         

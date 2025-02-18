@@ -49,7 +49,7 @@ final class SignUpProfileImageSettingView: UIView {
         informationLabel.numberOfLines = 2
         informationLabel.textColor = .black
         informationLabel.textAlignment = .center
-        setInformationLabelText("프로필 이미지를\n선택해주세요.")
+        setInformationLabelText("프로필 이미지를\n설정해 주세요.")
     }
     
     private func layout() {
