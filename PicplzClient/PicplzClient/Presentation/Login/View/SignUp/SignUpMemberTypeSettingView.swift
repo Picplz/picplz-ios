@@ -103,7 +103,7 @@ final class SignUpMemberTypeSettingView: UIView {
         
         addSubview(photographerSelectorView)
         NSLayoutConstraint.activate([
-            photographerSelectorView.topAnchor.constraint(greaterThanOrEqualTo: titleLabel.bottomAnchor, constant: 78.0),
+            photographerSelectorView.topAnchor.constraint(lessThanOrEqualTo: titleLabel.bottomAnchor, constant: 78.0),
             photographerSelectorView.leftAnchor.constraint(equalTo: leftAnchor, constant: 30.0),
             photographerSelectorViewWidthConstrint,
             photographerSelectorViewHeightConstrint,
@@ -111,7 +111,7 @@ final class SignUpMemberTypeSettingView: UIView {
         
         addSubview(customerSelectorView)
         NSLayoutConstraint.activate([
-            customerSelectorView.topAnchor.constraint(greaterThanOrEqualTo: titleLabel.bottomAnchor, constant: 78.0),
+            customerSelectorView.topAnchor.constraint(lessThanOrEqualTo: titleLabel.bottomAnchor, constant: 78.0),
             rightAnchor.constraint(equalTo: customerSelectorView.rightAnchor, constant: 30.0),
             customerSelectorViewWidthConstrint,
             customerSelectorViewHeightConstrint,
