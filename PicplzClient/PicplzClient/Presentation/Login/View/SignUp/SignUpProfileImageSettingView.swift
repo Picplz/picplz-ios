@@ -12,7 +12,6 @@ final class SignUpProfileImageSettingView: UIView {
     let profileImageButton = UIButton()
     let selectImageButton = UIButton()
     let informationLabel = UILabel()
-    let testButton = UIButton(type: .system)
     
     override init(frame: CGRect) {
         super.init(frame: frame)

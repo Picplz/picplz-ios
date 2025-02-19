@@ -80,6 +80,11 @@ final class DIContainerProvider {
             vc.viewModel = r.resolve(SignUpProfileImagePageViewModelProtocol.self)
             return vc
         }
+        container.register(SignUpMemberTypePageViewController.self) { r in
+            let vc = SignUpMemberTypePageViewController()
+//            vc.viewModel = r.resolve(SignUpMemberTypePageViewModelProtocol.self)
+            return vc
+        }
         
         return container
     }

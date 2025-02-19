@@ -50,7 +50,7 @@ final class SignUpCoordinator: Coordinator {
                 preconditionFailure("viewController could not be resolved...")
             }
             vc.viewModel.signUpSession = self.signUpSession
-            vc.viewModel.currentPage = 1
+            vc.viewModel.currentPage = currentPage.getPage()
             vc.viewModel.delegate = self
             nextVc = vc
         case .profileImageSetting:
@@ -58,8 +58,16 @@ final class SignUpCoordinator: Coordinator {
                 preconditionFailure("viewController could not be resolved...")
             }
             vc.viewModel.signUpSession = self.signUpSession
-            vc.viewModel.currentPage = 2
+            vc.viewModel.currentPage = currentPage.getPage()
             vc.viewModel.delegate = self
+            nextVc = vc
+        case .memberTypeSetting:
+            guard let vc = container.resolve(SignUpMemberTypePageViewController.self) else {
+                preconditionFailure("viewController could not be resolved...")
+            }
+//            vc.viewModel.signUpSession = self.signUpSession
+//            vc.viewModel.currentPage = currentPage.getPage()
+//            vc.viewModel.delegate = self
             nextVc = vc
         }
         
@@ -69,6 +77,11 @@ final class SignUpCoordinator: Coordinator {
     enum Page: Int, CaseIterable {
         case nicknameSetting = 1
         case profileImageSetting = 2
+        case memberTypeSetting = 3
+        
+        func getPage() -> Int {
+            return self.rawValue
+        }
     }
 }
 
