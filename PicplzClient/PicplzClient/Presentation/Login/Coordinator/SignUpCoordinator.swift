@@ -76,25 +76,43 @@ final class SignUpCoordinator: Coordinator {
     
     enum Page: Int, CaseIterable {
         case nicknameSetting = 1
-        case profileImageSetting = 2
-        case memberTypeSetting = 3
+        case profileImageSetting
+        case memberTypeSetting
+        case photoCareerTypeSetting
+        case photoCareerPeriodSetting
+        case photoSpecializedThemesSetting
         
         func getPage() -> Int {
             return self.rawValue
+        }
+        
+        func getLastPage(to memberType: SignUpSession.MemberType) -> Int {
+            switch memberType {
+            case .customer: return 3
+            case .photographer: return 6
+            }
+        }
+        
+        func isLast(to memberType: SignUpSession.MemberType) -> Bool {
+            self.rawValue == getLastPage(to: memberType)
         }
     }
 }
 
 extension SignUpCoordinator: SignUpViewModelDelegate {
-    func goToNextPage(current currentPage: Int, session signUpSession: SignUpSession?) {
+    func goToNextPage(current currentPageNumber: Int, session signUpSession: SignUpSession?) {
         log.debug("SignUpCoordinator goToNextPage called... current SignUpSession: \(self.signUpSession)")
         
-        if currentPage == Page.allCases.last?.rawValue {
+        guard let currentPage = Page(rawValue: currentPageNumber) else { return }
+        
+        if let signUpSession = signUpSession,
+           let memberType = signUpSession.memberType,
+           currentPage.isLast(to: memberType) {
             delegate?.finished(signUpCoordinator: self)
             return
         }
         
-        if let nextPage = Page(rawValue: currentPage + 1) {
+        if let nextPage = Page(rawValue: currentPage.rawValue + 1) {
             self.currentPage = nextPage
             showCurrentPage()
         } else {
