@@ -12,7 +12,7 @@ import Combine
 import OSLog
 
 final class SignUpMemberTypePageViewController: UIViewController {
-//    var viewModel: SignUpMemberTypePageViewModelProtocol!
+    var viewModel: SignUpMemberTypePageViewModelProtocol!
     private var subscriptions: Set<AnyCancellable> = []
     
     private let contentView = SignUpMemberTypeSettingView()
@@ -72,17 +72,36 @@ final class SignUpMemberTypePageViewController: UIViewController {
     }
     
     private func bind() {
+        viewModel.selectedMemberTypePublisher
+            .receive(on: RunLoop.main)
+            .sink { [weak self] selectedMemberType in
+                self?.contentView.selectedMemberType = selectedMemberType
+            }
+            .store(in: &subscriptions)
+        
+        viewModel.nextButtonEnabledPublisher
+            .receive(on: RunLoop.main)
+            .sink { [weak self] nextButtonEnabled in
+                if nextButtonEnabled {
+                    self?.nextButton.backgroundColor = .picplzBlack
+                    self?.nextButton.isEnabled = true
+                } else {
+                    self?.nextButton.backgroundColor = .grey3
+                    self?.nextButton.isEnabled = false
+                }
+            }
+            .store(in: &subscriptions)
     }
     
     @objc private func nextButtonTapped() {
-//        viewModel.nextButtonDidTapped()
+        viewModel.nextButtonDidTapped()
     }
     
     @objc private func didMemberTypeSelected(_ sender: UITapGestureRecognizer) {
         if sender.view === contentView.customerSelectorView {
-            contentView.selectedMemberType = .customer
+            viewModel.didSelectedMemberType(for: .customer)
         } else if sender.view === contentView.photographerSelectorView {
-            contentView.selectedMemberType = .photographer
+            viewModel.didSelectedMemberType(for: .photographer)
         }
     }
 }

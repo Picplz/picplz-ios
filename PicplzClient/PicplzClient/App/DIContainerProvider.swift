@@ -58,6 +58,7 @@ final class DIContainerProvider {
         container.register(OnboardingViewModelProtocol.self) { _ in OnboardingViewModel() }
         container.register(SignUpNicknamePageViewModelProtocol.self) { _ in SignUpNicknamePageViewModel() }
         container.register(SignUpProfileImagePageViewModelProtocol.self) { _ in SignUpProfileImagePageViewModel() }
+        container.register(SignUpMemberTypePageViewModelProtocol.self) { _ in SignUpMemberTypePageViewModel() }
         
         // MARK:              ...  View Controllers
         container.register(OnboardingViewController.self) { r in
@@ -82,7 +83,7 @@ final class DIContainerProvider {
         }
         container.register(SignUpMemberTypePageViewController.self) { r in
             let vc = SignUpMemberTypePageViewController()
-//            vc.viewModel = r.resolve(SignUpMemberTypePageViewModelProtocol.self)
+            vc.viewModel = r.resolve(SignUpMemberTypePageViewModelProtocol.self)
             return vc
         }
         

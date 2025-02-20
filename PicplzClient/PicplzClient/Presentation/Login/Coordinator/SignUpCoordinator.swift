@@ -65,9 +65,9 @@ final class SignUpCoordinator: Coordinator {
             guard let vc = container.resolve(SignUpMemberTypePageViewController.self) else {
                 preconditionFailure("viewController could not be resolved...")
             }
-//            vc.viewModel.signUpSession = self.signUpSession
-//            vc.viewModel.currentPage = currentPage.getPage()
-//            vc.viewModel.delegate = self
+            vc.viewModel.signUpSession = self.signUpSession
+            vc.viewModel.currentPage = currentPage.getPage()
+            vc.viewModel.delegate = self
             nextVc = vc
         }
         
