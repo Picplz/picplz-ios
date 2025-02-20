@@ -26,21 +26,11 @@ final class SignUpMemberTypeSettingView: UIView {
     
     var selectedMemberType: SignUpSession.MemberType? {
         didSet {
-            if selectedMemberType == .customer {
-                photographerSelectorViewWidthConstrint.constant = 120.0
-                photographerSelectorViewHeightConstrint.constant = 120.0
-                
-                customerSelectorViewWidthConstrint.constant = 160.0
-                customerSelectorViewHeightConstrint.constant = 160.0
+            guard let selectedMemberType = selectedMemberType else {
+                return
             }
             
-            if selectedMemberType == .photographer {
-                photographerSelectorViewWidthConstrint.constant = 160.0
-                photographerSelectorViewHeightConstrint.constant = 160.0
-                
-                customerSelectorViewWidthConstrint.constant = 120.0
-                customerSelectorViewHeightConstrint.constant = 120.0
-            }
+            adjustViewWithSelectedMemberType(for: selectedMemberType)
         }
     }
     
@@ -129,5 +119,31 @@ final class SignUpMemberTypeSettingView: UIView {
             customerTypeLabel.topAnchor.constraint(equalTo: customerSelectorView.bottomAnchor, constant: 10.0),
             customerTypeLabel.centerXAnchor.constraint(equalTo: customerSelectorView.centerXAnchor),
         ])
+    }
+    
+    private func adjustViewWithSelectedMemberType(for memberType: SignUpSession.MemberType) {
+        if selectedMemberType == .customer {
+            UIView.animate(withDuration: 0.3) {
+                self.photographerSelectorViewWidthConstrint.constant = 120.0
+                self.photographerSelectorViewHeightConstrint.constant = 120.0
+                
+                self.customerSelectorViewWidthConstrint.constant = 160.0
+                self.customerSelectorViewHeightConstrint.constant = 160.0
+                
+                self.layoutIfNeeded()
+            }
+        }
+        
+        if selectedMemberType == .photographer {
+            UIView.animate(withDuration: 0.3) {
+                self.photographerSelectorViewWidthConstrint.constant = 160.0
+                self.photographerSelectorViewHeightConstrint.constant = 160.0
+                
+                self.customerSelectorViewWidthConstrint.constant = 120.0
+                self.customerSelectorViewHeightConstrint.constant = 120.0
+                
+                self.layoutIfNeeded()
+            }
+        }
     }
 }
