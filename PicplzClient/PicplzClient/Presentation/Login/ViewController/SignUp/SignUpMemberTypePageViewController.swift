@@ -16,7 +16,7 @@ final class SignUpMemberTypePageViewController: UIViewController {
     private var subscriptions: Set<AnyCancellable> = []
     
     private let contentView = SignUpMemberTypeSettingView()
-    private let nextButton = UIButton()
+    private let nextButton = UIPickplzButton()
     
     private var log = Logger.of("SignUpMemberTypePageViewController")
     
@@ -51,13 +51,7 @@ final class SignUpMemberTypePageViewController: UIViewController {
         contentView.customerSelectorView.addGestureRecognizer(customerSelectorTapGestureRecognizer)
         
         // MARK: Next Button
-        // FIXME: Duplicated
         nextButton.setTitle("다음", for: .normal)
-        nextButton.setTitleColor(.grey2, for: .normal)
-        nextButton.titleLabel?.font = .buttonTitle
-        nextButton.backgroundColor = .grey3
-        nextButton.layer.cornerRadius = 5.0
-        nextButton.clipsToBounds = true
         nextButton.translatesAutoresizingMaskIntoConstraints = false
         nextButton.isEnabled = false
         nextButton.addTarget(self, action: #selector(nextButtonTapped), for: .touchUpInside)

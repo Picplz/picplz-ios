@@ -16,7 +16,7 @@ final class SignUpProfileImagePageViewController: UIViewController {
     private var subscriptions: Set<AnyCancellable> = []
     
     private let contentView = SignUpProfileImageSettingView()
-    private let nextButton = UIButton()
+    private let nextButton = UIPickplzButton()
     
     private var log = Logger.of("SignUpNicknamePageViewController")
     
@@ -48,13 +48,7 @@ final class SignUpProfileImagePageViewController: UIViewController {
         contentView.selectImageButton.addTarget(self, action: #selector(didSelectButtonTapped), for: .touchUpInside)
         
         // MARK: Next Button
-        // FIXME: Duplicated
         nextButton.setTitle("다음에 설정하기", for: .normal)
-        nextButton.setTitleColor(.grey2, for: .normal)
-        nextButton.titleLabel?.font = .buttonTitle
-        nextButton.backgroundColor = .picplzBlack
-        nextButton.layer.cornerRadius = 5.0
-        nextButton.clipsToBounds = true
         nextButton.translatesAutoresizingMaskIntoConstraints = false
         nextButton.addTarget(self, action: #selector(nextButtonTapped), for: .touchUpInside)
         view.addSubview(nextButton)

@@ -14,7 +14,7 @@ final class SignUpNicknamePageViewController: UIViewController {
     private var subscriptions: Set<AnyCancellable> = []
     
     private let contentView = SignUpNicknameSettingView()
-    private let nextButton = UIButton()
+    private let nextButton = UIPickplzButton()
     private var nextButtonBottomConstraint: NSLayoutConstraint?
     
     private var log = Logger.of("SignUpNicknamePageViewController")
@@ -57,13 +57,7 @@ final class SignUpNicknamePageViewController: UIViewController {
         ])
         
         // MARK: Next Button
-        // FIXME: Duplicated
         nextButton.setTitle("다음", for: .normal)
-        nextButton.setTitleColor(.grey2, for: .normal)
-        nextButton.titleLabel?.font = .buttonTitle
-        nextButton.backgroundColor = .grey3
-        nextButton.layer.cornerRadius = 5.0
-        nextButton.clipsToBounds = true
         nextButton.translatesAutoresizingMaskIntoConstraints = false
         nextButton.isEnabled = false
         nextButton.addTarget(self, action: #selector(nextButtonTapped), for: .touchUpInside)
