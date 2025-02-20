@@ -13,13 +13,6 @@ final class SignUpPhotographerCareerTypeSettingView: UIView {
     let majorButton = CareerTypeButton()
     let jobButton = CareerTypeButton()
     let influencerButton = CareerTypeButton()
-    let buttonsHolderView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.axis = .horizontal
-        stackView.spacing = 6.0
-        stackView.distribution = .fillEqually
-        return stackView
-    }()
     
     private lazy var careerTypeAndButtonMapping: [SignUpSession.CareerType: UIButton] = [
         .major: majorButton,
@@ -51,13 +44,14 @@ final class SignUpPhotographerCareerTypeSettingView: UIView {
         subtitleLabel.textColor = .picplzBlack
         subtitleLabel.text = "여기 라이팅 바꿔야할거같은데 우리이거 수정하기로햇던듯?"
         
+        majorButton.translatesAutoresizingMaskIntoConstraints = false
         majorButton.setTitle("사진 전공", for: .normal)
-        buttonsHolderView.addArrangedSubview(majorButton)
+        
+        jobButton.translatesAutoresizingMaskIntoConstraints = false
         jobButton.setTitle("수익 창출", for: .normal)
-        buttonsHolderView.addArrangedSubview(jobButton)
+        
+        influencerButton.translatesAutoresizingMaskIntoConstraints = false
         influencerButton.setTitle("SNS 계정 운영", for: .normal)
-        buttonsHolderView.addArrangedSubview(influencerButton)
-        buttonsHolderView.translatesAutoresizingMaskIntoConstraints = false
     }
     
     private func layout() {
@@ -73,12 +67,25 @@ final class SignUpPhotographerCareerTypeSettingView: UIView {
             subtitleLabel.leftAnchor.constraint(equalTo: leftAnchor),
         ])
         
-        addSubview(buttonsHolderView)
+        addSubview(majorButton)
         NSLayoutConstraint.activate([
-            buttonsHolderView.topAnchor.constraint(equalTo: subtitleLabel.bottomAnchor, constant: 50.0),
-            buttonsHolderView.leftAnchor.constraint(equalTo: leftAnchor),
-            buttonsHolderView.rightAnchor.constraint(equalTo: rightAnchor),
-            buttonsHolderView.heightAnchor.constraint(equalToConstant: 40.0),
+            majorButton.topAnchor.constraint(equalTo: subtitleLabel.bottomAnchor, constant: 50.0),
+            majorButton.leftAnchor.constraint(equalTo: leftAnchor),
+            majorButton.heightAnchor.constraint(equalToConstant: 40.0),
+        ])
+        
+        addSubview(jobButton)
+        NSLayoutConstraint.activate([
+            jobButton.topAnchor.constraint(equalTo: subtitleLabel.bottomAnchor, constant: 50.0),
+            jobButton.leftAnchor.constraint(equalTo: majorButton.rightAnchor, constant: 6.0),
+            jobButton.heightAnchor.constraint(equalToConstant: 40.0),
+        ])
+        
+        addSubview(influencerButton)
+        NSLayoutConstraint.activate([
+            influencerButton.topAnchor.constraint(equalTo: subtitleLabel.bottomAnchor, constant: 50.0),
+            influencerButton.leftAnchor.constraint(equalTo: jobButton.rightAnchor, constant: 6.0),
+            influencerButton.heightAnchor.constraint(equalToConstant: 40.0),
         ])
     }
     
@@ -94,6 +101,8 @@ final class CareerTypeButton: UIButton {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
+        self.configuration = UIButton.Configuration.plain()
+        self.configuration?.contentInsets = .init(top: 0, leading: 11.5, bottom: 0, trailing: 11.5)
         self.titleLabel?.font = UIFont(name: FontFamily.pretendardRegular.rawValue, size: 14)!
         self.backgroundColor = .picplzWhite
         self.layer.cornerRadius = 5.0
