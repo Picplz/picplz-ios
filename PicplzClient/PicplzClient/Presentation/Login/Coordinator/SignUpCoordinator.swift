@@ -69,6 +69,20 @@ final class SignUpCoordinator: Coordinator {
             vc.viewModel.currentPage = currentPage.getPage()
             vc.viewModel.delegate = self
             nextVc = vc
+        case .photoCareerTypeSetting:
+            guard let vc = container.resolve(SignUpPhotographerCareerTypePageViewController.self) else {
+                preconditionFailure("viewController could not be resolved...")
+            }
+            vc.viewModel.signUpSession = self.signUpSession
+            vc.viewModel.currentPage = currentPage.getPage()
+            vc.viewModel.delegate = self
+            nextVc = vc
+        case .photoCareerPeriodSetting:
+            log.debug("CareerPeriodSettingPage is not implemented...")
+            nextVc = UIViewController()
+        case .photoSpecializedThemesSetting:
+            log.debug("SpecializedThemesSettingPage is not implemented...")
+            nextVc = UIViewController()
         }
         
         navigationController.pushViewController(nextVc, animated: true)
