@@ -98,48 +98,46 @@ final class SignUpPhotographerCareerTypeSettingView: UIView {
 }
 
 final class CareerTypeButton: UIButton {
+    private let defaultFont = UIFont(name: FontFamily.pretendardRegular.rawValue, size: 14)!
+    private let selectedFont = UIFont(name: FontFamily.pretendardBold.rawValue, size: 14)!
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        self.configuration = UIButton.Configuration.plain()
-        self.configuration?.contentInsets = .init(top: 0, leading: 11.5, bottom: 0, trailing: 11.5)
-        self.titleLabel?.font = UIFont(name: FontFamily.pretendardRegular.rawValue, size: 14)!
-        self.backgroundColor = .picplzWhite
-        self.layer.cornerRadius = 5.0
-        self.clipsToBounds = true
-        self.adjustStyleForIsSelectedStatus()
+        var configuration = UIButton.Configuration.plain()
+        configuration.contentInsets = .init(top: 0, leading: 11.5, bottom: 0, trailing: 11.5)
+        configuration.baseBackgroundColor = .picplzWhite
+        configuration.baseForegroundColor = .grey4
+        configuration.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { [weak self] incoming in
+            guard let self else { return incoming }
+            
+            var outgoing = incoming
+            outgoing.font = self.isSelected ? self.selectedFont : self.defaultFont
+            
+            return outgoing
+        }
+        
+        var attributedString = AttributedString("버튼")
+        attributedString.font = defaultFont
+        configuration.attributedTitle = attributedString
+        
+        configuration.background.cornerRadius = 5.0
+        configuration.cornerStyle = .fixed
+        
+        configuration.background.strokeColor = .grey3
+        configuration.background.strokeWidth = 1.0
+        
+        self.configuration = configuration
     }
     
     override var isSelected: Bool {
         didSet {
-            adjustStyleForIsSelectedStatus()
+            self.configuration?.background.strokeColor = self.isSelected ? .picplzBlack : .grey3
+            self.configuration?.baseForegroundColor = self.isSelected ? .picplzBlack : .grey4
         }
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    override func setTitle(_ title: String?, for state: UIControl.State) {
-        super.setTitle(title, for: state)
-        setTitleColor(.grey4, for: state)
-    }
-    
-    func adjustStyleForIsSelectedStatus() {
-        if isSelected {
-            UIView.animate(withDuration: 0.1) {
-                self.setTitleColor(.picplzBlack, for: .normal)
-                self.titleLabel?.font = UIFont(name: FontFamily.pretendardBold.rawValue, size: 14)!
-                self.layer.borderColor = UIColor.picplzBlack.cgColor
-                self.layer.borderWidth = 1.0
-            }
-        } else {
-            UIView.animate(withDuration: 0.1) {
-                self.setTitleColor(.grey4, for: .normal)
-                self.titleLabel?.font = UIFont(name: FontFamily.pretendardRegular.rawValue, size: 14)!
-                self.layer.borderColor = UIColor.grey3.cgColor
-                self.layer.borderWidth = 1.0
-            }
-        }
-    }
+    } 
 }
