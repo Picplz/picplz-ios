@@ -11,7 +11,7 @@ import UIKit
  픽플즈에서 기본으로 제공하는 감성 항목을 표시하는 셀
  */
 class SpecializedThemeCollectionViewDefaultCell: UICollectionViewCell {
-    let titleLabel = UILabel()
+    let titleTextField = UITextField()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -25,7 +25,8 @@ class SpecializedThemeCollectionViewDefaultCell: UICollectionViewCell {
     }
     
     func style() {
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        titleTextField.translatesAutoresizingMaskIntoConstraints = false
+        titleTextField.isUserInteractionEnabled = false
         
         updateStyle(to: false)
 
@@ -37,28 +38,28 @@ class SpecializedThemeCollectionViewDefaultCell: UICollectionViewCell {
     
     func updateStyle(to isSelected: Bool) {
         if isSelected {
-            titleLabel.textColor = .picplzBlack
-            titleLabel.font = UIFont(name: FontFamily.pretendardBold.rawValue, size: 14)!
+            titleTextField.textColor = .picplzBlack
+            titleTextField.font = UIFont(name: FontFamily.pretendardBold.rawValue, size: 14)!
             layer.borderColor = UIColor.picplzBlack.cgColor
         } else {
-            titleLabel.textColor = .grey4
-            titleLabel.font = UIFont(name: FontFamily.pretendardRegular.rawValue, size: 14)!
+            titleTextField.textColor = .grey4
+            titleTextField.font = UIFont(name: FontFamily.pretendardRegular.rawValue, size: 14)!
             layer.borderColor = UIColor.grey3.cgColor
         }
     }
     
     func layout() {
-        addSubview(titleLabel)
+        addSubview(titleTextField)
         NSLayoutConstraint.activate([
-            titleLabel.topAnchor.constraint(equalTo: topAnchor),
-            titleLabel.leftAnchor.constraint(greaterThanOrEqualTo: leftAnchor, constant: 12),
-            rightAnchor.constraint(greaterThanOrEqualTo: titleLabel.rightAnchor, constant: 12),
-            titleLabel.bottomAnchor.constraint(equalTo: bottomAnchor),
+            titleTextField.topAnchor.constraint(equalTo: topAnchor),
+            titleTextField.leftAnchor.constraint(greaterThanOrEqualTo: leftAnchor, constant: 12),
+            rightAnchor.constraint(greaterThanOrEqualTo: titleTextField.rightAnchor, constant: 12),
+            titleTextField.bottomAnchor.constraint(equalTo: bottomAnchor),
         ])
     }
     
     func configuration(title: String, isSelected: Bool) {
-        self.titleLabel.text = title
+        self.titleTextField.text = title
         updateStyle(to: isSelected)
     }
 }

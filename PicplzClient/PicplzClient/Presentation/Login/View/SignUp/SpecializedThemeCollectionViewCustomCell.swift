@@ -6,33 +6,68 @@
 //
 
 import UIKit
+import OSLog
 
 /**
  사용자가 정의한 감성 항목을 표시하는 셀
  */
 final class SpecializedThemeCollectionViewCustomCell: SpecializedThemeCollectionViewDefaultCell {
-    let pencilIconImageView: UIImageView = {
-        let imageView = UIImageView(image: UIImage(named: "PencilIcon"))
-        imageView.contentMode = .scaleAspectFit
-        return imageView
+    private lazy var editButton: UIButton = {
+        let button = UIButton()
+        button.setImage(UIImage(named: "PencilIcon"), for: .normal)
+        button.addTarget(self, action: #selector(editButtonTapped), for: .touchUpInside)
+        return button
     }()
+    
+    private var log = Logger.of("SpecializedThemeCollectionViewCustomCell")
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        titleTextField.delegate = self
+    }
+    
+    @MainActor required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func style() {
         super.style()
         
-        pencilIconImageView.translatesAutoresizingMaskIntoConstraints = false
+        editButton.translatesAutoresizingMaskIntoConstraints = false
     }
     
     override func layout() {
         super.layout()
         
-        addSubview(pencilIconImageView)
+        addSubview(editButton)
         NSLayoutConstraint.activate([
-            pencilIconImageView.widthAnchor.constraint(equalToConstant: 12),
-            pencilIconImageView.heightAnchor.constraint(equalToConstant: 12),
-            pencilIconImageView.centerYAnchor.constraint(equalTo: titleLabel.centerYAnchor),
-            pencilIconImageView.leftAnchor.constraint(equalTo: titleLabel.rightAnchor, constant: 1),
-            rightAnchor.constraint(equalTo: pencilIconImageView.rightAnchor, constant: 12),
+            editButton.widthAnchor.constraint(equalToConstant: 12),
+            editButton.heightAnchor.constraint(equalToConstant: 12),
+            editButton.centerYAnchor.constraint(equalTo: titleTextField.centerYAnchor),
+            editButton.leftAnchor.constraint(equalTo: titleTextField.rightAnchor, constant: 1),
+            rightAnchor.constraint(equalTo: editButton.rightAnchor, constant: 12),
         ])
+    }
+    
+    @objc private func editButtonTapped() {
+        titleTextField.isUserInteractionEnabled = true
+        titleTextField.becomeFirstResponder()
+        updateStyle(to: true)
+    }
+
+    private func handleEndEditing() {
+        log.debug("SpecializedThemeCollectionViewCustomCell handleEndEditing called")
+        titleTextField.isUserInteractionEnabled = false
+    }
+}
+
+extension SpecializedThemeCollectionViewCustomCell: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        handleEndEditing()
+        return true
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        handleEndEditing()
     }
 }
