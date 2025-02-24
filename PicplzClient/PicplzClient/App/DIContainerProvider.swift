@@ -92,6 +92,11 @@ final class DIContainerProvider {
             vc.viewModel = r.resolve(SignUpPhotographerCareerTypePageViewModelProtocol.self)
             return vc
         }
+        container.register(SignUpPhotographerCareerPeriodViewController.self) { r in
+            let vc = SignUpPhotographerCareerPeriodViewController()
+//            vc.viewModel = r.resolve(SignUpPhotographerCareerPeriodPageViewModelProtocol.self)
+            return vc
+        }
         return container
     }
 }

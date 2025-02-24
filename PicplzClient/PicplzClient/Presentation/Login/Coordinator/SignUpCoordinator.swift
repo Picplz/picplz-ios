@@ -47,7 +47,8 @@ final class SignUpCoordinator: Coordinator {
         switch currentPage {
         case .nicknameSetting:
             guard let vc = container.resolve(SignUpNicknamePageViewController.self) else {
-                preconditionFailure("viewController could not be resolved...")
+                handleViewControllerNotResolved()
+                return
             }
             vc.viewModel.signUpSession = self.signUpSession
             vc.viewModel.currentPage = currentPage.getPage()
@@ -55,7 +56,8 @@ final class SignUpCoordinator: Coordinator {
             nextVc = vc
         case .profileImageSetting:
             guard let vc = container.resolve(SignUpProfileImagePageViewController.self) else {
-                preconditionFailure("viewController could not be resolved...")
+                handleViewControllerNotResolved()
+                return
             }
             vc.viewModel.signUpSession = self.signUpSession
             vc.viewModel.currentPage = currentPage.getPage()
@@ -63,7 +65,8 @@ final class SignUpCoordinator: Coordinator {
             nextVc = vc
         case .memberTypeSetting:
             guard let vc = container.resolve(SignUpMemberTypePageViewController.self) else {
-                preconditionFailure("viewController could not be resolved...")
+                handleViewControllerNotResolved()
+                return
             }
             vc.viewModel.signUpSession = self.signUpSession
             vc.viewModel.currentPage = currentPage.getPage()
@@ -71,15 +74,19 @@ final class SignUpCoordinator: Coordinator {
             nextVc = vc
         case .photoCareerTypeSetting:
             guard let vc = container.resolve(SignUpPhotographerCareerTypePageViewController.self) else {
-                preconditionFailure("viewController could not be resolved...")
+                handleViewControllerNotResolved()
+                return
             }
             vc.viewModel.signUpSession = self.signUpSession
             vc.viewModel.currentPage = currentPage.getPage()
             vc.viewModel.delegate = self
             nextVc = vc
         case .photoCareerPeriodSetting:
-            log.debug("CareerPeriodSettingPage is not implemented...")
-            nextVc = UIViewController()
+            guard let vc = container.resolve(SignUpPhotographerCareerPeriodViewController.self) else {
+                handleViewControllerNotResolved()
+                return
+            }
+            nextVc = vc
         case .photoSpecializedThemesSetting:
             log.debug("SpecializedThemesSettingPage is not implemented...")
             nextVc = UIViewController()
@@ -110,6 +117,10 @@ final class SignUpCoordinator: Coordinator {
         func isLast(to memberType: SignUpSession.MemberType) -> Bool {
             self.rawValue == getLastPage(to: memberType)
         }
+    }
+    
+    private func handleViewControllerNotResolved() {
+        preconditionFailure("viewController could not be resolved...")
     }
 }
 
