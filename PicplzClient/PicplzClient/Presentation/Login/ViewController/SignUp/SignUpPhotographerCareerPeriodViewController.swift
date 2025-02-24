@@ -12,7 +12,7 @@ import Combine
 import OSLog
 
 final class SignUpPhotographerCareerPeriodViewController: UIViewController {
-//    var viewModel: SignUpPhotographerCareerPeriodViewModelProtocol!
+    var viewModel: SignUpPhotographerCareerPeriodPageViewModelProtocol!
     private var subscriptions: Set<AnyCancellable> = []
     
     private let contentView = SignUpPhotographerCareerPeriodSettingView()
@@ -73,7 +73,25 @@ final class SignUpPhotographerCareerPeriodViewController: UIViewController {
     }
     
     func bind() {
+        viewModel.yearsPublisher
+            .sink { [weak self] years in
+                self?.contentView.yearsTextField.text = String(years)
+            }
+            .store(in: &subscriptions)
         
+        viewModel.monthsPublisher
+            .sink { [weak self] months in
+                self?.contentView.monthsTextField.text = String(months)
+            }
+            .store(in: &subscriptions)
+        
+        viewModel.nextButtonEnabledPublisher
+            .sink { [weak self] isEnabled in
+                self?.contentView.yearsTextField.textColor = isEnabled ? .black : .grey3
+                self?.contentView.monthsTextField.textColor = isEnabled ? .black : .grey3
+                self?.nextButton.isEnabled = isEnabled
+            }
+            .store(in: &subscriptions)
     }
     
     private func configureToolbar(for toolbar: UIToolbar) {
@@ -83,7 +101,7 @@ final class SignUpPhotographerCareerPeriodViewController: UIViewController {
     }
     
     @objc private func didNextButtonTapped() {
-//        viewModel.nextButtonDidTapped()
+        viewModel.nextButtonDidTapped()
     }
     
     @objc private func didEditingEnd() {
@@ -94,13 +112,11 @@ final class SignUpPhotographerCareerPeriodViewController: UIViewController {
 extension SignUpPhotographerCareerPeriodViewController: UIPickerViewDelegate {
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         if pickerView === contentView.yearsPickerView {
-            // FIXME: viewModel 연동
-            contentView.yearsTextField.text = String(row)
+            viewModel.didPeriodSelected(years: row, months: viewModel.months)
         }
         
         if pickerView === contentView.monthsPickerView {
-            // FIXME: viewModel 연동
-            contentView.monthsTextField.text = String(row)
+            viewModel.didPeriodSelected(years: viewModel.years, months: row)
         }
     }
 }

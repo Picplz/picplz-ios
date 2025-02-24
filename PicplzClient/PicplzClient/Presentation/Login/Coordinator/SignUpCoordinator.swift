@@ -86,6 +86,9 @@ final class SignUpCoordinator: Coordinator {
                 handleViewControllerNotResolved()
                 return
             }
+            vc.viewModel.signUpSession = self.signUpSession
+            vc.viewModel.currentPage = currentPage.getPage()
+            vc.viewModel.delegate = self
             nextVc = vc
         case .photoSpecializedThemesSetting:
             log.debug("SpecializedThemesSettingPage is not implemented...")
