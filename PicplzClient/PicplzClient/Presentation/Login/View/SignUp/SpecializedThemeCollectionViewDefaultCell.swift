@@ -49,12 +49,12 @@ class SpecializedThemeCollectionViewDefaultCell: UICollectionViewCell {
     }
     
     func layout() {
-        addSubview(titleTextField)
+        contentView.addSubview(titleTextField)
         NSLayoutConstraint.activate([
-            titleTextField.topAnchor.constraint(equalTo: topAnchor),
-            titleTextField.leftAnchor.constraint(greaterThanOrEqualTo: leftAnchor, constant: 12),
-            rightAnchor.constraint(greaterThanOrEqualTo: titleTextField.rightAnchor, constant: 12),
-            titleTextField.bottomAnchor.constraint(equalTo: bottomAnchor),
+            titleTextField.topAnchor.constraint(equalTo: contentView.topAnchor),
+            titleTextField.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 12),
+            contentView.rightAnchor.constraint(greaterThanOrEqualTo: titleTextField.rightAnchor, constant: 12),
+            titleTextField.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
         ])
     }
     

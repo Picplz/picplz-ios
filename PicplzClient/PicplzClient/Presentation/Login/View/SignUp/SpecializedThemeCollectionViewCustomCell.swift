@@ -24,6 +24,7 @@ final class SpecializedThemeCollectionViewCustomCell: SpecializedThemeCollection
     override init(frame: CGRect) {
         super.init(frame: frame)
         titleTextField.delegate = self
+        titleTextField.addTarget(self, action: #selector(didChangeText), for: .editingChanged)
     }
     
     @MainActor required init?(coder: NSCoder) {
@@ -39,13 +40,13 @@ final class SpecializedThemeCollectionViewCustomCell: SpecializedThemeCollection
     override func layout() {
         super.layout()
         
-        addSubview(editButton)
+        contentView.addSubview(editButton)
         NSLayoutConstraint.activate([
             editButton.widthAnchor.constraint(equalToConstant: 12),
             editButton.heightAnchor.constraint(equalToConstant: 12),
             editButton.centerYAnchor.constraint(equalTo: titleTextField.centerYAnchor),
             editButton.leftAnchor.constraint(equalTo: titleTextField.rightAnchor, constant: 1),
-            rightAnchor.constraint(equalTo: editButton.rightAnchor, constant: 12),
+            contentView.rightAnchor.constraint(equalTo: editButton.rightAnchor, constant: 12),
         ])
     }
     
@@ -58,6 +59,13 @@ final class SpecializedThemeCollectionViewCustomCell: SpecializedThemeCollection
     private func handleEndEditing() {
         log.debug("SpecializedThemeCollectionViewCustomCell handleEndEditing called")
         titleTextField.isUserInteractionEnabled = false
+    }
+    
+    @objc private func didChangeText() {
+        titleTextField.invalidateIntrinsicContentSize()
+        if let collectionView = self.superview as? UICollectionView {
+            collectionView.collectionViewLayout.invalidateLayout()
+        }
     }
 }
 
