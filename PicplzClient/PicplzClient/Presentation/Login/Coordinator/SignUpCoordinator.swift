@@ -91,8 +91,14 @@ final class SignUpCoordinator: Coordinator {
             vc.viewModel.delegate = self
             nextVc = vc
         case .photoSpecializedThemesSetting:
-            log.debug("SpecializedThemesSettingPage is not implemented...")
-            nextVc = UIViewController()
+            guard let vc = container.resolve(SignUpPhotographerSpecializedThemesPageViewController.self) else {
+                handleViewControllerNotResolved()
+                return
+            }
+//            vc.viewModel.signUpSession = self.signUpSession
+//            vc.viewModel.currentPage = currentPage.getPage()
+//            vc.viewModel.delegate = self
+            nextVc = vc
         }
         
         navigationController.pushViewController(nextVc, animated: true)
