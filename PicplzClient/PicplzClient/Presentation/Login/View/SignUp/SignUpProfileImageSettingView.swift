@@ -10,7 +10,7 @@ import UIKit
 final class SignUpProfileImageSettingView: UIView {
     let titleLabel = UILabel()
     let profileImageButton = UIButton()
-    let selectImageButton = UIButton()
+    let cameraButton = UIButton()
     let informationLabel = UILabel()
     
     override init(frame: CGRect) {
@@ -38,10 +38,10 @@ final class SignUpProfileImageSettingView: UIView {
         profileImageButton.layer.cornerRadius = 80.0 // perfect circle
         profileImageButton.clipsToBounds = true
         
-        selectImageButton.translatesAutoresizingMaskIntoConstraints = false
-        selectImageButton.setImage(UIImage(named: "SelectImageIcon"), for: .normal)
-        selectImageButton.layer.cornerRadius = 16.5
-        selectImageButton.clipsToBounds = true
+        cameraButton.translatesAutoresizingMaskIntoConstraints = false
+        cameraButton.setImage(UIImage(named: "CameraIcon"), for: .normal)
+        cameraButton.layer.cornerRadius = 16.5
+        cameraButton.clipsToBounds = true
         
         informationLabel.translatesAutoresizingMaskIntoConstraints = false
         informationLabel.font = .title
@@ -67,12 +67,12 @@ final class SignUpProfileImageSettingView: UIView {
             profileImageButton.heightAnchor.constraint(equalToConstant: 160.0),
         ])
         
-        addSubview(selectImageButton)
+        addSubview(cameraButton)
         NSLayoutConstraint.activate([
-            selectImageButton.widthAnchor.constraint(equalToConstant: 33.0),
-            selectImageButton.heightAnchor.constraint(equalToConstant: 33.0),
-            profileImageButton.rightAnchor.constraint(equalTo: selectImageButton.rightAnchor, constant: 5.0),
-            profileImageButton.bottomAnchor.constraint(equalTo: selectImageButton.bottomAnchor, constant: 5.0),
+            cameraButton.widthAnchor.constraint(equalToConstant: 33.0),
+            cameraButton.heightAnchor.constraint(equalToConstant: 33.0),
+            profileImageButton.rightAnchor.constraint(equalTo: cameraButton.rightAnchor, constant: 5.0),
+            profileImageButton.bottomAnchor.constraint(equalTo: cameraButton.bottomAnchor, constant: 5.0),
         ])
         
         addSubview(informationLabel)

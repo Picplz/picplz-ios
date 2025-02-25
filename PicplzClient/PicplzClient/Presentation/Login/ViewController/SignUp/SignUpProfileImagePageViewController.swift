@@ -45,7 +45,7 @@ final class SignUpProfileImagePageViewController: UIViewController {
         ])
         
         contentView.profileImageButton.addTarget(self, action: #selector(didSelectButtonTapped), for: .touchUpInside)
-        contentView.selectImageButton.addTarget(self, action: #selector(didSelectButtonTapped), for: .touchUpInside)
+        contentView.cameraButton.addTarget(self, action: #selector(didCameraButtonTapped), for: .touchUpInside)
         
         // MARK: Next Button
         nextButton.setTitle("다음에 설정하기", for: .normal)
@@ -99,7 +99,7 @@ final class SignUpProfileImagePageViewController: UIViewController {
     @objc private func didSelectButtonTapped() {
         let defaultAction = UIAlertAction(title: "앨범에서 선택",
                              style: .default) { [weak self] action in
-            self?.presentUIimagePicker()
+            self?.presentUIimagePicker(useCamera: false)
         }
         
         let cancelAction = UIAlertAction(title: "닫기",
@@ -115,8 +115,13 @@ final class SignUpProfileImagePageViewController: UIViewController {
         self.present(alert, animated: true)
     }
     
-    private func presentUIimagePicker() {
+    @objc private func didCameraButtonTapped() {
+        presentUIimagePicker(useCamera: true)
+    }
+    
+    private func presentUIimagePicker(useCamera: Bool) {
         let picker = UIImagePickerController()
+        picker.sourceType = useCamera ? .camera : .photoLibrary
         picker.allowsEditing = true
         picker.delegate = self
         present(picker, animated: true)
