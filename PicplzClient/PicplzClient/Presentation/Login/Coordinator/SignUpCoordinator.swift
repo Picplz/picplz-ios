@@ -142,7 +142,14 @@ extension SignUpCoordinator: SignUpViewModelDelegate {
         if let signUpSession = signUpSession,
            let memberType = signUpSession.memberType,
            currentPage.isLast(to: memberType) {
-            delegate?.finished(signUpCoordinator: self)
+            guard let vc = container.resolve(SignUpFinishVIewController.self) else {
+                handleViewControllerNotResolved()
+                return
+            }
+            vc.delegate = self
+            vc.nickname = signUpSession.nickname
+            vc.profileImagePath = signUpSession.profileImageUrl
+            navigationController.viewControllers = [vc]
             return
         }
         
@@ -152,5 +159,11 @@ extension SignUpCoordinator: SignUpViewModelDelegate {
         } else {
             log.error("다음 SignUp 페이지를 로드할 수 없습니다.")
         }
+    }
+}
+
+extension SignUpCoordinator: SignUpFinishVIewControllerDelegate {
+    func didTapFinishButton() {
+        delegate?.finished(signUpCoordinator: self)
     }
 }

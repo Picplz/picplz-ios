@@ -104,6 +104,9 @@ final class DIContainerProvider {
             vc.viewModel = r.resolve(SignUpPhotographerSpecializedThemesPageViewModelProtocol.self)
             return vc
         }
+        container.register(SignUpFinishVIewController.self) { _ in
+            return SignUpFinishVIewController()
+        }
         return container
     }
 }
