@@ -11,6 +11,8 @@ import UIKit
  픽플즈에서 기본으로 제공하는 감성 항목을 표시하는 셀
  */
 class SpecializedThemeCollectionViewDefaultCell: UICollectionViewCell {
+    var theme: Theme?
+    
     let titleTextField = UITextField()
     
     override init(frame: CGRect) {
@@ -58,8 +60,10 @@ class SpecializedThemeCollectionViewDefaultCell: UICollectionViewCell {
         ])
     }
     
-    func configuration(title: String, isSelected: Bool) {
-        self.titleTextField.text = title
+    func configuration(theme: Theme?, isSelected: Bool) {
+        guard let theme = theme else { return }
+        self.theme = theme
+        self.titleTextField.text = theme.title
         updateStyle(to: isSelected)
     }
 }

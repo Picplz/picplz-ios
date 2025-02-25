@@ -18,4 +18,9 @@ final class SpecializedThemeCollectionViewControlCell: SpecializedThemeCollectio
         backgroundColor = .grey1
         layer.borderColor = UIColor.grey3.cgColor
     }
+    
+    func configuration(title: String, isSelected: Bool) {
+        self.titleTextField.text = title
+        self.updateStyle(to: isSelected)
+    }
 }

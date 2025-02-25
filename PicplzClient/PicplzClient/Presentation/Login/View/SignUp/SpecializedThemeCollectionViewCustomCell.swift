@@ -12,6 +12,10 @@ import OSLog
  사용자가 정의한 감성 항목을 표시하는 셀
  */
 final class SpecializedThemeCollectionViewCustomCell: SpecializedThemeCollectionViewDefaultCell {
+    var delegate: SpecializedThemeCollectionViewCustomCellDelegate?
+    var editingTheme: Theme?
+    var rightConstraint: NSLayoutConstraint?
+    
     private lazy var editButton: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(named: "PencilIcon"), for: .normal)
@@ -41,31 +45,54 @@ final class SpecializedThemeCollectionViewCustomCell: SpecializedThemeCollection
         super.layout()
         
         contentView.addSubview(editButton)
+        rightConstraint = contentView.rightAnchor.constraint(equalTo: editButton.rightAnchor, constant: 12)
         NSLayoutConstraint.activate([
             editButton.widthAnchor.constraint(equalToConstant: 12),
             editButton.heightAnchor.constraint(equalToConstant: 12),
             editButton.centerYAnchor.constraint(equalTo: titleTextField.centerYAnchor),
             editButton.leftAnchor.constraint(equalTo: titleTextField.rightAnchor, constant: 1),
-            contentView.rightAnchor.constraint(equalTo: editButton.rightAnchor, constant: 12),
+            rightConstraint!,
         ])
     }
     
     @objc private func editButtonTapped() {
-        titleTextField.isUserInteractionEnabled = true
-        titleTextField.becomeFirstResponder()
-        updateStyle(to: true)
+        beginEditing()
     }
 
     private func handleEndEditing() {
-        log.debug("SpecializedThemeCollectionViewCustomCell handleEndEditing called")
+        log.debug("SpecializedThemeCollectionViewCustomCell - handleEndEditing called")
+        guard let theme = theme, let editingTheme = editingTheme else { return }
         titleTextField.isUserInteractionEnabled = false
+        delegate?.didUpdateCustomThemeTitle(from: theme, to: editingTheme)
+        
+        self.theme = editingTheme
+        self.editingTheme = nil
+        editButton.isHidden = false
+        rightConstraint?.constant = 12
     }
     
     @objc private func didChangeText() {
+        if editingTheme == nil {
+            editingTheme = theme
+        }
+        
+        guard var theme = editingTheme,
+              theme.setTitle(to: titleTextField.text ?? "") else { return }
+        theme.initialized = true
+        editingTheme = theme
+        
         titleTextField.invalidateIntrinsicContentSize()
         if let collectionView = self.superview as? UICollectionView {
             collectionView.collectionViewLayout.invalidateLayout()
         }
+    }
+    
+    func beginEditing() {
+        self.titleTextField.isUserInteractionEnabled = true
+        self.titleTextField.becomeFirstResponder()
+        self.updateStyle(to: true)
+        editButton.isHidden = true
+        rightConstraint?.constant = 0
     }
 }
 
@@ -78,4 +105,8 @@ extension SpecializedThemeCollectionViewCustomCell: UITextFieldDelegate {
     func textFieldDidEndEditing(_ textField: UITextField) {
         handleEndEditing()
     }
+}
+
+protocol SpecializedThemeCollectionViewCustomCellDelegate {
+    func didUpdateCustomThemeTitle(from previousTheme: Theme, to newTheme: Theme)
 }
