@@ -73,6 +73,13 @@ final class AuthManager: AuthManaging {
         return true
     }
     
+    func updateUserInfo(user currentUserEntity: AuthUser) {
+        self.currentUserModel = AuthUserModel.from(entity: currentUserEntity)
+        setToDeviceStore()
+        
+        log.debug("AuthManager updateUserInfo... currentUser=\(String(describing: self.currentUserModel))")
+    }
+    
     private func setToDeviceStore() {
         // MARK: save currentUserModel
         if let currentUserModel = currentUserModel {

@@ -41,6 +41,10 @@ final class DIContainerProvider {
             let authManaging = r.resolve(AuthManaging.self)!
             return GetAuthInfoUseCaseImpl(authManaging: authManaging)
         }
+        container.register(SendSignUpRequestUseCase.self) { r in
+            let authManaging = r.resolve(AuthManaging.self)!
+            return SendSignUpRequestUseCaseImpl(authManaging: authManaging)
+        }
         
         // MARK: Presentaion
         // MARK:              ...  View Models

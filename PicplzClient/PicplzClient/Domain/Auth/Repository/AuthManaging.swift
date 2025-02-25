@@ -15,4 +15,5 @@ protocol AuthManaging {
     func login(accessToken: String, expiresDate: Date, user currentUserEntity: AuthUser)
     func logout()
     func validateToken() -> Bool
+    func updateUserInfo(user currentUserEntity: AuthUser)
 }

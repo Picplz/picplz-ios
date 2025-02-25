@@ -17,6 +17,8 @@ protocol MainViewModelProtocol {
     var accessToken: String? { get }
     var accessTokenPublisher: Published<String?>.Publisher { get }
     
+    var userInfo: AuthUser? { get }
+    
     func logoutButtonTapped()
     func viewPrepared()
 }

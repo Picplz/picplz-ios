@@ -24,12 +24,15 @@ final class SignUpCoordinator: Coordinator {
         (SignUpNicknamePageViewController.self, SignUpNicknamePageViewModelProtocol.self)
     ]
     private let signUpSession = SignUpSession()
+    private var signUpUseCase: SendSignUpRequestUseCase!
     
     private var log = Logger.of("SignUpCoordinator")
     
     init(navigationController: UINavigationController, container: Container) {
         self.container = container
         self.navigationController = navigationController
+        
+        self.signUpUseCase = container.resolve(SendSignUpRequestUseCase.self)
     }
     
     deinit {
@@ -131,6 +134,10 @@ final class SignUpCoordinator: Coordinator {
     private func handleViewControllerNotResolved() {
         preconditionFailure("viewController could not be resolved...")
     }
+    
+    private func sendDataToServer() {
+        signUpUseCase.execute(signUpSession: signUpSession)
+    }
 }
 
 extension SignUpCoordinator: SignUpViewModelDelegate {
@@ -142,6 +149,8 @@ extension SignUpCoordinator: SignUpViewModelDelegate {
         if let signUpSession = signUpSession,
            let memberType = signUpSession.memberType,
            currentPage.isLast(to: memberType) {
+            sendDataToServer() // MARK: Send sign up requst to server
+            
             guard let vc = container.resolve(SignUpFinishVIewController.self) else {
                 handleViewControllerNotResolved()
                 return
