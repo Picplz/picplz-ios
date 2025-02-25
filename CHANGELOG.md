@@ -13,5 +13,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - 폰트 Pretandard 적용
 - 로그인 정보를 UserDefaults와 Keychain에 저장
 - 기본 언어를 한국어로 변경
+- 최조 회원 정보 등록 (SignUpCoordinator)
 
 [unreleased]: https://github.com/Picplz/picplz-ios

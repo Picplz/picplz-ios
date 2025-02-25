@@ -9,6 +9,7 @@ import Combine
 
 final class MainViewModel: MainViewModelProtocol {
     weak var delegate: MainViewModelDelegate?
+    var userInfo: AuthUser?
     var getAuthInfoUseCase: GetAuthInfoUseCase?
     var logoutUseCase: LogoutUseCase?
     
@@ -19,6 +20,7 @@ final class MainViewModel: MainViewModelProtocol {
     
     func viewPrepared() {
         accessToken = getAuthInfoUseCase?.getAccessToken()
+        userInfo = getAuthInfoUseCase?.getUserInfo()
     }
     
     func logoutButtonTapped() {

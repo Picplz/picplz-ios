@@ -10,6 +10,7 @@ import Combine
 
 final class MainViewController: UIViewController {
     let label = UILabel()
+    let showUserInfoButton = UIButton()
     let logoutButton = UIButton()
     
     var viewModel: MainViewModelProtocol!
@@ -35,6 +36,11 @@ final class MainViewController: UIViewController {
         label.text = "MainView"
         label.numberOfLines = 0
         
+        showUserInfoButton.translatesAutoresizingMaskIntoConstraints = false
+        showUserInfoButton.setTitle("유저 정보 보기", for: .normal)
+        showUserInfoButton.setTitleColor(.picplzBlack, for: .normal)
+        showUserInfoButton.addTarget(self, action: #selector(userInfoButtonTapped), for: .touchUpInside)
+        
         logoutButton.translatesAutoresizingMaskIntoConstraints = false
         logoutButton.setTitle("로그아웃", for: .normal)
         logoutButton.setTitleColor(.picplzBlack, for: .normal)
@@ -49,10 +55,16 @@ final class MainViewController: UIViewController {
             view.rightAnchor.constraint(equalTo: label.rightAnchor, constant: 8),
         ])
         
+        view.addSubview(showUserInfoButton)
+        NSLayoutConstraint.activate([
+            showUserInfoButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            showUserInfoButton.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 16)
+        ])
+        
         view.addSubview(logoutButton)
         NSLayoutConstraint.activate([
             logoutButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            logoutButton.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 16)
+            logoutButton.topAnchor.constraint(equalTo: showUserInfoButton.bottomAnchor, constant: 16)
         ])
     }
     
@@ -64,6 +76,13 @@ final class MainViewController: UIViewController {
                 self?.label.text = "로그인됨 accessToken=\(accessToken)"
             }
             .store(in: &subscriptions)
+    }
+    
+    @objc private func userInfoButtonTapped() {
+        let alert = UIAlertController(title: "유저 정보", message: "\(String(describing: viewModel.userInfo))", preferredStyle: .actionSheet)
+        let action = UIAlertAction(title: "확인", style: .default)
+        alert.addAction(action)
+        present(alert, animated: true)
     }
     
     @objc private func logoutButtonTapped() {
