@@ -10,7 +10,7 @@ import Combine
 import OSLog
 
 final class SignUpPhotographerSpecializedThemesPageViewController: UIViewController {
-//    var viewModel: SignUpPhotographerSpecializedThemesPageViewModel!
+    var viewModel: SignUpPhotographerSpecializedThemesPageViewModelProtocol!
     private var subscriptions: Set<AnyCancellable> = []
     
     private let contentView = SignUpPhotographerSpecializedThemesSettingVIew()
@@ -68,11 +68,16 @@ final class SignUpPhotographerSpecializedThemesPageViewController: UIViewControl
     }
     
     func bind() {
-        
+        viewModel.collectionViewItemsPublisher
+            .receive(on: RunLoop.main)
+            .sink { [weak self] items in
+                self?.applyDataSource(items: items)
+            }
+            .store(in: &subscriptions)
     }
     
     @objc private func didNextButtonTapped() {
-//        viewModel.nextButtonDidTapped()
+        viewModel.nextButtonDidTapped()
     }
     
     @objc private func didEditingEnd() {
@@ -81,14 +86,8 @@ final class SignUpPhotographerSpecializedThemesPageViewController: UIViewControl
 }
 
 extension SignUpPhotographerSpecializedThemesPageViewController {
-    enum Section {
-        case main
-    }
-    
-    enum Item: Hashable {
-        case content(theme: Theme, isSelected: Bool)
-        case control
-    }
+    typealias Section = ThemesSettingCollectionViewSection
+    typealias Item = ThemesSettingCollectionViewItem
     
     private func registerCells(to collectionView: UICollectionView) {
         collectionView.register(SpecializedThemeCollectionViewDefaultCell.self, forCellWithReuseIdentifier: "DefaultCell")
@@ -126,87 +125,9 @@ extension SignUpPhotographerSpecializedThemesPageViewController {
             
             return cell
         }
-        
-        applyDataSource(themes: Theme.predefinedThemes)
-    }
-    
-    private func applyDataSource(themes: [Theme]) {
-        let items = themes.map { Item.content(theme: $0, isSelected: false) } + [Item.control]
-        applyDataSource(items: items)
     }
     
     private func applyDataSource(items: [Item]) {
-        self.itemList = items
-        
-        var snapshot = NSDiffableDataSourceSnapshot<Section, Item>()
-        snapshot.appendSections([.main])
-        snapshot.appendItems(items, toSection: .main)
-        
-        dataSource.apply(snapshot)
-        
-//        log.debug("snapshot applied - \(snapshot.itemIdentifiers)")
-    }
-    
-    private func reloadItems() {
-        var snapshot = NSDiffableDataSourceSnapshot<Section, Item>()
-        snapshot.appendSections([.main])
-        snapshot.appendItems(itemList, toSection: .main)
-        
-        dataSource.apply(snapshot)
-    }
-    
-    private func replaceTheme(from previousTheme: Theme, to newTheme: Theme) {
-        log.debug("replaceTheme called from=\(previousTheme.title) to=\(newTheme.title)")
-        
-        var newTheme: Theme? = newTheme
-        
-        let existingthemes: [Theme] = itemList
-            .map { item in
-                guard case .content(let theme, _) = item else {
-                    return nil
-                }
-                
-                return theme
-            }
-            .compactMap { $0 }
-        
-        // MARK: 이름이 중복인 경우
-        if let themeToCompare = newTheme,
-           existingthemes.contains(themeToCompare) {
-            log.debug("이미 같은 이름의 감성이 추가되어 있어 제거합니다. \(themeToCompare.title)")
-            newTheme = nil
-        }
-        
-        let newItems: [Item] = itemList
-            .map { item in
-                if case let .content(theme, _) = item,
-                   theme == previousTheme {
-                    if let newTheme = newTheme {
-                        return Item.content(theme: newTheme, isSelected: true)
-                    }
-                    return nil
-                }
-                return item
-            }
-            .compactMap { $0 } // newTheme이 nil인 경우 제거됨
-        
-        applyDataSource(items: newItems)
-    }
-    
-    private func addCustomTheme() {
-        let newTheme = Theme(title: "", userCreated: true, initialized: false)
-        let newItem = Item.content(theme: newTheme, isSelected: false)
-        
-        let existingContentItems: [Item] = itemList
-            .filter {
-                if case .content = $0 {
-                    return true
-                } else {
-                    return false
-                }
-            }
-        
-        let items = existingContentItems + [newItem, Item.control]
         self.itemList = items
         
         var snapshot = NSDiffableDataSourceSnapshot<Section, Item>()
@@ -233,19 +154,12 @@ extension SignUpPhotographerSpecializedThemesPageViewController {
 
 extension SignUpPhotographerSpecializedThemesPageViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let item = self.itemList[indexPath.row]
-        if case let .content(theme, isSelected) = item {
-            self.itemList[indexPath.row] = .content(theme: theme, isSelected: !isSelected)
-            reloadItems()
-        } else if case .control = item {
-            log.debug("didSelectItemAt - .control")
-            addCustomTheme()
-        }
+        viewModel.didSelectItem(indexPath: indexPath)
     }
 }
 
 extension SignUpPhotographerSpecializedThemesPageViewController: SpecializedThemeCollectionViewCustomCellDelegate {
     func didUpdateCustomThemeTitle(from previousTheme: Theme, to newTheme: Theme) {
-        replaceTheme(from: previousTheme, to: newTheme)
+        viewModel.customThemeUpdated(from: previousTheme, to: newTheme)
     }
 }
