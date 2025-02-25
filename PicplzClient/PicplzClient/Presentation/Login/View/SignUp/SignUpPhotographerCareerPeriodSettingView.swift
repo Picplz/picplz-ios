@@ -57,6 +57,7 @@ final class SignUpPhotographerCareerPeriodSettingView: UIView {
         yearsTextField.clipsToBounds = true
         yearsTextField.inputView = yearsPickerView
         yearsTextField.inputAccessoryView = yearsToolbar
+        yearsTextField.tintColor = .clear // hide cursor
         yearsTextField.delegate = self
         
         yearsCaptionLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -75,6 +76,7 @@ final class SignUpPhotographerCareerPeriodSettingView: UIView {
         monthsTextField.clipsToBounds = true
         monthsTextField.inputView = monthsPickerView
         monthsTextField.inputAccessoryView = monthsToolbar
+        monthsTextField.tintColor = .clear // hide cursor
         monthsTextField.delegate = self
         
         monthsCaptionLabel.translatesAutoresizingMaskIntoConstraints = false
