@@ -13,7 +13,7 @@ final class SignUpPhotographerCareerTypePageViewModel: SignUpPhotographerCareerT
     var currentPage: Int = 0
     var signUpSession: SignUpSession?
     
-    @Published var nextButtonEnabled: Bool = true
+    @Published var nextButtonEnabled: Bool = false
     var nextButtonEnabledPublisher: Published<Bool>.Publisher {
         $nextButtonEnabled
     }
@@ -21,6 +21,12 @@ final class SignUpPhotographerCareerTypePageViewModel: SignUpPhotographerCareerT
     @Published var isInformationModalActive: Bool = false
     var isInformationModalActivePublisher: Published<Bool>.Publisher {
         $isInformationModalActive
+    }
+    
+    
+    @Published var havingCareer: Bool? = nil
+    var havingCareerPublisher: Published<Bool?>.Publisher {
+        $havingCareer
     }
     
     @Published var shouldShowPrompt: Bool = true
@@ -45,12 +51,21 @@ final class SignUpPhotographerCareerTypePageViewModel: SignUpPhotographerCareerT
         isInformationModalActive.toggle()
     }
     
+//    func careerYesButtonTapped() {
+//        shouldShowPrompt = false
+//    }
+//    
+//    func careerNoButtonTapped() {
+//        delegate?.goToNextPage(current: currentPage + 1, session: signUpSession) // skip next page
+//    }
     func careerYesButtonTapped() {
-        shouldShowPrompt = false
+        havingCareer = true
+        nextButtonEnabled = true
     }
     
     func careerNoButtonTapped() {
-        delegate?.goToNextPage(current: currentPage + 1, session: signUpSession) // skip next page
+        havingCareer = false
+        nextButtonEnabled = true
     }
     
     func careerTypeSelected(for careerType: SignUpSession.CareerType) {
@@ -59,6 +74,11 @@ final class SignUpPhotographerCareerTypePageViewModel: SignUpPhotographerCareerT
     }
     
     func nextButtonDidTapped() {
-        delegate?.goToNextPage(current: currentPage, session: signUpSession)
+        if shouldShowPrompt && (havingCareer ?? false) { // 프롬프트 표시 중 + 경력 있음 -> 설정 뷰 표시
+            shouldShowPrompt = false
+            nextButtonEnabled = false
+        } else { // 다음 페이지 이동
+            delegate?.goToNextPage(current: currentPage, session: signUpSession)
+        }
     }
 }

@@ -15,8 +15,8 @@ final class SignUpPhotographerCareerExistsPromptView: UIView {
         button.setImage(UIImage(named: "InformationIcon"), for: .normal)
         return button
     }()
-    let yesButton = UIPickplzButton()
-    let noButton = UIPickplzButton()
+    let yesButton = selectablePicPlzButton()
+    let noButton = selectablePicPlzButton()
     let buttonsHolderView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
@@ -52,8 +52,10 @@ final class SignUpPhotographerCareerExistsPromptView: UIView {
         informationButton.translatesAutoresizingMaskIntoConstraints = false
         
         yesButton.setTitle("있어요", for: .normal)
+        yesButton.isSelected = false
         buttonsHolderView.addArrangedSubview(yesButton)
         noButton.setTitle("없어요", for: .normal)
+        noButton.isSelected = false
         buttonsHolderView.translatesAutoresizingMaskIntoConstraints = false
         buttonsHolderView.addArrangedSubview(noButton)
     }
@@ -86,5 +88,23 @@ final class SignUpPhotographerCareerExistsPromptView: UIView {
             buttonsHolderView.rightAnchor.constraint(equalTo: rightAnchor),
             buttonsHolderView.heightAnchor.constraint(equalToConstant: 65.0),
         ])
+    }
+}
+
+final class selectablePicPlzButton: UIPickplzButton {
+    override var isSelected: Bool {
+        didSet {
+            if isSelected {
+                self.backgroundColor = .black
+                self.layer.borderColor = .none
+                self.layer.borderWidth = .zero
+                self.setTitleColor(.picplzWhite, for: .normal)
+            } else {
+                self.backgroundColor = .white
+                self.layer.borderColor = UIColor.grey3.cgColor
+                self.layer.borderWidth = 1.0
+                self.setTitleColor(.picplzBlack, for: .normal)
+            }
+        }
     }
 }

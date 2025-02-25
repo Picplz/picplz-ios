@@ -8,6 +8,9 @@
 import Combine
 
 protocol SignUpPhotographerCareerTypePageViewModelProtocol: SignUpVIewModelProtocol {
+    var havingCareer: Bool? { get }
+    var havingCareerPublisher: Published<Bool?>.Publisher { get }
+    
     var shouldShowPrompt: Bool { get }
     var shouldShowPromptPublisher: Published<Bool>.Publisher { get }
     

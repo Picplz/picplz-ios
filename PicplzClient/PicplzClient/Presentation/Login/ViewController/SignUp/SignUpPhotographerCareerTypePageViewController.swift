@@ -91,7 +91,6 @@ final class SignUpPhotographerCareerTypePageViewController: UIViewController {
         nextButton.translatesAutoresizingMaskIntoConstraints = false
         nextButton.addTarget(self, action: #selector(didNextButtonTapped), for: .touchUpInside)
         nextButton.isEnabled = false
-        nextButton.isHidden = true
         view.addSubview(nextButton)
         
         NSLayoutConstraint.activate([
@@ -109,12 +108,17 @@ final class SignUpPhotographerCareerTypePageViewController: UIViewController {
                 if shouldShowPrompt {
                     self?.promptContentView.isHidden = false
                     self?.settingContentView.isHidden = true
-                    self?.nextButton.isHidden = true
                 } else {
                     self?.promptContentView.isHidden = true
                     self?.settingContentView.isHidden = false
-                    self?.nextButton.isHidden = false
                 }
+            }
+            .store(in: &subscriptions)
+        
+        viewModel.nextButtonEnabledPublisher
+            .receive(on: RunLoop.main)
+            .sink { [weak self] enabled in
+                self?.nextButton.isEnabled = enabled
             }
             .store(in: &subscriptions)
         
@@ -123,6 +127,25 @@ final class SignUpPhotographerCareerTypePageViewController: UIViewController {
             .sink { [weak self] careerType in
                 self?.settingContentView.selectCareerType(for: careerType)
                 self?.nextButton.isEnabled = true
+            }
+            .store(in: &subscriptions)
+        
+        viewModel.havingCareerPublisher
+            .receive(on: RunLoop.main)
+            .sink { [weak self] havingCareer in
+                guard let havingCareer = havingCareer else {
+                    self?.promptContentView.yesButton.isSelected = false
+                    self?.promptContentView.noButton.isSelected = false
+                    return
+                }
+                
+                if havingCareer {
+                    self?.promptContentView.yesButton.isSelected = true
+                    self?.promptContentView.noButton.isSelected = false
+                } else {
+                    self?.promptContentView.yesButton.isSelected = false
+                    self?.promptContentView.noButton.isSelected = true
+                }
             }
             .store(in: &subscriptions)
     }
