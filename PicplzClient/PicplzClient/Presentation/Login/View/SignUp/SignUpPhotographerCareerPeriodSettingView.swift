@@ -57,6 +57,7 @@ final class SignUpPhotographerCareerPeriodSettingView: UIView {
         yearsTextField.clipsToBounds = true
         yearsTextField.inputView = yearsPickerView
         yearsTextField.inputAccessoryView = yearsToolbar
+        yearsTextField.delegate = self
         
         yearsCaptionLabel.translatesAutoresizingMaskIntoConstraints = false
         yearsCaptionLabel.text = "년"
@@ -74,6 +75,7 @@ final class SignUpPhotographerCareerPeriodSettingView: UIView {
         monthsTextField.clipsToBounds = true
         monthsTextField.inputView = monthsPickerView
         monthsTextField.inputAccessoryView = monthsToolbar
+        monthsTextField.delegate = self
         
         monthsCaptionLabel.translatesAutoresizingMaskIntoConstraints = false
         monthsCaptionLabel.text = "개월"
@@ -121,5 +123,11 @@ final class SignUpPhotographerCareerPeriodSettingView: UIView {
             monthsCaptionLabel.bottomAnchor.constraint(equalTo: monthsTextField.bottomAnchor),
             monthsCaptionLabel.leftAnchor.constraint(equalTo: monthsTextField.rightAnchor, constant: 6.0),
         ])
+    }
+}
+
+extension SignUpPhotographerCareerPeriodSettingView: UITextFieldDelegate {
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        return false
     }
 }
