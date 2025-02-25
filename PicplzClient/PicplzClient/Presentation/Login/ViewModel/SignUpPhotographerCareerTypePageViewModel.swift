@@ -51,13 +51,6 @@ final class SignUpPhotographerCareerTypePageViewModel: SignUpPhotographerCareerT
         isInformationModalActive.toggle()
     }
     
-//    func careerYesButtonTapped() {
-//        shouldShowPrompt = false
-//    }
-//    
-//    func careerNoButtonTapped() {
-//        delegate?.goToNextPage(current: currentPage + 1, session: signUpSession) // skip next page
-//    }
     func careerYesButtonTapped() {
         havingCareer = true
         nextButtonEnabled = true
