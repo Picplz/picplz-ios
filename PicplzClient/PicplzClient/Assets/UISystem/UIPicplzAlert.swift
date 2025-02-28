@@ -1,5 +1,5 @@
 //
-//  UIPickplzAlert.swift
+//  UIPicplzAlert.swift
 //  PicplzClient
 //
 //  Created by 임영택 on 2/20/25.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class UIPickplzAlert: UIView {
+final class UIPicplzAlert: UIView {
     var title: String? {
         didSet {
             titleLabel.text = title

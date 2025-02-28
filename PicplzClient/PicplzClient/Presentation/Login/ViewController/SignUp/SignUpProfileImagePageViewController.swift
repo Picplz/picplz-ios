@@ -16,7 +16,7 @@ final class SignUpProfileImagePageViewController: UIViewController {
     private var subscriptions: Set<AnyCancellable> = []
     
     private let contentView = SignUpProfileImageSettingView()
-    private let nextButton = UIPickplzButton()
+    private let nextButton = UIPicplzButton()
     
     private var log = Logger.of("SignUpNicknamePageViewController")
     

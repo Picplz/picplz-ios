@@ -14,7 +14,7 @@ final class SignUpNicknamePageViewController: UIViewController {
     private var subscriptions: Set<AnyCancellable> = []
     
     private let contentView = SignUpNicknameSettingView()
-    private let nextButton = UIPickplzButton()
+    private let nextButton = UIPicplzButton()
     private var nextButtonBottomConstraint: NSLayoutConstraint?
     
     private var log = Logger.of("SignUpNicknamePageViewController")
