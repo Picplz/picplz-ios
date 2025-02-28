@@ -21,7 +21,7 @@ final class AppCoordinator: Coordinator {
         guard let window = window else { return nil }
         
         self.window = window
-        navigationController = UINavigationController()
+        navigationController = UIPickplzNavigationController()
         
         self.container = container
         
