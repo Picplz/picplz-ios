@@ -1,5 +1,5 @@
 //
-//  UIPickplzButton.swift
+//  UIPicplzButton.swift
 //  PicplzClient
 //
 //  Created by 임영택 on 2/20/25.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class UIPickplzButton: UIButton {
+class UIPicplzButton: UIButton {
     override init(frame: CGRect) {
         super.init(frame: frame)
         

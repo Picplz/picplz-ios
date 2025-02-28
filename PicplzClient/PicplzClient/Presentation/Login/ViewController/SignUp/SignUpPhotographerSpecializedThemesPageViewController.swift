@@ -14,7 +14,7 @@ final class SignUpPhotographerSpecializedThemesPageViewController: UIViewControl
     private var subscriptions: Set<AnyCancellable> = []
     
     private let contentView = SignUpPhotographerSpecializedThemesSettingVIew()
-    private let nextButton = UIPickplzButton()
+    private let nextButton = UIPicplzButton()
     
     private var dataSource: UICollectionViewDiffableDataSource<Section, Item>!
     private var itemList: [Item] = []

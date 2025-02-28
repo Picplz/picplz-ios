@@ -14,5 +14,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - 로그인 정보를 UserDefaults와 Keychain에 저장
 - 기본 언어를 한국어로 변경
 - 최조 회원 정보 등록 (SignUpCoordinator)
+- 네비게이션 바 커스텀 디자인 적용
 
 [unreleased]: https://github.com/Picplz/picplz-ios

@@ -63,7 +63,7 @@ final class SignUpFinishVIewController: UIViewController {
         label.textAlignment = .center
         return label
     }()
-    private let startButton = UIPickplzButton()
+    private let startButton = UIPicplzButton()
     
     private var log = Logger.of("SignUpFinishVIewController")
     

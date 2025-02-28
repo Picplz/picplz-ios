@@ -17,8 +17,8 @@ final class SignUpPhotographerCareerTypePageViewController: UIViewController {
     
     private let promptContentView = SignUpPhotographerCareerExistsPromptView()
     private let settingContentView = SignUpPhotographerCareerTypeSettingView()
-    private let alertView = UIPickplzAlert()
-    private let nextButton = UIPickplzButton()
+    private let alertView = UIPicplzAlert()
+    private let nextButton = UIPicplzButton()
     
     private var log = Logger.of("SignUpPhotographerCareerTypePageViewController")
     

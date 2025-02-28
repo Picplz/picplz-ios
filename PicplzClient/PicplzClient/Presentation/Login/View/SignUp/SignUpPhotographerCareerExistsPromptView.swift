@@ -91,7 +91,7 @@ final class SignUpPhotographerCareerExistsPromptView: UIView {
     }
 }
 
-final class selectablePicPlzButton: UIPickplzButton {
+final class selectablePicPlzButton: UIPicplzButton {
     override var isSelected: Bool {
         didSet {
             if isSelected {

@@ -16,7 +16,7 @@ final class SignUpPhotographerCareerPeriodViewController: UIViewController {
     private var subscriptions: Set<AnyCancellable> = []
     
     private let contentView = SignUpPhotographerCareerPeriodSettingView()
-    private let nextButton = UIPickplzButton()
+    private let nextButton = UIPicplzButton()
     
     private let yearsTitles: [String] = (0...30).map { "\($0)년" }
     private let monthsTitles: [String] = (0...12).map { "\($0)개월" }
