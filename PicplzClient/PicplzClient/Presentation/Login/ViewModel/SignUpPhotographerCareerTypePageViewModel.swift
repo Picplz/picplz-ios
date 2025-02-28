@@ -67,11 +67,18 @@ final class SignUpPhotographerCareerTypePageViewModel: SignUpPhotographerCareerT
     }
     
     func nextButtonDidTapped() {
-        if shouldShowPrompt && (havingCareer ?? false) { // 프롬프트 표시 중 + 경력 있음 -> 설정 뷰 표시
+        let havingCareer = self.havingCareer ?? false
+        
+        if shouldShowPrompt && havingCareer { // 프롬프트 표시 중 + 경력 있음 -> 설정 뷰 표시
             shouldShowPrompt = false
             nextButtonEnabled = false
         } else { // 다음 페이지 이동
-            delegate?.goToNextPage(current: currentPage, session: signUpSession)
+            var adjustedCurrentPage = self.currentPage
+            if !havingCareer {
+                adjustedCurrentPage += 1 // 경험 없음을 선택한 경우 다다음 페이지로 이동
+            }
+            
+            delegate?.goToNextPage(current: adjustedCurrentPage, session: signUpSession)
         }
     }
 }

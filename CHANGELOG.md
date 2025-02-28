@@ -16,4 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - 최조 회원 정보 등록 (SignUpCoordinator)
 - 네비게이션 바 커스텀 디자인 적용
 
+### Fixed
+- 경력 없음 선택 시에도 경력 선택 페이지로 이동했던 문제
+
 [unreleased]: https://github.com/Picplz/picplz-ios
