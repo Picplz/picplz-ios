@@ -1,7 +1,7 @@
 ---
 name: bug-issue
 about: 결함 제보
-title: 'bug: 버그 (IOS-1)'
+title: 'bug: 버그 (iOS-1)'
 labels: bug
 assignees: ''
 
@@ -9,7 +9,7 @@ assignees: ''
 
 ## 개요
 
-- 이슈 ID: IOS-1
+- 이슈 ID: iOS-1
 - 마감예정일: 2025-01-01
 - 증상: 
 - 예상 원인: 
