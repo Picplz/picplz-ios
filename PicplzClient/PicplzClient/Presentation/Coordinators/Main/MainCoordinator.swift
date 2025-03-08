@@ -18,11 +18,19 @@ final class MainCoordinator: Coordinator {
     weak var delegate: MainCoordinatorDelegate?
     private let navigationController: UINavigationController
     private let container: Container
+    private let authManaging: AuthManaging
     private var log = Logger.of("MainCoordinator")
     
     init(navigationController: UINavigationController, container: Container) {
         self.navigationController = navigationController
         self.container = container
+        
+        if let authManaging = container.resolve(AuthManaging.self) {
+            self.authManaging = authManaging
+        } else {
+            log.error("AuthManaging could not be resolved...")
+            preconditionFailure("AuthManaging could not be resolved...")
+        }
     }
     
     deinit {
@@ -30,16 +38,78 @@ final class MainCoordinator: Coordinator {
     }
     
     func start() {
-        guard let rootViewController = container.resolve(MainViewController.self) else {
-            preconditionFailure("viewController could not be resolved...")
+        guard let currentUser = authManaging.currentUser,
+        let memberType = currentUser.memberType else {
+            delegate?.finished(mainCoordinator: self)
+            return
         }
-        rootViewController.viewModel.delegate = self
-        navigationController.viewControllers = [rootViewController]
+        
+        /**
+         FIXME: 작가의 경우 전환이 가능하므로 currentUser의 memberType을 바로 바라보지 말고
+         UserDefaults 등으로 관리해야 할 듯
+         */
+        if case .customer = memberType {
+            startCustomer()
+        } else if case .photographer = memberType {
+            startPhotographer()
+        } else {
+            delegate?.finished(mainCoordinator: self)
+        }
+    }
+    
+    func startCustomer() {
+        let coordinator = CustomerCoordinator(navigationController: navigationController, container: container)
+        childCoordinators.append(coordinator)
+        coordinator.delegate = self
+        coordinator.start()
+    }
+    
+    func startPhotographer() {
+        let coordinator = PhotographerCoordinator(navigationController: navigationController, container: container)
+        childCoordinators.append(coordinator)
+        coordinator.delegate = self
+        coordinator.start()
+    }
+    
+    func loggedOut(_ childCoordinator: Coordinator) {
+        childCoordinators = childCoordinators.filter { $0 === childCoordinator }
+        delegate?.finished(mainCoordinator: self)
+    }
+    
+    func switchToAnother(_ childCoordinator: Coordinator) {
+        childCoordinators = childCoordinators.filter { $0 === childCoordinator }
+        
+        if childCoordinator is CustomerCoordinator {
+            startPhotographer()
+            return
+        }
+        
+        if childCoordinator is PhotographerCoordinator {
+            startCustomer()
+            return
+        }
+        
+        log.warning("unexpected child coordinator: \(String(describing: childCoordinator.self))")
     }
 }
 
-extension MainCoordinator: MainViewModelDelegate {
-    func loggedOut() {
-        delegate?.finished(mainCoordinator: self)
+extension MainCoordinator: CustomerCoordinatorDelegate {
+    func switchToPhotographer(customerCoordinator: CustomerCoordinator) {
+        switchToAnother(customerCoordinator)
+    }
+    
+    func loggedOut(customerCoordinator: CustomerCoordinator) {
+        loggedOut(customerCoordinator)
     }
 }
+
+extension MainCoordinator: PhotographerCoordinatorDelegate {
+    func switchToCustomer(photographerCoordinator: PhotographerCoordinator) {
+        switchToAnother(photographerCoordinator)
+    }
+    
+    func loggedOut(photographerCoordinator: PhotographerCoordinator) {
+        loggedOut(photographerCoordinator)
+    }
+}
+

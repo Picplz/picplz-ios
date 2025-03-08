@@ -111,6 +111,12 @@ final class DIContainerProvider {
         container.register(SignUpFinishVIewController.self) { _ in
             return SignUpFinishVIewController()
         }
+        container.register(CustomerViewController.self) { _ in
+            return CustomerViewController()
+        }
+        container.register(PhotographerViewController.self) { _ in
+            return PhotographerViewController()
+        }
         return container
     }
 }

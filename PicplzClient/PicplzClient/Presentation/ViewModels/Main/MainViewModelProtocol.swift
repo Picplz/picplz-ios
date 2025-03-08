@@ -9,6 +9,10 @@ import Foundation
 
 protocol MainViewModelDelegate: AnyObject {
     func loggedOut()
+    
+    func switchToCustomer()
+    
+    func switchToPhotographer()
 }
 
 protocol MainViewModelProtocol {
