@@ -25,6 +25,10 @@ if __name__ == "__main__":
     
     review_results = []
     for file in changed_files:
+        if not os.path.exists(file):  # 파일이 존재하는지 확인
+            print(f"Deleted: {file}")
+            continue
+
         if file.endswith((".py", ".js", ".ts", ".swift")):  # 리뷰할 파일 확장자 필터링
             print(f"Reviewing {file}...")
             review_results.append(f"### `{file}`\n{review_code(file)}\n")
