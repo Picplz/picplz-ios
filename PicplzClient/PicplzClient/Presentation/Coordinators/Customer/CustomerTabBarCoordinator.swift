@@ -19,11 +19,11 @@ class CustomerTabBarCoordinator: Coordinator {
     private let navigationController: UINavigationController
     private let log = Logger.of("CustomerTabBarCoordinator")
     
-    private let homeCoordinator = CustomerHomeCoordinator(tabBarTitle: "홈", tabBarImage: UIImage(named: "StarBlack"), tabBarIndex: 0)
-    private let mapCoordinator = CustomerMapCoordinator(tabBarTitle: "지도", tabBarImage: UIImage(named: "StarBlack"), tabBarIndex: 1)
-    private let feedCoordinator = CustomerFeedCoordinator(tabBarTitle: "피드", tabBarImage: UIImage(named: "StarBlack"), tabBarIndex: 2)
-    private let chatCoordinator = CustomerChatCoordinator(tabBarTitle: "채팅", tabBarImage: UIImage(named: "StarBlack"), tabBarIndex: 3)
-    private let myPageCoordinator = CustomerMyPageCoordinator(tabBarTitle: "마이페이지", tabBarImage: UIImage(named: "StarBlack"), tabBarIndex: 4)
+    private lazy var homeCoordinator = CustomerHomeCoordinator(tabBarTitle: "홈", tabBarImage: UIImage(named: "StarBlack"), tabBarIndex: 0)
+    private lazy var mapCoordinator = CustomerMapCoordinator(tabBarTitle: "지도", tabBarImage: UIImage(named: "StarBlack"), tabBarIndex: 1)
+    private lazy var feedCoordinator = CustomerFeedCoordinator(tabBarTitle: "피드", tabBarImage: UIImage(named: "StarBlack"), tabBarIndex: 2)
+    private lazy var chatCoordinator = CustomerChatCoordinator(tabBarTitle: "채팅", tabBarImage: UIImage(named: "StarBlack"), tabBarIndex: 3)
+    private lazy var myPageCoordinator = CustomerMyPageCoordinator(tabBarTitle: "마이페이지", tabBarImage: UIImage(named: "StarBlack"), tabBarIndex: 4)
     
     init(navigationController: UINavigationController) {
         self.navigationController = navigationController
