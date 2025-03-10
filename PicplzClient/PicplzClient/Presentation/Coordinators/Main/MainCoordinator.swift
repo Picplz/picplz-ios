@@ -65,7 +65,7 @@ final class MainCoordinator: Coordinator {
     }
     
     func startPhotographer() {
-        let coordinator = PhotographerCoordinator(navigationController: navigationController, container: container)
+        let coordinator = PhotographerTabBarCoordinator(navigationController: navigationController)
         childCoordinators.append(coordinator)
         coordinator.delegate = self
         coordinator.start()
@@ -84,7 +84,7 @@ final class MainCoordinator: Coordinator {
             return
         }
         
-        if childCoordinator is PhotographerCoordinator {
+        if childCoordinator is PhotographerTabBarCoordinator {
             startCustomer()
             return
         }
@@ -103,12 +103,12 @@ extension MainCoordinator: CustomerTabBarCoordinatorDelegate {
     }
 }
 
-extension MainCoordinator: PhotographerCoordinatorDelegate {
-    func switchToCustomer(photographerCoordinator: PhotographerCoordinator) {
+extension MainCoordinator: PhotographerTabBarCoordinatorDelegate {
+    func switchToCustomer(photographerCoordinator: PhotographerTabBarCoordinator) {
         switchToAnother(photographerCoordinator)
     }
     
-    func loggedOut(photographerCoordinator: PhotographerCoordinator) {
+    func loggedOut(photographerCoordinator: PhotographerTabBarCoordinator) {
         loggedOut(photographerCoordinator)
     }
 }
