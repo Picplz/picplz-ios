@@ -58,7 +58,7 @@ final class MainCoordinator: Coordinator {
     }
     
     func startCustomer() {
-        let coordinator = CustomerCoordinator(navigationController: navigationController, container: container)
+        let coordinator = CustomerTabBarCoordinator(navigationController: navigationController)
         childCoordinators.append(coordinator)
         coordinator.delegate = self
         coordinator.start()
@@ -72,14 +72,14 @@ final class MainCoordinator: Coordinator {
     }
     
     func loggedOut(_ childCoordinator: Coordinator) {
-        childCoordinators = childCoordinators.filter { $0 === childCoordinator }
+        childCoordinators = childCoordinators.filter { $0 !== childCoordinator }
         delegate?.finished(mainCoordinator: self)
     }
     
     func switchToAnother(_ childCoordinator: Coordinator) {
-        childCoordinators = childCoordinators.filter { $0 === childCoordinator }
+        childCoordinators = childCoordinators.filter { $0 !== childCoordinator }
         
-        if childCoordinator is CustomerCoordinator {
+        if childCoordinator is CustomerTabBarCoordinator {
             startPhotographer()
             return
         }
@@ -93,12 +93,12 @@ final class MainCoordinator: Coordinator {
     }
 }
 
-extension MainCoordinator: CustomerCoordinatorDelegate {
-    func switchToPhotographer(customerCoordinator: CustomerCoordinator) {
+extension MainCoordinator: CustomerTabBarCoordinatorDelegate {
+    func switchToPhotographer(customerCoordinator: CustomerTabBarCoordinator) {
         switchToAnother(customerCoordinator)
     }
     
-    func loggedOut(customerCoordinator: CustomerCoordinator) {
+    func loggedOut(customerCoordinator: CustomerTabBarCoordinator) {
         loggedOut(customerCoordinator)
     }
 }
