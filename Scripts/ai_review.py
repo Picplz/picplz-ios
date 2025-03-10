@@ -11,7 +11,7 @@ def review_code(file_path):
     
     client = genai.Client(api_key=API_KEY)
     response = client.models.generate_content(
-        model="gemini-2.0-flash", contents=f"You are a senior software engineer reviewing code. Review the following code and provide constructive feedback:\n\n{content}"
+        model="gemini-2.0-flash", contents=f"당신은 iOS 시니어 개발자입니다. 아래의 코드를 리뷰하고 건설적인 피드백을 제시하세요:\n\n{content}"
     )
 
     return response.text
@@ -29,7 +29,7 @@ if __name__ == "__main__":
             print(f"Deleted: {file}")
             continue
 
-        if file.endswith((".py", ".js", ".ts", ".swift")):  # 리뷰할 파일 확장자 필터링
+        if file.endswith((".swift")):  # 리뷰할 파일 확장자 필터링
             print(f"Reviewing {file}...")
             review_results.append(f"### `{file}`\n{review_code(file)}\n")
     
