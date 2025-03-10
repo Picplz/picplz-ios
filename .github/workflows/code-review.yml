@@ -5,6 +5,8 @@ on:
 jobs:
     ai_review:
         runs-on: ubuntu-latest
+        permissions:
+            pull-requests: write
         steps:
             - name: Checkout Code
               uses: actions/checkout@v4

@@ -35,3 +35,4 @@ if __name__ == "__main__":
     
     with open(COMMENT_FILE_PATH, "w", encoding="utf-8") as f:
         f.write("\n".join(review_results))
+        print(f"saved to ${COMMENT_FILE_PATH}")
