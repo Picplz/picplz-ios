@@ -1,0 +1,24 @@
+name: code-review
+on:
+    pull_request:
+        types: [opened, synchronize]
+jobs:
+    ai_review:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout Code
+              uses: actions/checkout@v4
+            - name: Set up Python
+              uses: actions/setup-python@v5
+              with:
+                python-version: '3.13'
+            - name: Install dependencies
+              run: pip install -q -U google-genai
+            - name: Run Scripts
+              env:
+                OPENAI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+              run: python Scripts/ai_review.py  ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }}
+            - name: Comment on PR
+              uses: mshick/add-pr-comment@v2
+              with:
+                 message-path: review_comment.txt
