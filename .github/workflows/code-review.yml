@@ -25,4 +25,5 @@ jobs:
             - name: Comment on PR
               uses: mshick/add-pr-comment@v2
               with:
+                 message-id: ai-code-review-for-${{ github.event.pull_request.head.sha }}
                  message-path: review_comment.txt
