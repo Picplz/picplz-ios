@@ -22,8 +22,7 @@ final class CustomerMapCoordinator: TabBarItemCoordinator {
     }
     
     func start() {
-        let viewController = UIViewController()
-        viewController.view.backgroundColor = .blue
+        let viewController = CustomerMapViewController()
         navigationController.viewControllers = [viewController]
         navigationController.tabBarItem = UITabBarItem(title: tabBarTitle, image: tabBarImage, tag: tabBarIndex)
     }
