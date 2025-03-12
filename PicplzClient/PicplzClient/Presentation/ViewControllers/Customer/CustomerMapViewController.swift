@@ -22,6 +22,7 @@ class CustomerMapViewController: UIViewController {
         
         mapView.backgroundColor = .clear
         mapView.translatesAutoresizingMaskIntoConstraints = false
+        mapView.searchingMessageLabelView.alpha = 0
         
         scrollView.showsVerticalScrollIndicator = false
         scrollView.showsHorizontalScrollIndicator = false
@@ -56,6 +57,35 @@ class CustomerMapViewController: UIViewController {
             let offsetY = (contentSize.height - scrollViewSize.height) / 2
             
             self.scrollView.setContentOffset(CGPoint(x: offsetX, y: offsetY), animated: false)
+        }
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        animateBlinkSearchingLable(count: 3)
+    }
+    
+    // FIXME: 애니메이션이 자연스럽지 않음
+    func animateBlinkSearchingLable(count: Int) {
+        mapView.searchingMessageLabelView.isHidden = false
+        mapView.searchingMessageLabelView.alpha = 0
+        UIView.animateKeyframes(withDuration: 3, delay: 0, options: [], animations: {
+            for i in 0..<count {
+                let relativeStart = Double(i) * (1.0 / 3.0) // 0 -> 1/3 -> 2/3
+                let relativeDuration = 1.0 / 3.0
+                
+                // alpha 0 -> 1
+                UIView.addKeyframe(withRelativeStartTime: relativeStart, relativeDuration: relativeDuration) {
+                    self.mapView.searchingMessageLabelView.alpha = 1
+                }
+                
+                // alpha 1 -> 0
+                UIView.addKeyframe(withRelativeStartTime: relativeStart + relativeDuration, relativeDuration: relativeDuration) {
+                    self.mapView.searchingMessageLabelView.alpha = 0
+                }
+            }
+        }) { _ in
+            self.mapView.searchingMessageLabelView.isHidden = true // hide after animation
         }
     }
 }

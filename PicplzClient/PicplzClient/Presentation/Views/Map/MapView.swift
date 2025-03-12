@@ -10,7 +10,7 @@ import UIKit
 final class MapView: UIView {
     private let backgroundView = MapBackgroundView()
     
-    private let searchingMessageLabelView: UILabel = {
+    let searchingMessageLabelView: UILabel = {
         let label = UILabel()
         label.text = "주변 작가 찾는 중..."
         label.textAlignment = .center
