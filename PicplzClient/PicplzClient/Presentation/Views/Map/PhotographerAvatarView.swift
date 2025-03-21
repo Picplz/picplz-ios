@@ -50,8 +50,13 @@ class PhotographerAvatarView: UIView {
         
         distanceLabel.font = .caption
         distanceLabel.textColor = .grey3
-        distanceLabel.text = "\(data.distance)m"
         distanceLabel.textAlignment = .center
+        if let distance = data.distance,
+           let unit = data.distanceUnit?.displayString {
+            distanceLabel.text = "\(distance)\(unit)"
+        } else {
+            distanceLabel.text = nil
+        }
         
         addSubview(avatarImageView)
         addSubview(nameLabel)

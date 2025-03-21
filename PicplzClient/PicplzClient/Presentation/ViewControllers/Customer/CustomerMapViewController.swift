@@ -7,28 +7,65 @@
 
 import UIKit
 import SwiftUI
+import CoreLocation
+import MapKit
+import OSLog
 
 class CustomerMapViewController: UIViewController {
     private let scrollView = UIScrollView()
+    private let headerView = MapHeaderView()
     private let mapView = MapView()
+    private let refreshLocationButton = UIPicplzButton2(title: "내 위치 새로고침", image: UIImage(named: "ArrowRotateLeft")!)
+    
+    private let locationManager = CLLocationManager()
+    private var currentLocation: CLLocation?
 
+    private let log = Logger.of("CustomerMapViewController")
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationController?.setNavigationBarHidden(true, animated: false)
         view.backgroundColor = .grey1
         
+        headerView.translatesAutoresizingMaskIntoConstraints = false
+        headerView.addressLabel.text = ""
+        view.addSubview(headerView)
+        NSLayoutConstraint.activate([
+            headerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24),
+            headerView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 15),
+        ])
+        
+        // FIXME: refreshLocationButton styling
+        refreshLocationButton.translatesAutoresizingMaskIntoConstraints = false
+        let refreshButtonTapAction = UIAction { [weak self] _ in
+            self?.getShortAddress(for: self?.locationManager.location)
+        }
+        refreshLocationButton.addAction(refreshButtonTapAction, for: .touchUpInside)
+        view.addSubview(refreshLocationButton)
+        NSLayoutConstraint.activate([
+            refreshLocationButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15),
+            refreshLocationButton.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
+        ])
+        
         scrollView.translatesAutoresizingMaskIntoConstraints = false
-        scrollView.delegate = self
         
         mapView.backgroundColor = .clear
         mapView.translatesAutoresizingMaskIntoConstraints = false
         mapView.searchingMessageLabelView.alpha = 0
+        mapView.photographerAvatarModels = [
+            .init(name: "짱구", distance: 200, distanceUnit: .m, active: true, image: UIImage(named: "ProfileImagePlaceholder")!),
+            .init(name: "짱아", distance: 400, distanceUnit: .m, active: true, image: UIImage(named: "ProfileImagePlaceholder")!),
+            .init(name: "흰둥", distance: 800, distanceUnit: .m, active: true, image: UIImage(named: "ProfileImagePlaceholder")!),
+            .init(name: "훈", distance: 1000, distanceUnit: .m, active: false, image: UIImage(named: "ProfileImagePlaceholder")!),
+            .init(name: "철수", distance: 1.2, distanceUnit: .km, active: true, image: UIImage(named: "ProfileImagePlaceholder")!),
+            .init(name: "원장", distance: nil, distanceUnit: nil, active: true, image: UIImage(named: "ProfileImagePlaceholder")!),
+        ]
         
         scrollView.showsVerticalScrollIndicator = false
         scrollView.showsHorizontalScrollIndicator = false
         view.addSubview(scrollView)
         NSLayoutConstraint.activate([
-            scrollView.topAnchor.constraint(equalTo: view.topAnchor),
+            scrollView.topAnchor.constraint(equalTo: headerView.bottomAnchor),
             scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
@@ -41,6 +78,13 @@ class CustomerMapViewController: UIViewController {
             mapView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
             mapView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
         ])
+        
+        locationManager.delegate = self
+        if locationManager.authorizationStatus == .authorizedWhenInUse {
+            getShortAddress(for: locationManager.location)
+        } else {
+            print("\(String(describing: locationManager.authorizationStatus))")
+        }
     }
     
     override func viewDidLayoutSubviews() {
@@ -54,9 +98,8 @@ class CustomerMapViewController: UIViewController {
             guard contentSize.width > 0 else { return }
             
             let offsetX = (contentSize.width - scrollViewSize.width) / 2
-            let offsetY = (contentSize.height - scrollViewSize.height) / 2
             
-            self.scrollView.setContentOffset(CGPoint(x: offsetX, y: offsetY), animated: false)
+            self.scrollView.setContentOffset(CGPoint(x: offsetX, y: 0), animated: false)
         }
     }
     
@@ -90,11 +133,62 @@ class CustomerMapViewController: UIViewController {
     }
 }
 
-extension CustomerMapViewController: UIScrollViewDelegate {
+extension CustomerMapViewController: CLLocationManagerDelegate {
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        if status == .authorizedWhenInUse,
+           let currentLocation = manager.location {
+            getShortAddress(for: currentLocation)
+        } else {
+            log.info("could not get current location because of status. status=\(String(describing: status))")
+        }
+    }
+}
+
+// TODO: migrate to ViewModel
+extension CustomerMapViewController {
+    func getShortAddress(for location: CLLocation?) {
+        guard let location = location else {
+            return
+        }
+        
+        log.debug("current location: \(location)")
+        
+        let geocoder = CLGeocoder()
+        geocoder.reverseGeocodeLocation(location, preferredLocale: Locale(identifier: "ko-KR")) { places, error in
+                guard error == nil else {
+                    print("reverseGeocodeLocation error - \(error?.localizedDescription ?? "N/A")")
+                    return
+                }
+
+                if let places = places {
+                    guard let place = places.first else { return }
+                    
+                    self.log.debug("current place: \(place)")
+                    
+                    let debugDescription = place.debugDescription
+                    do {
+                        let regex = /대한민국.*?,/
+                        if let match = try regex.firstMatch(in: debugDescription) {
+                            let matchedString = match.output // "대한민국 서울특별시 마포구 용강동 112-12,"
+                            let addressComponents = matchedString.split(separator: " ")
+                            if addressComponents.count >= 4 {
+                                let shortAddress = "\(addressComponents[2]) \(addressComponents[3])"
+                                self.headerView.addressLabel.text = shortAddress
+                            }
+                        } else {
+                            self.headerView.addressLabel.text = "\(place.locality ?? "") \(place.subLocality ?? "")"
+                        }
+                    } catch {
+                        print("faild to parse debugDescription... error: \(error.localizedDescription)")
+                    }
+                }
+            }
+    }
 }
 
 struct CustomerMapViewController_Preview: PreviewProvider {
     static var previews: some View {
         CustomerMapViewController().toPreview()
+            .ignoresSafeArea()
     }
 }

@@ -9,7 +9,20 @@ import UIKit
 
 struct PhotograperAvatarData {
     let name: String
-    let distance: Int // in Meters
+    let distance: Double?
+    let distanceUnit: DistanceUnit?
     let active: Bool
     let image: UIImage
+    
+    enum DistanceUnit {
+        case km
+        case m
+        
+        var displayString: String {
+            switch self {
+            case .km: return "km"
+            case .m: return "m"
+            }
+        }
+    }
 }
