@@ -33,13 +33,29 @@ final class MapView: UIView {
         return label
     }()
     
-    private var photographerAvatarView1: PhotographerAvatarView?
-    private var photographerAvatarView2: PhotographerAvatarView?
-    private var photographerAvatarView3: PhotographerAvatarView?
-    private var photographerAvatarView4: PhotographerAvatarView?
-    private var photographerAvatarView5: PhotographerAvatarView?
+    var photographerAvatarModels: [PhotograperAvatarData] = [] {
+        didSet {
+            photographerAvatarViews = photographerAvatarModels.map{ model in
+                PhotographerAvatarView(of: model)
+            }
+        }
+    }
+    var photographerAvatarViews: [PhotographerAvatarView] = [] {
+        didSet {
+            oldValue.forEach { $0.removeFromSuperview() }
+            
+            photographerAvatarViews.enumerated()
+                .forEach { index, view in
+                    view.translatesAutoresizingMaskIntoConstraints = false
+                    addSubview(view)
+                    layoutAvatarView(index: index, view: view)
+                }
+        }
+    }
     
     override init(frame: CGRect) {
+        
+        
         super.init(frame: frame)
         style()
         layout()
@@ -51,9 +67,6 @@ final class MapView: UIView {
         myAvatarView.translatesAutoresizingMaskIntoConstraints = false
         searchingMessageLabelView.translatesAutoresizingMaskIntoConstraints = false
         myLabelView.translatesAutoresizingMaskIntoConstraints = false
-        
-        photographerAvatarView1 = PhotographerAvatarView(of: .init(name: "짱구", distance: 200, active: true, image: UIImage(named: "ProfileImagePlaceholder")!))
-        photographerAvatarView1?.translatesAutoresizingMaskIntoConstraints = false
     }
     
     private func layout() {
@@ -61,9 +74,6 @@ final class MapView: UIView {
         addSubview(searchingMessageLabelView)
         addSubview(myLabelView)
         addSubview(backgroundView)
-        if let avatar1 = photographerAvatarView1 {
-            addSubview(avatar1)
-        }
         
         NSLayoutConstraint.activate([
             backgroundView.topAnchor.constraint(equalTo: topAnchor),
@@ -88,13 +98,40 @@ final class MapView: UIView {
             myLabelView.topAnchor.constraint(equalTo: myAvatarView.bottomAnchor, constant: 3),
             myLabelView.centerXAnchor.constraint(equalTo: centerXAnchor),
         ])
+    }
+    
+    private func layoutAvatarView(index: Int, view: UIView) {
+        var xConstant: CGFloat = 0
+        var yConstant: CGFloat = 0
         
-        if let avatar1 = photographerAvatarView1 {
-            NSLayoutConstraint.activate([
-                avatar1.bottomAnchor.constraint(equalTo: myAvatarView.topAnchor, constant: -24),
-                avatar1.rightAnchor.constraint(equalTo: myAvatarView.leftAnchor, constant: -48),
-            ])
+        switch index {
+        case 0:
+            xConstant = -72
+            yConstant = -112
+        case 1:
+            xConstant = 72
+            yConstant = -148
+        case 2:
+            xConstant = 188
+            yConstant = -36
+        case 3:
+            xConstant = 142
+            yConstant = 112
+        case 4:
+            xConstant = 24
+            yConstant = 200
+        case 5:
+            xConstant = -82
+            yConstant = 162
+        default:
+            xConstant = 0
+            yConstant = 0
         }
+        
+        NSLayoutConstraint.activate([
+            view.centerXAnchor.constraint(equalTo: myAvatarView.centerXAnchor, constant: xConstant),
+            view.centerYAnchor.constraint(equalTo: myAvatarView.centerYAnchor, constant: yConstant),
+        ])
     }
     
     required init?(coder: NSCoder) {

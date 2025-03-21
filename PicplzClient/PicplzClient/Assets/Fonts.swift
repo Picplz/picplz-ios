@@ -33,4 +33,5 @@ extension UIFont {
     static let bigTitle = UIFont(name: FontFamily.pretendardBold.rawValue, size: 24)!
     static let caption = UIFont(name: FontFamily.pretendardRegular.rawValue, size: 12)!
     static let captionSemiBold = UIFont(name: FontFamily.pretendardSemiBold.rawValue, size: 12)!
+    static let middleTitleSemiBold = UIFont(name: FontFamily.pretendardSemiBold.rawValue, size: 18)!
 }
