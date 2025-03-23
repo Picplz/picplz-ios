@@ -16,10 +16,12 @@ class CustomerMapViewController: UIViewController {
     private let headerView = MapHeaderView()
     private let mapView = MapView()
     private let refreshLocationButton = UIPicplzButton2(title: "내 위치 새로고침", image: UIImage(named: "ArrowRotateLeft")!)
+    private let bottomSheetView = CustomerMapBottomSheetView()
+    private var bottomSheetViewTopConstraint: NSLayoutConstraint?
     
     private let locationManager = CLLocationManager()
     private var currentLocation: CLLocation?
-
+    
     private let log = Logger.of("CustomerMapViewController")
     
     override func viewDidLoad() {
@@ -85,6 +87,31 @@ class CustomerMapViewController: UIViewController {
         } else {
             print("\(String(describing: locationManager.authorizationStatus))")
         }
+        
+        // MARK: Bottom Sheet
+        bottomSheetView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(bottomSheetView)
+        NSLayoutConstraint.activate([
+            bottomSheetView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            bottomSheetView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            bottomSheetView.heightAnchor.constraint(equalTo: view.heightAnchor),
+        ])
+        bottomSheetViewTopConstraint = bottomSheetView.topAnchor.constraint(equalTo: view.bottomAnchor, constant: -100)
+        bottomSheetViewTopConstraint?.isActive = true
+        
+        let panGesuture = UIPanGestureRecognizer(target: self, action: #selector(handlePanGesture))
+        bottomSheetView.handle.addGestureRecognizer(panGesuture)
+    }
+    
+    @objc private func handlePanGesture(_ gesture: UIPanGestureRecognizer) {
+        guard let bottomSheetViewTopConstraint = bottomSheetViewTopConstraint else { return }
+        
+        bottomSheetViewTopConstraint.constant = bottomSheetViewTopConstraint.constant + gesture.translation(in: bottomSheetView.handle).y
+        gesture.setTranslation(.zero, in: bottomSheetView.handle)
+        
+        print(gesture.translation(in: view).y)
+        
+        print(bottomSheetViewTopConstraint.constant)
     }
     
     override func viewDidLayoutSubviews() {
@@ -155,34 +182,34 @@ extension CustomerMapViewController {
         
         let geocoder = CLGeocoder()
         geocoder.reverseGeocodeLocation(location, preferredLocale: Locale(identifier: "ko-KR")) { places, error in
-                guard error == nil else {
-                    print("reverseGeocodeLocation error - \(error?.localizedDescription ?? "N/A")")
-                    return
-                }
-
-                if let places = places {
-                    guard let place = places.first else { return }
-                    
-                    self.log.debug("current place: \(place)")
-                    
-                    let debugDescription = place.debugDescription
-                    do {
-                        let regex = /대한민국.*?,/
-                        if let match = try regex.firstMatch(in: debugDescription) {
-                            let matchedString = match.output // "대한민국 서울특별시 마포구 용강동 112-12,"
-                            let addressComponents = matchedString.split(separator: " ")
-                            if addressComponents.count >= 4 {
-                                let shortAddress = "\(addressComponents[2]) \(addressComponents[3])"
-                                self.headerView.addressLabel.text = shortAddress
-                            }
-                        } else {
-                            self.headerView.addressLabel.text = "\(place.locality ?? "") \(place.subLocality ?? "")"
+            guard error == nil else {
+                print("reverseGeocodeLocation error - \(error?.localizedDescription ?? "N/A")")
+                return
+            }
+            
+            if let places = places {
+                guard let place = places.first else { return }
+                
+                self.log.debug("current place: \(place)")
+                
+                let debugDescription = place.debugDescription
+                do {
+                    let regex = /대한민국.*?,/
+                    if let match = try regex.firstMatch(in: debugDescription) {
+                        let matchedString = match.output // "대한민국 서울특별시 마포구 용강동 112-12,"
+                        let addressComponents = matchedString.split(separator: " ")
+                        if addressComponents.count >= 4 {
+                            let shortAddress = "\(addressComponents[2]) \(addressComponents[3])"
+                            self.headerView.addressLabel.text = shortAddress
                         }
-                    } catch {
-                        print("faild to parse debugDescription... error: \(error.localizedDescription)")
+                    } else {
+                        self.headerView.addressLabel.text = "\(place.locality ?? "") \(place.subLocality ?? "")"
                     }
+                } catch {
+                    print("faild to parse debugDescription... error: \(error.localizedDescription)")
                 }
             }
+        }
     }
 }
 
