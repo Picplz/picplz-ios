@@ -108,10 +108,6 @@ class CustomerMapViewController: UIViewController {
         
         bottomSheetViewTopConstraint.constant = bottomSheetViewTopConstraint.constant + gesture.translation(in: bottomSheetView.handle).y
         gesture.setTranslation(.zero, in: bottomSheetView.handle)
-        
-        print(gesture.translation(in: view).y)
-        
-        print(bottomSheetViewTopConstraint.constant)
     }
     
     override func viewDidLayoutSubviews() {
