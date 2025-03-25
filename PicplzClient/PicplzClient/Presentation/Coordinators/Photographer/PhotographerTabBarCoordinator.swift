@@ -42,7 +42,9 @@ class PhotographerTabBarCoordinator: Coordinator {
         chatCoordinator.start()
         myPageCoordinator.start()
         
-        let tabBarController = UITabBarController()
+        let tabBarController = UITabBarController() // FIXME: Tabbar 커스텀 스타일링
+        tabBarController.tabBar.isTranslucent = false
+        tabBarController.tabBar.backgroundColor = .picplzWhite
         tabBarController.viewControllers = [
             homeCoordinator.navigationController,
             mapCoordinator.navigationController,
