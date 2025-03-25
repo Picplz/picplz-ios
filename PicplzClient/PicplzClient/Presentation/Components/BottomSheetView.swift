@@ -63,7 +63,11 @@ class BottomSheetView: PassThroughView {
     private let cornerRadius: CGFloat
     private let handleSize: CGSize
     private let getRatioByMode: (Mode) -> CGFloat
-    private var currentMode: Mode
+    private var currentMode: Mode {
+        didSet {
+            updateYOffset(by: currentMode)
+        }
+    }
     private var heightByMode: CGFloat {
         let ratio = 1.0 - getRatioByMode(currentMode)
         return UIScreen.main.bounds.height * ratio
@@ -115,8 +119,10 @@ class BottomSheetView: PassThroughView {
             handleView.topAnchor.constraint(equalTo: contentViewWrapperView.topAnchor, constant: 4),
             handleView.centerXAnchor.constraint(equalTo: contentViewWrapperView.centerXAnchor),
             handleView.widthAnchor.constraint(equalToConstant: handleSize.width),
-            handleView.heightAnchor.constraint(equalToConstant: max(handleSize.height, 16)),
         ])
+        let handleViewHeightConstraint = handleView.heightAnchor.constraint(equalToConstant: max(handleSize.height, 16))
+        handleViewHeightConstraint.priority = .defaultLow
+        handleViewHeightConstraint.isActive = true
         
         NSLayoutConstraint.activate([
             barView.centerYAnchor.constraint(equalTo: handleView.centerYAnchor),
@@ -160,34 +166,56 @@ class BottomSheetView: PassThroughView {
         // MARK:
         if yOffset <= getHeight(by: .minimum) && yOffset > getHeight(by: .defaultMode) {
             if isDraggingDown {
-                yOffset = getHeight(by: .minimum)
+                updateYOffset(by: .minimum)
             } else {
-                yOffset = getHeight(by: .defaultMode)
+                updateYOffset(by: .defaultMode)
             }
         } else if yOffset <= getHeight(by: .defaultMode) && yOffset > getHeight(by: .medium) {
             if isDraggingDown {
-                yOffset = getHeight(by: .defaultMode)
+                updateYOffset(by: .defaultMode)
             } else {
-                yOffset = getHeight(by: .medium)
+                updateYOffset(by: .medium)
             }
         } else if yOffset <= getHeight(by: .medium) && yOffset > getHeight(by: .large) {
             if isDraggingDown {
-                yOffset = getHeight(by: .medium)
+                updateYOffset(by: .medium)
             } else {
-                yOffset = getHeight(by: .large)
+                updateYOffset(by: .large)
             }
         }
         
-        UIView.animate(withDuration: 0.5) {
-            self.contentWrapperViewTopConstraint?.constant = yOffset
-            self.layoutIfNeeded()
-        }
         recognizer.setTranslation(.zero, in: self)
     }
     
     private func getHeight(by mode: Mode) -> CGFloat {
         let ratio = 1.0 - getRatioByMode(mode)
         return UIScreen.main.bounds.height * ratio
+    }
+    
+    private func updateYOffset(by mode: Mode) {
+        let yOffset = getHeight(by: mode)
+        UIView.animate(withDuration: 0.5) {
+            self.contentWrapperViewTopConstraint?.constant = yOffset
+            self.layoutIfNeeded()
+        }
+        
+        if mode == .minimum {
+            contentView.removeFromSuperview()
+        } else {
+            let added = contentViewWrapperView.subviews.contains { view in
+                view === contentView
+            }
+            
+            if !added {
+                contentViewWrapperView.addSubview(contentView)
+                NSLayoutConstraint.activate([
+                    contentView.topAnchor.constraint(equalTo: handleView.bottomAnchor, constant: 8),
+                    contentView.leadingAnchor.constraint(equalTo: contentViewWrapperView.leadingAnchor),
+                    contentView.trailingAnchor.constraint(equalTo: contentViewWrapperView.trailingAnchor),
+                    contentView.bottomAnchor.constraint(equalTo: contentViewWrapperView.bottomAnchor),
+                ])
+            }
+        }
     }
     
     enum Mode {
@@ -202,7 +230,7 @@ class BottomSheetView: PassThroughView {
             return .init(maxYOffsetRatio: 0.8, minYOffsetRatio: 0.13, backgroundColor: .picplzWhite, cornerRadius: 8, handleSize: .init(width: 50, height: 4)) { mode in
                 switch mode {
                 case .minimum:
-                    return 0.13
+                    return 0.12
                 case .defaultMode:
                     return 0.3
                 case .medium:
