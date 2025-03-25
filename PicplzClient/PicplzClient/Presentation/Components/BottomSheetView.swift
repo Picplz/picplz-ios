@@ -20,7 +20,8 @@ class BottomSheetView: PassThroughView {
         getRatioByMode: @escaping (Mode) -> CGFloat,
         currentMode: Mode = .defaultMode,
         maxYOffsetRatio: CGFloat,
-        minYOffsetRatio: CGFloat
+        minYOffsetRatio: CGFloat,
+        backgroundColor: UIColor?
     ) {
         self.contentView = contentView
         self.cornerRadius = cornerRadius
@@ -29,8 +30,9 @@ class BottomSheetView: PassThroughView {
         self.currentMode = currentMode
         self.maxYOffsetRatio = maxYOffsetRatio
         self.minYOffsetRatio = minYOffsetRatio
-        super.init(frame: frame)
+        self.contentViewWrapperViewBackgroundColor = backgroundColor
         
+        super.init(frame: frame)
         setup()
     }
     
@@ -42,11 +44,13 @@ class BottomSheetView: PassThroughView {
             handleSize: prefereces.handleSize,
             getRatioByMode: prefereces.getRatioByMode,
             maxYOffsetRatio: prefereces.maxYOffsetRatio,
-            minYOffsetRatio: prefereces.minYOffsetRatio
+            minYOffsetRatio: prefereces.minYOffsetRatio,
+            backgroundColor: prefereces.backgroundColor
         )
     }
     
     private let contentViewWrapperView: UIView = UIView()
+    private let contentViewWrapperViewBackgroundColor: UIColor?
     private let contentView: UIView
     private let barView: UIView = {
         let barView = UIView()
@@ -83,6 +87,7 @@ class BottomSheetView: PassThroughView {
         contentViewWrapperView.clipsToBounds = true
         contentViewWrapperView.layer.borderColor = UIColor.grey2.cgColor
         contentViewWrapperView.layer.borderWidth = 1
+        contentViewWrapperView.backgroundColor = contentViewWrapperViewBackgroundColor
         
         // MARK: Layout
         translatesAutoresizingMaskIntoConstraints = false

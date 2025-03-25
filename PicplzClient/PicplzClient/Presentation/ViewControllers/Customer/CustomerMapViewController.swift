@@ -16,8 +16,9 @@ class CustomerMapViewController: UIViewController {
     private let headerView = MapHeaderView()
     private let mapView = MapView()
     private let refreshLocationButton = UIPicplzButton2(title: "내 위치 새로고침", image: UIImage(named: "ArrowRotateLeft")!)
-    private let bottomSheetView = CustomerMapBottomSheetView()
-    private var bottomSheetViewTopConstraint: NSLayoutConstraint?
+    
+    private var bottomSheetView: BottomSheetView!
+    private let bottomSheetContentView = CustomerMapBottomSheetContentView()
     
     private let locationManager = CLLocationManager()
     private var currentLocation: CLLocation?
@@ -89,25 +90,16 @@ class CustomerMapViewController: UIViewController {
         }
         
         // MARK: Bottom Sheet
+        bottomSheetView = BottomSheetView(contentView: bottomSheetContentView)
         bottomSheetView.translatesAutoresizingMaskIntoConstraints = false
+        
         view.addSubview(bottomSheetView)
         NSLayoutConstraint.activate([
+            bottomSheetView.topAnchor.constraint(equalTo: view.topAnchor),
             bottomSheetView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             bottomSheetView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            bottomSheetView.heightAnchor.constraint(equalTo: view.heightAnchor),
+            bottomSheetView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
         ])
-        bottomSheetViewTopConstraint = bottomSheetView.topAnchor.constraint(equalTo: view.bottomAnchor, constant: -100)
-        bottomSheetViewTopConstraint?.isActive = true
-        
-        let panGesuture = UIPanGestureRecognizer(target: self, action: #selector(handlePanGesture))
-        bottomSheetView.handle.addGestureRecognizer(panGesuture)
-    }
-    
-    @objc private func handlePanGesture(_ gesture: UIPanGestureRecognizer) {
-        guard let bottomSheetViewTopConstraint = bottomSheetViewTopConstraint else { return }
-        
-        bottomSheetViewTopConstraint.constant = bottomSheetViewTopConstraint.constant + gesture.translation(in: bottomSheetView.handle).y
-        gesture.setTranslation(.zero, in: bottomSheetView.handle)
     }
     
     override func viewDidLayoutSubviews() {
