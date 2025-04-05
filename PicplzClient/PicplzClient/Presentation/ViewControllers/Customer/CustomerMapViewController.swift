@@ -10,8 +10,11 @@ import SwiftUI
 import CoreLocation
 import MapKit
 import OSLog
+import Combine
 
 class CustomerMapViewController: UIViewController {
+    var viewModel: CustomerMapViewModelProtocol!
+    
     private let scrollView = UIScrollView()
     private let headerView = MapHeaderView()
     private let mapView = MapView()
@@ -20,8 +23,7 @@ class CustomerMapViewController: UIViewController {
     private var bottomSheetView: BottomSheetView!
     private let bottomSheetContentView = CustomerMapBottomSheetContentView()
     
-    private let locationManager = CLLocationManager()
-    private var currentLocation: CLLocation?
+    private var subscriptions: Set<AnyCancellable> = []
     
     private let log = Logger.of("CustomerMapViewController")
     
@@ -32,7 +34,7 @@ class CustomerMapViewController: UIViewController {
         layout()
         
         let refreshButtonTapAction = UIAction { [weak self] _ in
-            self?.getShortAddress(for: self?.locationManager.location)
+            self?.viewModel.refreshButtonTapped()
         }
         refreshLocationButton.addAction(refreshButtonTapAction, for: .touchUpInside)
 
@@ -46,12 +48,8 @@ class CustomerMapViewController: UIViewController {
             .init(name: "원장", distance: nil, distanceUnit: nil, active: true, image: UIImage(named: "ProfileImagePlaceholder")!),
         ]
         
-        locationManager.delegate = self
-        if locationManager.authorizationStatus == .authorizedWhenInUse {
-            getShortAddress(for: locationManager.location)
-        } else {
-            print("\(String(describing: locationManager.authorizationStatus))")
-        }
+        bind()
+        viewModel.onLoad()
     }
     
     private func style() {
@@ -116,6 +114,15 @@ class CustomerMapViewController: UIViewController {
         ])
     }
     
+    private func bind() {
+        viewModel.shortAddressPublisher
+            .receive(on: RunLoop.main)
+            .sink { address in
+                self.headerView.addressLabel.text = address
+            }
+            .store(in: &subscriptions)
+    }
+    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
@@ -163,62 +170,9 @@ class CustomerMapViewController: UIViewController {
     }
 }
 
-extension CustomerMapViewController: CLLocationManagerDelegate {
-    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-        if status == .authorizedWhenInUse,
-           let currentLocation = manager.location {
-            getShortAddress(for: currentLocation)
-        } else {
-            log.info("could not get current location because of status. status=\(String(describing: status))")
-        }
-    }
-}
-
-// TODO: migrate to ViewModel
-extension CustomerMapViewController {
-    func getShortAddress(for location: CLLocation?) {
-        guard let location = location else {
-            return
-        }
-        
-        log.debug("current location: \(location)")
-        
-        let geocoder = CLGeocoder()
-        geocoder.reverseGeocodeLocation(location, preferredLocale: Locale(identifier: "ko-KR")) { places, error in
-            guard error == nil else {
-                print("reverseGeocodeLocation error - \(error?.localizedDescription ?? "N/A")")
-                return
-            }
-            
-            if let places = places {
-                guard let place = places.first else { return }
-                
-                self.log.debug("current place: \(place)")
-                
-                let debugDescription = place.debugDescription
-                do {
-                    let regex = /대한민국.*?,/
-                    if let match = try regex.firstMatch(in: debugDescription) {
-                        let matchedString = match.output // "대한민국 서울특별시 마포구 용강동 112-12,"
-                        let addressComponents = matchedString.split(separator: " ")
-                        if addressComponents.count >= 4 {
-                            let shortAddress = "\(addressComponents[2]) \(addressComponents[3])"
-                            self.headerView.addressLabel.text = shortAddress
-                        }
-                    } else {
-                        self.headerView.addressLabel.text = "\(place.locality ?? "") \(place.subLocality ?? "")"
-                    }
-                } catch {
-                    print("faild to parse debugDescription... error: \(error.localizedDescription)")
-                }
-            }
-        }
-    }
-}
-
-struct CustomerMapViewController_Preview: PreviewProvider {
-    static var previews: some View {
-        CustomerMapViewController().toPreview()
-            .ignoresSafeArea()
-    }
-}
+//struct CustomerMapViewController_Preview: PreviewProvider {
+//    static var previews: some View {
+//        CustomerMapViewController().toPreview()
+//            .ignoresSafeArea()
+//    }
+//}
