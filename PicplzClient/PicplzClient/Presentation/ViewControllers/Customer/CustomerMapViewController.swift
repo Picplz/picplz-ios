@@ -27,34 +27,16 @@ class CustomerMapViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationController?.setNavigationBarHidden(true, animated: false)
-        view.backgroundColor = .grey1
         
-        headerView.translatesAutoresizingMaskIntoConstraints = false
-        headerView.addressLabel.text = ""
-        view.addSubview(headerView)
-        NSLayoutConstraint.activate([
-            headerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24),
-            headerView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 15),
-        ])
+        style()
+        layout()
         
-        // FIXME: refreshLocationButton styling
-        refreshLocationButton.translatesAutoresizingMaskIntoConstraints = false
         let refreshButtonTapAction = UIAction { [weak self] _ in
             self?.getShortAddress(for: self?.locationManager.location)
         }
         refreshLocationButton.addAction(refreshButtonTapAction, for: .touchUpInside)
-        view.addSubview(refreshLocationButton)
-        NSLayoutConstraint.activate([
-            refreshLocationButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15),
-            refreshLocationButton.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
-        ])
-        
-        scrollView.translatesAutoresizingMaskIntoConstraints = false
-        
-        mapView.backgroundColor = .clear
-        mapView.translatesAutoresizingMaskIntoConstraints = false
-        mapView.searchingMessageLabelView.alpha = 0
+
+        // FIXME: Replace to real data
         mapView.photographerAvatarModels = [
             .init(name: "짱구", distance: 200, distanceUnit: .m, active: true, image: UIImage(named: "ProfileImagePlaceholder")!),
             .init(name: "짱아", distance: 400, distanceUnit: .m, active: true, image: UIImage(named: "ProfileImagePlaceholder")!),
@@ -64,8 +46,50 @@ class CustomerMapViewController: UIViewController {
             .init(name: "원장", distance: nil, distanceUnit: nil, active: true, image: UIImage(named: "ProfileImagePlaceholder")!),
         ]
         
+        locationManager.delegate = self
+        if locationManager.authorizationStatus == .authorizedWhenInUse {
+            getShortAddress(for: locationManager.location)
+        } else {
+            print("\(String(describing: locationManager.authorizationStatus))")
+        }
+    }
+    
+    private func style() {
+        navigationController?.setNavigationBarHidden(true, animated: false)
+        view.backgroundColor = .grey1
+        
+        headerView.translatesAutoresizingMaskIntoConstraints = false
+        refreshLocationButton.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        
+        headerView.addressLabel.text = ""
+        
+        // TODO: refreshLocationButton styling
+
+        mapView.backgroundColor = .clear
+        mapView.translatesAutoresizingMaskIntoConstraints = false
+        mapView.searchingMessageLabelView.alpha = 0
+        
         scrollView.showsVerticalScrollIndicator = false
         scrollView.showsHorizontalScrollIndicator = false
+        
+        bottomSheetView = BottomSheetView(contentView: bottomSheetContentView)
+        bottomSheetView.translatesAutoresizingMaskIntoConstraints = false
+    }
+    
+    private func layout() {
+        view.addSubview(headerView)
+        NSLayoutConstraint.activate([
+            headerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24),
+            headerView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 15),
+        ])
+        
+        view.addSubview(refreshLocationButton)
+        NSLayoutConstraint.activate([
+            refreshLocationButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15),
+            refreshLocationButton.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
+        ])
+        
         view.addSubview(scrollView)
         NSLayoutConstraint.activate([
             scrollView.topAnchor.constraint(equalTo: headerView.bottomAnchor),
@@ -82,17 +106,7 @@ class CustomerMapViewController: UIViewController {
             mapView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
         ])
         
-        locationManager.delegate = self
-        if locationManager.authorizationStatus == .authorizedWhenInUse {
-            getShortAddress(for: locationManager.location)
-        } else {
-            print("\(String(describing: locationManager.authorizationStatus))")
-        }
-        
         // MARK: Bottom Sheet
-        bottomSheetView = BottomSheetView(contentView: bottomSheetContentView)
-        bottomSheetView.translatesAutoresizingMaskIntoConstraints = false
-        
         view.addSubview(bottomSheetView)
         NSLayoutConstraint.activate([
             bottomSheetView.topAnchor.constraint(equalTo: view.topAnchor),
@@ -105,7 +119,8 @@ class CustomerMapViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-        // adjust offset on next roop
+        // adjust offset on next loop
+        // make scroll view's horizontal scroll half scrolled
         DispatchQueue.main.async {
             let scrollViewSize = self.scrollView.bounds.size
             let contentSize = self.scrollView.contentSize
