@@ -61,8 +61,6 @@ class CustomerMapViewController: UIViewController {
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         
         headerView.addressLabel.text = ""
-        
-        // TODO: refreshLocationButton styling
 
         mapView.backgroundColor = .clear
         mapView.translatesAutoresizingMaskIntoConstraints = false
