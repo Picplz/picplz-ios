@@ -227,7 +227,7 @@ class BottomSheetView: PassThroughView {
     
     struct Preferences {
         static var basic: Preferences {
-            return .init(maxYOffsetRatio: 0.8, minYOffsetRatio: 0.13, backgroundColor: .picplzWhite, cornerRadius: 8, handleSize: .init(width: 50, height: 4)) { mode in
+            return .init(maxYOffsetRatio: 0.8, minYOffsetRatio: 0.13, backgroundColor: .picplzWhite, cornerRadius: 20, handleSize: .init(width: 50, height: 4)) { mode in
                 switch mode {
                 case .minimum:
                     return 0.12
