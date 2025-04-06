@@ -82,6 +82,7 @@ class BottomSheetView: PassThroughView {
         
         // MARK: Style
         contentViewWrapperView.layer.cornerRadius = cornerRadius
+        contentViewWrapperView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         contentViewWrapperView.clipsToBounds = true
         contentViewWrapperView.layer.borderColor = UIColor.grey2.cgColor
         contentViewWrapperView.layer.borderWidth = 1
@@ -140,28 +141,25 @@ class BottomSheetView: PassThroughView {
     @objc private func didPan(_ recognizer: UIPanGestureRecognizer) {
         var yOffset = contentWrapperViewTopConstraint?.constant ?? 0.0
         
-        print("nextOffset \(yOffset + recognizer.translation(in: self).y)")
-        print("maxOffset \(maxYOffset)")
-        print("minOffset \(minYOffset)")
+//        print("nextOffset \(yOffset + recognizer.translation(in: self).y)")
+//        print("maxOffset \(maxYOffset)")
+//        print("minOffset \(minYOffset)")
         if yOffset + recognizer.translation(in: self).y < maxYOffset {
-            print("a")
             yOffset = maxYOffset
         } else if yOffset + recognizer.translation(in: self).y > minYOffset {
-            print("b")
             yOffset = minYOffset
         } else {
-            print("c")
             yOffset += recognizer.translation(in: self).y
         }
         
         let velocity = recognizer.velocity(in: self)
         let isDraggingDown: Bool = velocity.y > 0
         
-        guard recognizer.state == .ended else {
+//        guard recognizer.state == .ended else {
 //            contentWrapperViewTopConstraint?.constant = yOffset
 //            self.layoutIfNeeded()
-            return
-        }
+//            return
+//        }
         
         // MARK:
         if yOffset <= minYOffset && yOffset > getHeight(by: .defaultMode) {
