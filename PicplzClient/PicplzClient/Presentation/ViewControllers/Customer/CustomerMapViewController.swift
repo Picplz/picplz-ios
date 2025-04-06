@@ -168,9 +168,14 @@ class CustomerMapViewController: UIViewController {
     }
 }
 
-//struct CustomerMapViewController_Preview: PreviewProvider {
-//    static var previews: some View {
-//        CustomerMapViewController().toPreview()
-//            .ignoresSafeArea()
-//    }
-//}
+struct CustomerMapViewController_Preview: PreviewProvider {
+    static var previews: some View {
+        let vc = CustomerMapViewController()
+        vc.viewModel = CustomerMapViewModel(
+            getShortAddressUseCase: GetShortAddressUserCaseImpl(locationService: LocationServiceImpl())
+        )
+        
+        return vc.toPreview()
+            .ignoresSafeArea()
+    }
+}
