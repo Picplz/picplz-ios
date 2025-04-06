@@ -37,6 +37,8 @@ final class LocationServiceImpl: NSObject, LocationService {
         if locationManager.authorizationStatus == .authorizedWhenInUse,
            let location = locationManager.location {
             currentLocationPubisher.send(location)
+        } else if locationManager.authorizationStatus == .notDetermined {
+            locationManager.requestWhenInUseAuthorization()
         } else {
             print("\(String(describing: locationManager.authorizationStatus))")
         }
@@ -48,7 +50,7 @@ extension LocationServiceImpl: CLLocationManagerDelegate {
         if status == .authorizedWhenInUse,
            let currentLocation = manager.location {
             currentLocationPubisher.send(currentLocation)
-        } else {
+        } else if status == .notDetermined {
             log.info("could not get current location because of status. status=\(String(describing: status))")
         }
     }
