@@ -27,6 +27,8 @@ class CustomerMapViewController: UIViewController {
     
     private let log = Logger.of("CustomerMapViewController")
     
+    private let maxYMargin: CGFloat = 24
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -69,7 +71,8 @@ class CustomerMapViewController: UIViewController {
         scrollView.showsVerticalScrollIndicator = false
         scrollView.showsHorizontalScrollIndicator = false
         
-        bottomSheetView = BottomSheetView(contentView: bottomSheetContentView)
+        let safeFrame = view.safeAreaLayoutGuide.layoutFrame
+        bottomSheetView = BottomSheetView(contentView: bottomSheetContentView, prefereces: .getBasicPreferences(maxYOffset: safeFrame.minY + maxYMargin, minYOffset: safeFrame.maxY))
         bottomSheetView.translatesAutoresizingMaskIntoConstraints = false
     }
     
@@ -136,6 +139,13 @@ class CustomerMapViewController: UIViewController {
             
             self.scrollView.setContentOffset(CGPoint(x: offsetX, y: 0), animated: false)
         }
+        
+        // MARK: Set minY, maxY to bottomSheet
+        let safeFrame = view.safeAreaLayoutGuide.layoutFrame
+        print(safeFrame.minY)
+        print(safeFrame.maxY)
+        bottomSheetView.minYOffset = safeFrame.maxY - maxYMargin // offset으로 따지므로 바꿔서 대입
+        bottomSheetView.maxYOffset = safeFrame.minY
     }
     
     override func viewDidAppear(_ animated: Bool) {

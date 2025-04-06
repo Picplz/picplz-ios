@@ -19,8 +19,8 @@ class BottomSheetView: PassThroughView {
         handleSize: CGSize,
         getRatioByMode: @escaping (Mode) -> CGFloat,
         currentMode: Mode = .defaultMode,
-        maxYOffsetRatio: CGFloat,
-        minYOffsetRatio: CGFloat,
+        maxYOffset: CGFloat,
+        minYOffset: CGFloat,
         backgroundColor: UIColor?
     ) {
         self.contentView = contentView
@@ -28,23 +28,23 @@ class BottomSheetView: PassThroughView {
         self.handleSize = handleSize
         self.getRatioByMode = getRatioByMode
         self.currentMode = currentMode
-        self.maxYOffsetRatio = maxYOffsetRatio
-        self.minYOffsetRatio = minYOffsetRatio
+        self.maxYOffset = maxYOffset
+        self.minYOffset = minYOffset
         self.contentViewWrapperViewBackgroundColor = backgroundColor
         
         super.init(frame: frame)
         setup()
     }
     
-    convenience init(contentView: UIView, prefereces: Preferences = .basic) {
+    convenience init(contentView: UIView, prefereces: Preferences) {
         self.init(
             frame: .zero,
             contentView: contentView,
             cornerRadius: prefereces.cornerRadius,
             handleSize: prefereces.handleSize,
             getRatioByMode: prefereces.getRatioByMode,
-            maxYOffsetRatio: prefereces.maxYOffsetRatio,
-            minYOffsetRatio: prefereces.minYOffsetRatio,
+            maxYOffset: prefereces.maxYOffset,
+            minYOffset: prefereces.minYOffset,
             backgroundColor: prefereces.backgroundColor
         )
     }
@@ -72,14 +72,8 @@ class BottomSheetView: PassThroughView {
         let ratio = 1.0 - getRatioByMode(currentMode)
         return UIScreen.main.bounds.height * ratio
     }
-    private let maxYOffsetRatio: CGFloat
-    private var maxYOffset: CGFloat {
-        UIScreen.main.bounds.height * (1.0 - maxYOffsetRatio)
-    }
-    private let minYOffsetRatio: CGFloat
-    private var minYOffset: CGFloat {
-        UIScreen.main.bounds.height * (1.0 - minYOffsetRatio)
-    }
+    var maxYOffset: CGFloat
+    var minYOffset: CGFloat
     
     private var contentWrapperViewTopConstraint: NSLayoutConstraint?
     
@@ -146,11 +140,17 @@ class BottomSheetView: PassThroughView {
     @objc private func didPan(_ recognizer: UIPanGestureRecognizer) {
         var yOffset = contentWrapperViewTopConstraint?.constant ?? 0.0
         
+        print("nextOffset \(yOffset + recognizer.translation(in: self).y)")
+        print("maxOffset \(maxYOffset)")
+        print("minOffset \(minYOffset)")
         if yOffset + recognizer.translation(in: self).y < maxYOffset {
+            print("a")
             yOffset = maxYOffset
         } else if yOffset + recognizer.translation(in: self).y > minYOffset {
+            print("b")
             yOffset = minYOffset
         } else {
+            print("c")
             yOffset += recognizer.translation(in: self).y
         }
         
@@ -164,7 +164,7 @@ class BottomSheetView: PassThroughView {
         }
         
         // MARK:
-        if yOffset <= getHeight(by: .minimum) && yOffset > getHeight(by: .defaultMode) {
+        if yOffset <= minYOffset && yOffset > getHeight(by: .defaultMode) {
             if isDraggingDown {
                 updateYOffset(by: .minimum)
             } else {
@@ -193,7 +193,7 @@ class BottomSheetView: PassThroughView {
     }
     
     private func updateYOffset(by mode: Mode) {
-        let yOffset = getHeight(by: mode)
+        let yOffset = mode == .minimum ? minYOffset : getHeight(by: mode)
         UIView.animate(withDuration: 0.5) {
             self.contentWrapperViewTopConstraint?.constant = yOffset
             self.layoutIfNeeded()
@@ -226,23 +226,29 @@ class BottomSheetView: PassThroughView {
     }
     
     struct Preferences {
-        static var basic: Preferences {
-            return .init(maxYOffsetRatio: 0.8, minYOffsetRatio: 0.13, backgroundColor: .picplzWhite, cornerRadius: 20, handleSize: .init(width: 50, height: 4)) { mode in
+        static func getBasicPreferences(maxYOffset: CGFloat, minYOffset: CGFloat) -> Preferences {
+            return .init(
+                maxYOffset: maxYOffset,
+                minYOffset: minYOffset,
+                backgroundColor: .picplzWhite,
+                cornerRadius: 20,
+                handleSize: .init(width: 50, height: 4)
+            ) { mode in
                 switch mode {
-                case .minimum:
-                    return 0.12
                 case .defaultMode:
                     return 0.3
                 case .medium:
                     return 0.5
                 case .large:
                     return 0.8
+                default:
+                    return 0.0
                 }
             }
         }
         
-        var maxYOffsetRatio: CGFloat // ex> 0.9이면 최상단으로부터 0.9 비율까지 바텀시트를 확장할 수 있음
-        var minYOffsetRatio: CGFloat // ex> 0.1이면 최상단으로부터 0.1 비율까지 바텀시트를 축소할 수 있음
+        var maxYOffset: CGFloat // ex> 바텀시트 최대 y 오프셋 (최대 확장)
+        var minYOffset: CGFloat // ex> 바텀시트 최소 y 오프셋 (최소 확장)
         var backgroundColor: UIColor
         var cornerRadius: CGFloat
         var handleSize: CGSize
