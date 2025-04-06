@@ -151,38 +151,37 @@ class BottomSheetView: PassThroughView {
         } else {
             yOffset += recognizer.translation(in: self).y
         }
+        self.contentWrapperViewTopConstraint?.constant = yOffset
         
         let velocity = recognizer.velocity(in: self)
         let isDraggingDown: Bool = velocity.y > 0
         
-//        guard recognizer.state == .ended else {
-//            contentWrapperViewTopConstraint?.constant = yOffset
-//            self.layoutIfNeeded()
-//            return
-//        }
-        
-        // MARK:
-        if yOffset <= minYOffset && yOffset > getHeight(by: .defaultMode) {
-            if isDraggingDown {
-                updateYOffset(by: .minimum)
-            } else {
-                updateYOffset(by: .defaultMode)
-            }
-        } else if yOffset <= getHeight(by: .defaultMode) && yOffset > getHeight(by: .medium) {
-            if isDraggingDown {
-                updateYOffset(by: .defaultMode)
-            } else {
-                updateYOffset(by: .medium)
-            }
-        } else if yOffset <= getHeight(by: .medium) && yOffset > getHeight(by: .large) {
-            if isDraggingDown {
-                updateYOffset(by: .medium)
-            } else {
-                updateYOffset(by: .large)
+        // MARK: 패닝이 멈추면 인접한 모드로 고정
+        if recognizer.state == .ended {
+            if yOffset <= minYOffset && yOffset > getHeight(by: .defaultMode) {
+                if isDraggingDown {
+                    currentMode = .minimum
+                } else {
+                    currentMode = .defaultMode
+                }
+            } else if yOffset <= getHeight(by: .defaultMode) && yOffset > getHeight(by: .medium) {
+                if isDraggingDown {
+                    currentMode = .defaultMode
+                } else {
+                    currentMode = .medium
+                }
+            } else if yOffset <= getHeight(by: .medium) && yOffset > getHeight(by: .large) {
+                if isDraggingDown {
+                    currentMode = .medium
+                } else {
+                    currentMode = .large
+                }
+            } else if yOffset <= getHeight(by: .large) {
+                currentMode = .large
             }
         }
         
-        recognizer.setTranslation(.zero, in: self)
+        recognizer.setTranslation(.zero, in: self) // Recognizer 초기화
     }
     
     private func getHeight(by mode: Mode) -> CGFloat {
