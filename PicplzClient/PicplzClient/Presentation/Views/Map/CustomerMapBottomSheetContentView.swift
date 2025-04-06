@@ -50,7 +50,7 @@ class CustomerMapBottomSheetContentView: UIView {
             make.bottom.equalToSuperview()
             make.horizontalEdges
                 .equalToSuperview()
-                .offset(14)
+                .inset(14)
         }
     }
     
