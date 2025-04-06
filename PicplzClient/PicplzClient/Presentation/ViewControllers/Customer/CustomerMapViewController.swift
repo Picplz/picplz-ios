@@ -142,8 +142,6 @@ class CustomerMapViewController: UIViewController {
         
         // MARK: Set minY, maxY to bottomSheet
         let safeFrame = view.safeAreaLayoutGuide.layoutFrame
-        print(safeFrame.minY)
-        print(safeFrame.maxY)
         bottomSheetView.minYOffset = safeFrame.maxY - maxYMargin // offset으로 따지므로 바꿔서 대입
         bottomSheetView.maxYOffset = safeFrame.minY
     }
