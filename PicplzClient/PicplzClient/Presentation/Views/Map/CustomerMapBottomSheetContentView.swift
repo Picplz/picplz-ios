@@ -26,6 +26,8 @@ class CustomerMapBottomSheetContentView: UIView {
         backgroundColor = .picplzWhite
         
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: .init())
+        collectionView.showsVerticalScrollIndicator = false
+        collectionView.showsHorizontalScrollIndicator = false
         collectionView.collectionViewLayout = getLayout()
         
         collectionView.register(FilterItemCell.self, forCellWithReuseIdentifier: "FilterItemCell")
