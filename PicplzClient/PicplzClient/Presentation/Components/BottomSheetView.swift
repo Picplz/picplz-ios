@@ -233,7 +233,7 @@ class BottomSheetView: PassThroughView {
             ) { mode in
                 switch mode {
                 case .defaultMode:
-                    return 0.3
+                    return 0.22
                 case .medium:
                     return 0.5
                 case .large:
