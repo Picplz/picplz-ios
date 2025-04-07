@@ -438,6 +438,10 @@ fileprivate final class PhotographerItemCell: UICollectionViewCell {
         }
     }
     
+    override func prepareForReuse() {
+        self.tagStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
+    }
+    
     private func getTagBadge(title: String) -> UIView {
         let view = UIView()
         view.backgroundColor = .grey2
