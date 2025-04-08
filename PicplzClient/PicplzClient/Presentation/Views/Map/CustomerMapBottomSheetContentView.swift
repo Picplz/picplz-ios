@@ -107,7 +107,7 @@ class CustomerMapBottomSheetContentView: UIView {
 
                 return section
             default: // 그 외
-                let itemSize = NSCollectionLayoutSize(widthDimension: .estimated(60), heightDimension: .absolute(25))
+                let itemSize = NSCollectionLayoutSize(widthDimension: .estimated(200), heightDimension: .absolute(25)) // 너비를 충분히 크게 주지 않으면 버튼이 selected 상태가 될 때 레이블이 줄바꿈됨
                 let item = NSCollectionLayoutItem(layoutSize: itemSize)
                 
                 let groupSize = NSCollectionLayoutSize(widthDimension: .estimated(1000), heightDimension: .estimated(25))
@@ -131,14 +131,38 @@ class CustomerMapBottomSheetContentView: UIView {
         snapshot.appendItems(hashTagFilters.map({ Item.filter($0) }), toSection: .hashTagFilter)
         snapshot.appendItems([.order], toSection: .orderControl)
         snapshot.appendItems(photographerList.map({ Item.photographerList($0) }), toSection: .photographerList)
-        
         dataSource.apply(snapshot)
     }
     
     private func didFilterButtonTapped(filter: MapListFilter) {
         // TODO: Connect to viewModel
         // TODO: Make be selected only one
-        print(filter)
+        guard filter.type == .hashTagFilter else { return }
+        hashTagFilters = hashTagFilters.map { item in
+            if item == filter {
+                return MapListFilter(
+                    filterId: item.filterId,
+                    filterTitle: item.filterTitle,
+                    image: item.image,
+                    type: item.type,
+                    isSelected: !item.isSelected
+                )
+            }
+            
+            // MARK: 하나의 필터만 선택 가능
+            if !filter.isSelected && item.isSelected {
+                return MapListFilter(
+                    filterId: item.filterId,
+                    filterTitle: item.filterTitle,
+                    image: item.image,
+                    type: item.type,
+                    isSelected: false
+                )
+            }
+            
+            return item
+        }
+        applyDatasource()
     }
     
     private func didOrderBySelected(order: OrderBy) {
@@ -177,20 +201,18 @@ fileprivate final class FilterItemCell: UICollectionViewCell {
     }
     
     func configure(filter: MapListFilter, didTapButtonHandler: ((_ filter: MapListFilter) -> Void)?) {
-        self.button?.removeFromSuperview()
-        
-        if filter.type == .photographerFilter {
-            self.button = UIPicplzButton3(title: filter.filterTitle, image: filter.image!)
-        } else {
-            self.button = UIPicplzButton4(title: filter.filterTitle)
-            self.button?.setTitle(filter.filterTitle, for: .normal)
-        }
-        self.button?.addTarget(self, action: #selector(didTapButton), for: .touchUpInside)
-        layoutButton()
-        
+        self.didTapButtonHandler = didTapButtonHandler
         self.filter = filter
         
-        self.didTapButtonHandler = didTapButtonHandler
+        if filter.type == .photographerFilter {
+            button = UIPicplzButton3(title: filter.filterTitle, image: filter.image!)
+        } else {
+            button = UIPicplzButton4(title: filter.filterTitle)
+        }
+        button?.isSelected = filter.isSelected
+        layoutButton()
+        
+        button?.addTarget(self, action: #selector(didTapButton), for: .touchUpInside)
     }
     
     @objc func didTapButton() {
@@ -200,10 +222,13 @@ fileprivate final class FilterItemCell: UICollectionViewCell {
     
     func layoutButton() {
         guard let button = button else { return }
-        addSubview(button)
+        contentView.addSubview(button)
         button.snp.makeConstraints { make in
-            make.edges.equalTo(self)
+            make.edges.equalToSuperview()
         }
+        button.invalidateIntrinsicContentSize()
+        setNeedsLayout()
+        layoutIfNeeded()
     }
 }
 
@@ -486,26 +511,35 @@ fileprivate final class PhotographerItemCell: UICollectionViewCell {
 }
 
 struct MapListFilter: Hashable {
+    let filterId: String
     let filterTitle: String
     let image: UIImage?
     let type: FilterType
     var isSelected: Bool
     
     static var photographerFilters: [MapListFilter] = [
-        .init(filterTitle: "팔로우", image: UIImage(named: "CheckSymbol"), type: .photographerFilter, isSelected: false),
-        .init(filterTitle: "바로 촬영 가능", image: UIImage(named: "CameraSymbol"), type: .photographerFilter, isSelected: false),
+        .init(filterId: "following", filterTitle: "팔로우", image: UIImage(named: "CheckSymbol"), type: .photographerFilter, isSelected: false),
+        .init(filterId: "direct", filterTitle: "바로 촬영 가능", image: UIImage(named: "CameraSymbol"), type: .photographerFilter, isSelected: false),
     ]
     
     static var hashTagFilters: [MapListFilter] = [
-        .init(filterTitle: "#을지로 감성", image: nil, type: .hashTagFilter, isSelected: false),
-        .init(filterTitle: "#키치 감성", image: nil, type: .hashTagFilter, isSelected: false),
-        .init(filterTitle: "#MZ 감성", image: nil, type: .hashTagFilter, isSelected: false),
-        .init(filterTitle: "#퇴폐 감성", image: nil, type: .hashTagFilter, isSelected: false),
-        .init(filterTitle: "#어떤 감성2", image: nil, type: .hashTagFilter, isSelected: false),
-        .init(filterTitle: "#어떤 감성3", image: nil, type: .hashTagFilter, isSelected: false),
-        .init(filterTitle: "#어떤 감성4", image: nil, type: .hashTagFilter, isSelected: false),
-        .init(filterTitle: "#어떤 감성5", image: nil, type: .hashTagFilter, isSelected: false),
+        .init(filterId: "eljiro", filterTitle: "#을지로 감성", image: nil, type: .hashTagFilter, isSelected: true),
+        .init(filterId: "kitsch", filterTitle: "#키치 감성", image: nil, type: .hashTagFilter, isSelected: false),
+        .init(filterId: "mz", filterTitle: "#MZ 감성", image: nil, type: .hashTagFilter, isSelected: false),
+        .init(filterId: "demoral", filterTitle: "#퇴폐 감성", image: nil, type: .hashTagFilter, isSelected: false),
+        .init(filterId: "test1", filterTitle: "#어떤 감성1", image: nil, type: .hashTagFilter, isSelected: false),
+        .init(filterId: "test2", filterTitle: "#어떤 감성2", image: nil, type: .hashTagFilter, isSelected: false),
+        .init(filterId: "test3", filterTitle: "#어떤 감성3", image: nil, type: .hashTagFilter, isSelected: false),
+        .init(filterId: "test4", filterTitle: "#어떤 감성4", image: nil, type: .hashTagFilter, isSelected: false),
     ]
+    
+//    static func == (lhs: MapListFilter, rhs: MapListFilter) -> Bool {
+//        return lhs.filterId == rhs.filterId
+//    }
+//    
+//    func hash(into hasher: inout Hasher) {
+//        hasher.combine(filterId)
+//    }
     
     enum FilterType {
         case photographerFilter
