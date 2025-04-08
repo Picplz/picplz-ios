@@ -11,6 +11,8 @@ import SwiftUI
 class BottomSheetExampleViewController: UIViewController {
     private var buttomSheetView: BottomSheetView!
     
+    private let maxYMargin: CGFloat = 24
+    
     private let contentView: UIView = {
         let view = UILabel()
         view.text = "Hello, World!"
@@ -21,7 +23,8 @@ class BottomSheetExampleViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        buttomSheetView = BottomSheetView(contentView: contentView)
+        let safeFrame = view.safeAreaLayoutGuide.layoutFrame
+        buttomSheetView = BottomSheetView(contentView: contentView, prefereces: .getBasicPreferences(maxYOffset: safeFrame.minY + maxYMargin, minYOffset: safeFrame.maxY))
         buttomSheetView.translatesAutoresizingMaskIntoConstraints = false
         
         view.addSubview(buttomSheetView)
@@ -43,6 +46,15 @@ class BottomSheetExampleViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         navigationController?.setNavigationBarHidden(false, animated: animated)
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        // MARK: 오토레이아웃 이후 진행해야 safeAreaLayoutGuide의 정확한 프레임을 알 수 있다
+        let safeFrame = view.safeAreaLayoutGuide.layoutFrame
+        buttomSheetView.minYOffset = safeFrame.maxY
+        buttomSheetView.maxYOffset = safeFrame.minY + maxYMargin // 여유를 둔다
     }
 }
 

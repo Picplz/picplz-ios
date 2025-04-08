@@ -28,6 +28,11 @@ final class DIContainerProvider {
         }
         .inObjectScope(.container)
         
+        container.register(LocationService.self) { _ in
+            LocationServiceImpl()
+        }
+        .inObjectScope(.container)
+        
         // MARK: Domain
         container.register(LoginUseCase.self) { r in
             let authManaging = r.resolve(AuthManaging.self)!
@@ -44,6 +49,10 @@ final class DIContainerProvider {
         container.register(SendSignUpRequestUseCase.self) { r in
             let authManaging = r.resolve(AuthManaging.self)!
             return SendSignUpRequestUseCaseImpl(authManaging: authManaging)
+        }
+        container.register(GetShortAddressUseCase.self) { r in
+            let locationService = r.resolve(LocationService.self)!
+            return GetShortAddressUserCaseImpl(locationService: locationService)
         }
         
         // MARK: Presentaion
@@ -66,6 +75,13 @@ final class DIContainerProvider {
         container.register(SignUpPhotographerCareerTypePageViewModelProtocol.self) { _ in SignUpPhotographerCareerTypePageViewModel() }
         container.register(SignUpPhotographerCareerPeriodPageViewModelProtocol.self) { _ in SignUpPhotographerCareerPeriodPageViewModel() }
         container.register(SignUpPhotographerSpecializedThemesPageViewModelProtocol.self) { _ in SignUpPhotographerSpecializedThemesPageViewModel() }
+        container.register(CustomerMapViewModelProtocol.self) { r in
+            CustomerMapViewModel(
+                getShortAddressUseCase: GetShortAddressUserCaseImpl(
+                    locationService: r.resolve(LocationService.self)!
+                )
+            )
+        }
         
         // MARK:              ...  View Controllers
         container.register(OnboardingViewController.self) { r in
@@ -116,6 +132,11 @@ final class DIContainerProvider {
         }
         container.register(PhotographerViewController.self) { _ in
             return PhotographerViewController()
+        }
+        container.register(CustomerMapViewController.self) { r in
+            let vc = CustomerMapViewController()
+            vc.viewModel = r.resolve(CustomerMapViewModelProtocol.self)
+            return vc
         }
         return container
     }
