@@ -179,7 +179,7 @@ class CustomerMapBottomSheetContentView: UIView {
         applyDatasource()
     }
     
-    private func didOrderBySelected(order: OrderBy) {
+    private func didOrderBySelected(order: MapListOrderBy) {
         // TODO: Connect to viewModel
         print(order)
     }
@@ -203,136 +203,8 @@ fileprivate enum Item: Hashable {
     case photographerList(MapListPhotographer)
 }
 
-// FIXME: separate file
-fileprivate final class FilterItemCell: UICollectionViewCell {
-    private var filter: MapListFilter?
-    private(set) var button: UIButton?
-    private var didTapButtonHandler: ((_ filter: MapListFilter) -> Void)?
-    
-    override func prepareForReuse() {
-        self.button?.removeFromSuperview()
-        self.button = nil
-    }
-    
-    func configure(filter: MapListFilter, didTapButtonHandler: ((_ filter: MapListFilter) -> Void)?) {
-        self.didTapButtonHandler = didTapButtonHandler
-        self.filter = filter
-        
-        if filter.type == .photographerFilter {
-            button = UIPicplzButton3(title: filter.filterTitle, image: filter.image!)
-        } else {
-            button = UIPicplzButton4(title: filter.filterTitle)
-        }
-        button?.isSelected = filter.isSelected
-        layoutButton()
-        
-        button?.addTarget(self, action: #selector(didTapButton), for: .touchUpInside)
-    }
-    
-    @objc func didTapButton() {
-        guard let filter = self.filter else { return }
-        didTapButtonHandler?(filter)
-    }
-    
-    func layoutButton() {
-        guard let button = button else { return }
-        contentView.addSubview(button)
-        button.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
-        button.invalidateIntrinsicContentSize()
-        setNeedsLayout()
-        layoutIfNeeded()
-    }
-}
 
-// FIXME: separate file
-fileprivate final class OrderItemCell: UICollectionViewCell, UIPickerViewDelegate, UIPickerViewDataSource {
-    private let orderRules: [OrderBy] = OrderBy.allCases
-    private var selectedRule = OrderBy.distance
-    private let textField = UITextField()
-    private let pickerView = UIPickerView()
-    private let symbolImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.image = UIImage(named: "DropDownSymbol")
-        return imageView
-    }()
-    private var didSelectHandler: ((_ orderBy: OrderBy) -> Void)?
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        
-        // MARK: set pickerView
-        pickerView.delegate = self
-        pickerView.dataSource = self
-        
-        // MARK: set pickerView as textField's inputView
-        textField.inputView = pickerView
-        textField.tintColor = .clear // 커서 숨기기
-        
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(cellTapped))
-        tapGesture.cancelsTouchesInView = false
-        addGestureRecognizer(tapGesture)
-        
-        layout()
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    private func layout() {
-        textField.text = selectedRule.title
-        textField.font = UIFont.caption
-        textField.textColor = .grey5
-        
-        addSubview(textField)
-        textField.snp.makeConstraints { make in
-            make.leading.equalTo(self.snp.leading)
-            make.verticalEdges.equalTo(self)
-        }
-        
-        addSubview(symbolImageView)
-        symbolImageView.snp.makeConstraints { make in
-            make.leading.equalTo(textField.snp.trailing).offset(4)
-            make.trailing.equalTo(self.snp.trailing)
-            make.centerY.equalTo(textField.snp.centerY)
-        }
-    }
-    
-    func configure(didSelectHandler: ((_ orderBy: OrderBy) -> Void)?) {
-        self.didSelectHandler = didSelectHandler
-    }
-    
-    func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        1
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        orderRules.count
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        orderRules[row].title
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        pickerViewSelected()
-    }
-    
-    private func pickerViewSelected() {
-        let row = pickerView.selectedRow(inComponent: 0)
-        selectedRule = orderRules[row]
-        textField.text = selectedRule.title
-        textField.resignFirstResponder()
-        
-        didSelectHandler?(selectedRule)
-    }
-    
-    @objc private func cellTapped() {
-        textField.becomeFirstResponder()
-    }
-}
+
 
 // FIXME: separate file
 fileprivate final class PhotographerItemCell: UICollectionViewCell {
@@ -524,57 +396,6 @@ fileprivate final class PhotographerItemCell: UICollectionViewCell {
     }
 }
 
-struct MapListFilter: Hashable {
-    let filterId: String
-    let filterTitle: String
-    let image: UIImage?
-    let type: FilterType
-    var isSelected: Bool
-    
-    static var photographerFilters: [MapListFilter] = [
-        .init(filterId: "following", filterTitle: "팔로우", image: UIImage(named: "CheckSymbol"), type: .photographerFilter, isSelected: false),
-        .init(filterId: "direct", filterTitle: "바로 촬영 가능", image: UIImage(named: "CameraSymbol"), type: .photographerFilter, isSelected: false),
-    ]
-    
-    static var hashTagFilters: [MapListFilter] = [
-        .init(filterId: "eljiro", filterTitle: "#을지로 감성", image: nil, type: .hashTagFilter, isSelected: true),
-        .init(filterId: "kitsch", filterTitle: "#키치 감성", image: nil, type: .hashTagFilter, isSelected: false),
-        .init(filterId: "mz", filterTitle: "#MZ 감성", image: nil, type: .hashTagFilter, isSelected: false),
-        .init(filterId: "demoral", filterTitle: "#퇴폐 감성", image: nil, type: .hashTagFilter, isSelected: false),
-        .init(filterId: "test1", filterTitle: "#어떤 감성1", image: nil, type: .hashTagFilter, isSelected: false),
-        .init(filterId: "test2", filterTitle: "#어떤 감성2", image: nil, type: .hashTagFilter, isSelected: false),
-        .init(filterId: "test3", filterTitle: "#어떤 감성3", image: nil, type: .hashTagFilter, isSelected: false),
-        .init(filterId: "test4", filterTitle: "#어떤 감성4", image: nil, type: .hashTagFilter, isSelected: false),
-    ]
-    
-//    static func == (lhs: MapListFilter, rhs: MapListFilter) -> Bool {
-//        return lhs.filterId == rhs.filterId
-//    }
-//    
-//    func hash(into hasher: inout Hasher) {
-//        hasher.combine(filterId)
-//    }
-    
-    enum FilterType {
-        case photographerFilter
-        case hashTagFilter
-    }
-}
-
-fileprivate enum OrderBy: CaseIterable {
-    case distance
-    case popularity
-    
-    var title: String {
-        switch self {
-        case .distance:
-            return "거리순"
-        case .popularity:
-            return "인기순"
-        }
-    }
-}
-
 fileprivate final class SeparatorView: UICollectionReusableView {
     let lineView: UIView = {
         let view = UIView()
@@ -597,65 +418,3 @@ fileprivate final class SeparatorView: UICollectionReusableView {
     }
 }
 
-struct MapListPhotographer: Hashable {
-    // FIXME: ID 포함
-    let name: String
-    let distanceIntMeters: Int
-    let walkTimeInMinutes: Int
-    let isOurTownPhotographer: Bool
-    let isAbleToDirectShoot: Bool
-    let image: UIImage?
-    let tags: [String] // FIXME: hastag 별도 타입 참조
-    
-    // FIXME: just for debug. remove after implementing commuincate with backend
-    static let debugList: [MapListPhotographer] = [
-        .init(
-            name: "유가영",
-            distanceIntMeters: 200,
-            walkTimeInMinutes: 3,
-            isOurTownPhotographer: true,
-            isAbleToDirectShoot: true,
-            image: nil,
-            tags: ["#을지로 감성", "#MZ 감성", "#퇴폐 감성",  "#어떤 감성"]
-        ),
-        .init(
-            name: "주은강",
-            distanceIntMeters: 200,
-            walkTimeInMinutes: 3,
-            isOurTownPhotographer: true,
-            isAbleToDirectShoot: false,
-            image: nil,
-            tags: ["#을지로 감성"]
-        ),
-        .init(
-            name: "임세연",
-            distanceIntMeters: 200,
-            walkTimeInMinutes: 3,
-            isOurTownPhotographer: false,
-            isAbleToDirectShoot: true,
-            image: nil,
-            tags: ["#을지로 감성"]
-        ),
-        .init(
-            name: "짱구",
-            distanceIntMeters: 200,
-            walkTimeInMinutes: 3,
-            isOurTownPhotographer: false,
-            isAbleToDirectShoot: true,
-            image: nil,
-            tags: ["#을지로 감성"]
-        ),
-    ]
-}
-
-//struct CustomerMapViewController_Preview2: PreviewProvider {
-//    static var previews: some View {
-//        let vc = CustomerMapViewController()
-//        vc.viewModel = CustomerMapViewModel(
-//            getShortAddressUseCase: GetShortAddressUserCaseImpl(locationService: LocationServiceImpl())
-//        )
-//        
-//        return vc.toPreview()
-//            .ignoresSafeArea()
-//    }
-//}
