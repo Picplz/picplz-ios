@@ -106,8 +106,22 @@ class CustomerMapBottomSheetContentView: UIView {
                 section.interGroupSpacing = 20
 
                 return section
+            case 0: // 가장 상단 필터
+                let itemSize = NSCollectionLayoutSize(widthDimension: .estimated(120), heightDimension: .absolute(25))
+                let item = NSCollectionLayoutItem(layoutSize: itemSize)
+                
+                let groupSize = NSCollectionLayoutSize(widthDimension: .estimated(1000), heightDimension: .estimated(25))
+                let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+                group.interItemSpacing = .fixed(8)
+                
+                let section = NSCollectionLayoutSection(group: group)
+                section.orthogonalScrollingBehavior = .continuous
+                section.interGroupSpacing = 8
+                section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 11, trailing: 0)
+                
+                return section
             default: // 그 외
-                let itemSize = NSCollectionLayoutSize(widthDimension: .estimated(200), heightDimension: .absolute(25)) // 너비를 충분히 크게 주지 않으면 버튼이 selected 상태가 될 때 레이블이 줄바꿈됨
+                let itemSize = NSCollectionLayoutSize(widthDimension: .estimated(100), heightDimension: .absolute(25)) // 너비를 충분히 크게 주지 않으면 버튼이 selected 상태가 될 때 레이블이 줄바꿈됨
                 let item = NSCollectionLayoutItem(layoutSize: itemSize)
                 
                 let groupSize = NSCollectionLayoutSize(widthDimension: .estimated(1000), heightDimension: .estimated(25))
