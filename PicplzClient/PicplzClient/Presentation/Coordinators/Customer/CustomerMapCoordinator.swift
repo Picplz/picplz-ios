@@ -11,7 +11,7 @@ import OSLog
 
 final class CustomerMapCoordinator: TabBarItemCoordinator {
     var childCoordinators: [Coordinator] = []
-    private(set) var navigationController = UINavigationController()
+    private(set) var navigationController = UIPicplzNavigationController()
     private let container: Container
     private let log = Logger.of("CustomerMapCoordinator")
     
@@ -32,6 +32,22 @@ final class CustomerMapCoordinator: TabBarItemCoordinator {
             fatalError("CustomerMapViewController could not be resolved")
         }
         navigationController.viewControllers = [viewController]
+        viewController.viewModel.delegate = self
         navigationController.tabBarItem = UITabBarItem(title: tabBarTitle, image: tabBarImage, tag: tabBarIndex)
+    }
+}
+
+extension CustomerMapCoordinator: CustomerMapViewModelDelegate {
+    func selectPhotographerDetail(photographerId: Int) {
+        navigateToPhotographerDetail(photographerId: photographerId)
+    }
+    
+    private func navigateToPhotographerDetail(photographerId: Int) {
+        guard let viewController = container.resolve(PhotographerDetailViewController.self) else {
+            log.error("PhotographerDetailViewController could not be resolved")
+            fatalError("PhotographerDetailViewController could not be resolved")
+        }
+        viewController.viewModel.photographerId = photographerId
+        navigationController.viewControllers.append(viewController)
     }
 }

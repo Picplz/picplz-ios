@@ -50,6 +50,10 @@ class CustomerMapViewController: UIViewController {
             .init(name: "원장", distance: nil, distanceUnit: nil, active: true, image: UIImage(named: "ProfileImagePlaceholder")!),
         ]
         
+        bottomSheetContentView.onPhotographerSelected = { [weak self] photographerId in
+            self?.viewModel.photographerSelected(id: photographerId)
+        }
+        
         bind()
         viewModel.onLoad()
     }
@@ -148,6 +152,7 @@ class CustomerMapViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        navigationController?.setNavigationBarHidden(false, animated: false)
         animateBlinkSearchingLable(count: 3)
     }
     

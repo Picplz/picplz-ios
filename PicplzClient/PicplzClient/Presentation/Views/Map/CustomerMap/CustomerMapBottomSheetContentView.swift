@@ -20,6 +20,8 @@ class CustomerMapBottomSheetContentView: UIView {
     private var hashTagFilters: [MapListFilter] = MapListFilter.hashTagFilters
     private var photographerList: [MapListPhotographer] = MapListPhotographer.debugList
     
+    var onPhotographerSelected: (_ photographerId: Int) -> Void = { _ in }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -186,7 +188,7 @@ class CustomerMapBottomSheetContentView: UIView {
     
     private func didPhotographerSelected(photographer: MapListPhotographer) {
         // TODO: Connect to viewModel
-        print(photographer)
+        onPhotographerSelected(photographer.id)
     }
 }
 

@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 struct MapListPhotographer: Hashable {
-    // FIXME: ID 포함
+    let id: Int
     let name: String
     let distanceIntMeters: Int
     let walkTimeInMinutes: Int
@@ -21,6 +21,7 @@ struct MapListPhotographer: Hashable {
     // FIXME: just for debug. remove after implementing commuincate with backend
     static let debugList: [MapListPhotographer] = [
         .init(
+            id: 1,
             name: "유가영",
             distanceIntMeters: 200,
             walkTimeInMinutes: 3,
@@ -30,6 +31,7 @@ struct MapListPhotographer: Hashable {
             tags: ["#을지로 감성", "#MZ 감성", "#퇴폐 감성",  "#어떤 감성"]
         ),
         .init(
+            id: 2,
             name: "주은강",
             distanceIntMeters: 200,
             walkTimeInMinutes: 3,
@@ -39,6 +41,7 @@ struct MapListPhotographer: Hashable {
             tags: ["#을지로 감성"]
         ),
         .init(
+            id: 3,
             name: "임세연",
             distanceIntMeters: 200,
             walkTimeInMinutes: 3,
@@ -48,6 +51,7 @@ struct MapListPhotographer: Hashable {
             tags: ["#을지로 감성"]
         ),
         .init(
+            id: 4,
             name: "짱구",
             distanceIntMeters: 200,
             walkTimeInMinutes: 3,
