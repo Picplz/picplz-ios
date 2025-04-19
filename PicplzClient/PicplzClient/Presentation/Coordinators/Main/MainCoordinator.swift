@@ -58,7 +58,7 @@ final class MainCoordinator: Coordinator {
     }
     
     func startCustomer() {
-        let coordinator = CustomerTabBarCoordinator(navigationController: navigationController)
+        let coordinator = CustomerTabBarCoordinator(navigationController: navigationController, container: container)
         childCoordinators.append(coordinator)
         coordinator.delegate = self
         coordinator.start()

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Swinject
 import OSLog
 
 protocol CustomerTabBarCoordinatorDelegate: AnyObject {
@@ -17,16 +18,18 @@ class CustomerTabBarCoordinator: Coordinator {
     var childCoordinators: [any Coordinator] = []
     weak var delegate: CustomerTabBarCoordinatorDelegate?
     private let navigationController: UINavigationController
+    private let container: Container
     private let log = Logger.of("CustomerTabBarCoordinator")
     
     private lazy var homeCoordinator = CustomerHomeCoordinator(tabBarTitle: "홈", tabBarImage: UIImage(named: "StarBlack"), tabBarIndex: 0)
-    private lazy var mapCoordinator = CustomerMapCoordinator(tabBarTitle: "지도", tabBarImage: UIImage(named: "StarBlack"), tabBarIndex: 1)
+    private lazy var mapCoordinator = CustomerMapCoordinator(container: container, tabBarTitle: "지도", tabBarImage: UIImage(named: "StarBlack"), tabBarIndex: 1)
     private lazy var feedCoordinator = CustomerFeedCoordinator(tabBarTitle: "피드", tabBarImage: UIImage(named: "StarBlack"), tabBarIndex: 2)
     private lazy var chatCoordinator = CustomerChatCoordinator(tabBarTitle: "채팅", tabBarImage: UIImage(named: "StarBlack"), tabBarIndex: 3)
     private lazy var myPageCoordinator = CustomerMyPageCoordinator(tabBarTitle: "마이페이지", tabBarImage: UIImage(named: "StarBlack"), tabBarIndex: 4)
     
-    init(navigationController: UINavigationController) {
+    init(navigationController: UINavigationController, container: Container) {
         self.navigationController = navigationController
+        self.container = container
         
         homeCoordinator.delegate = self
     }
