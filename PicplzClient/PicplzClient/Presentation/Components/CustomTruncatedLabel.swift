@@ -12,6 +12,15 @@ class CustomTruncatedLabel: UILabel {
     private let ellipsisString: String
     private let ellipsisFont: UIFont
     private let ellipsisPadding: CGFloat
+    private var originalText: String?
+    
+    override var numberOfLines: Int {
+        didSet {
+            if let originalText = originalText {
+                setText(originalText)
+            }
+        }
+    }
     
     init(ellipsisString: String = "...더보기", ellipsisPadding: CGFloat = 16, ellipsisFont: UIFont, normalFont: UIFont) {
         self.ellipsisString = ellipsisString
@@ -27,14 +36,16 @@ class CustomTruncatedLabel: UILabel {
     }
     
     func setText(_ text: String) {
-        self.text = text
+        self.originalText = text
         
         guard let font = self.font else { return }
         
         let labelWidth = self.bounds.width
         
         let lineHeight = self.font.lineHeight
-        let labelHeight = lineHeight * CGFloat(self.numberOfLines)
+        
+        let numberOfLines: Int = self.numberOfLines == 0 ? .max : self.numberOfLines
+        let labelHeight = lineHeight * CGFloat(numberOfLines)
         
         let basicAttributes: [NSAttributedString.Key: Any] = [.font: font]
         let trailingAttributes: [NSAttributedString.Key: Any] = [.font: ellipsisFont]
@@ -49,7 +60,6 @@ class CustomTruncatedLabel: UILabel {
         
         if fullSize.height <= labelHeight {
             self.attributedText = fullSizeText
-            print("full size renderable")
             return
         }
         
