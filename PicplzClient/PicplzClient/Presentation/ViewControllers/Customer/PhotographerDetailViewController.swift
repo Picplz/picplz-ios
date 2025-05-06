@@ -34,7 +34,7 @@ class PhotographerDetailViewController: UIViewController {
             .receive(on: RunLoop.main)
             .sink { [weak self] id in
                 // FIXME: filter DEBUG DATA
-                let filteredPhotographers = MapListPhotographer.debugList.filter { $0.id == id }
+                let filteredPhotographers = PhotographerDetail.debugList.filter { $0.id == id }
                 if let selectedPhotographer = filteredPhotographers.first {
                     self?.infoView.configure(photographer: selectedPhotographer)
                 }

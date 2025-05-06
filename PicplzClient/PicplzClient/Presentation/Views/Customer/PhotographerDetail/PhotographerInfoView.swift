@@ -235,7 +235,7 @@ final class PhotographerInfoView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configure(photographer: MapListPhotographer) {
+    func configure(photographer: PhotographerDetail) {
         followersCountLabel.text = String(photographer.followers)
         profileImage.image = photographer.image ?? UIImage(named: "ProfileImagePlaceholder")
         nameLabel.text = "\(photographer.name) 작가"
@@ -258,7 +258,7 @@ final class PhotographerInfoView: UIView {
         }
     }
     
-    private func getIconBySocialType(_ socialType: MapListPhotographer.SocialType) -> UIImage? {
+    private func getIconBySocialType(_ socialType: PhotographerDetail.SocialType) -> UIImage? {
         switch socialType {
         case .instagram:
             return UIImage(named: "InstagramIcon")
