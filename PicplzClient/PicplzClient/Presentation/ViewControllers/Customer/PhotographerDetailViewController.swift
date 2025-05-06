@@ -10,7 +10,15 @@ import SnapKit
 import Combine
 
 class PhotographerDetailViewController: UIViewController {
+    private let scrollView = UIScrollView()
+    private let scrollContentView = UIView()
     private let infoView = PhotographerInfoView()
+    private let dividerView = DividerView(backgroundColor: .grey1)
+    private let reviewView = PhotographerReviewDigestView()
+    private let reviewView2 = PhotographerReviewDigestView()
+    private let reviewView3 = PhotographerReviewDigestView()
+    private let reviewView4 = PhotographerReviewDigestView()
+    private let reviewView5 = PhotographerReviewDigestView()
     
     var viewModel: PhotographerDetailViewModel!
     
@@ -19,11 +27,36 @@ class PhotographerDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.addSubview(infoView)
+        view.addSubview(scrollView)
+        scrollView.addSubview(scrollContentView)
+        
+        scrollContentView.addSubview(infoView)
+        scrollContentView.addSubview(dividerView)
+        scrollContentView.addSubview(reviewView)
+        
+        scrollView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+        
+        scrollContentView.snp.makeConstraints { make in
+            make.leading.trailing.equalTo(view)
+            make.width.height.top.bottom.equalTo(scrollView)
+        }
         
         infoView.snp.makeConstraints { make in
             make.horizontalEdges.equalToSuperview().inset(15)
-            make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
+            make.top.equalToSuperview()
+        }
+        
+        dividerView.snp.makeConstraints { make in
+            make.horizontalEdges.equalToSuperview()
+            make.top.equalTo(infoView.snp.bottom)
+            make.height.equalTo(20)
+        }
+        
+        reviewView.snp.makeConstraints { make in
+            make.horizontalEdges.equalToSuperview().inset(15)
+            make.top.equalTo(dividerView.snp.bottom).offset(10)
         }
         
         bind()
@@ -37,6 +70,7 @@ class PhotographerDetailViewController: UIViewController {
                 let filteredPhotographers = PhotographerDetail.debugList.filter { $0.id == id }
                 if let selectedPhotographer = filteredPhotographers.first {
                     self?.infoView.configure(photographer: selectedPhotographer)
+                    self?.reviewView.configure(reviews: filteredPhotographers.first?.reviews ?? [])
                 }
             }
             .store(in: &subscriptions)

@@ -102,7 +102,7 @@ struct PhotographerDetail: Hashable {
                     selectedOption: "프로필 Only",
                     shootAt: "서울시 마포구 무대륙",
                     comment: "하나하나 신경써서 해주시고 잘 알려주세요 사진 처음찍거나 잘 못찍으시는 분들 하시면 후회 안하십니다!",
-                    rating: 4.0,
+                    rating: 4.5,
                     likesCount: 4,
                     likedByCurrentUser: false
                 ),
@@ -114,7 +114,7 @@ struct PhotographerDetail: Hashable {
                     selectedOption: "프로필 Only",
                     shootAt: "서울시 마포구 자유인들",
                     comment: "쏘쏘해요",
-                    rating: 3.0,
+                    rating: 5.0,
                     likesCount: 2,
                     likedByCurrentUser: true
                 ),
@@ -126,7 +126,7 @@ struct PhotographerDetail: Hashable {
                     selectedOption: "카카오톡 패키지",
                     shootAt: "서울시 마포구 앤트러사이트",
                     comment: "감사합니다",
-                    rating: 3.5,
+                    rating: 4.5,
                     likesCount: 12,
                     likedByCurrentUser: true
                 )
@@ -155,7 +155,7 @@ struct PhotographerDetail: Hashable {
                     selectedOption: "프로필 Only",
                     shootAt: "서울시 마포구 무대륙",
                     comment: "하나하나 신경써서 해주시고 잘 알려주세요 사진 처음찍거나 잘 못찍으시는 분들 하시면 후회 안하십니다!",
-                    rating: 4.0,
+                    rating: 1.0,
                     likesCount: 4,
                     likedByCurrentUser: false
                 ),
@@ -167,7 +167,7 @@ struct PhotographerDetail: Hashable {
                     selectedOption: "프로필 Only",
                     shootAt: "서울시 마포구 자유인들",
                     comment: "쏘쏘해요",
-                    rating: 3.0,
+                    rating: 2.0,
                     likesCount: 2,
                     likedByCurrentUser: true
                 ),
