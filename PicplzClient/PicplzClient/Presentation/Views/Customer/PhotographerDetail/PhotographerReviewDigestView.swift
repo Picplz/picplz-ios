@@ -10,6 +10,12 @@ import SnapKit
 
 final class PhotographerReviewDigestView: UIView {
     private var reviews: [PhotographerReview]
+    private let reviewAnalysisList: [ReviewAnalysis] = [ // FIXME: see `ReviewAnalysis` definition
+        .init(description: "사진을 예쁘게 찍어줘요", count: 14),
+        .init(description: "포즈 추천을 잘 해줘요", count: 10),
+        .init(description: "친절해요", count: 9),
+        .init(description: "보정을 잘 해요", count: 5),
+    ]
     
     private var rating: Float {
         let sum = reviews.reduce(0.0) { partialResult, review in
@@ -40,6 +46,7 @@ final class PhotographerReviewDigestView: UIView {
         label.textColor = .grey4
         return label
     }()
+    private let chartView = PhotographerReviewChartView()
     
     override init(frame: CGRect) {
         self.reviews = []
@@ -48,11 +55,14 @@ final class PhotographerReviewDigestView: UIView {
         
         backgroundColor = .picplzWhite
         layout()
+        
+        chartView.configure(reviewAnalysisList)
     }
     
     func layout() {
         addSubview(titleLabel)
         addSubview(starsWrapperView)
+        addSubview(chartView)
         
         titleLabel.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
@@ -67,6 +77,12 @@ final class PhotographerReviewDigestView: UIView {
         
         starsWrapperView.addArrangedSubview(starsIndicatorView)
         starsWrapperView.addArrangedSubview(ratingLabel)
+        
+        chartView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.top.equalTo(starsWrapperView.snp.bottom).offset(17)
+//            make.bottom.equalToSuperview().inset(20) // FIXME: 밑에 뷰를 추가하면 제거
+        }
     }
     
     func configure(reviews: [PhotographerReview]) {
@@ -78,6 +94,12 @@ final class PhotographerReviewDigestView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+}
+
+// FIXME: 데이터 설계 필요 / 백엔드에서 어떻게 처리하는지?
+struct ReviewAnalysis {
+    let description: String
+    let count: Int
 }
 
 fileprivate final class RatingStarsIndicatorView: UIView {
