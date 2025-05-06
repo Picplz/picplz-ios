@@ -1,5 +1,5 @@
 //
-//  PhotographerReviewView.swift
+//  PhotographerReviewDigestView.swift
 //  PicplzClient
 //
 //  Created by 임영택 on 5/5/25.
@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-final class PhotographerReviewView: UIView {
+final class PhotographerReviewDigestView: UIView {
     let titleLabel: UILabel = {
         let label = UILabel()
         label.font = .smallTitle
