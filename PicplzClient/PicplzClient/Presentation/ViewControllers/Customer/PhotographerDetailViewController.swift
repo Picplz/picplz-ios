@@ -51,7 +51,7 @@ class PhotographerDetailViewController: UIViewController {
         dividerView.snp.makeConstraints { make in
             make.horizontalEdges.equalToSuperview()
             make.top.equalTo(infoView.snp.bottom)
-            make.height.equalTo(20)
+            make.height.equalTo(10)
         }
         
         reviewView.snp.makeConstraints { make in
