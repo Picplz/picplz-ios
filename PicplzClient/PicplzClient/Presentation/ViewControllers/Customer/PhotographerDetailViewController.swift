@@ -15,6 +15,7 @@ class PhotographerDetailViewController: UIViewController {
     private let infoView = PhotographerInfoView()
     private let dividerView = DividerView(backgroundColor: .grey1)
     private let reviewView = PhotographerReviewDigestView()
+    private let portfolioView = PhotographerPortfolioDigestView()
     
     var viewModel: PhotographerDetailViewModel!
     
@@ -29,6 +30,7 @@ class PhotographerDetailViewController: UIViewController {
         scrollContentView.addSubview(infoView)
         scrollContentView.addSubview(dividerView)
         scrollContentView.addSubview(reviewView)
+        scrollContentView.addSubview(portfolioView)
         
         scrollView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
@@ -53,6 +55,12 @@ class PhotographerDetailViewController: UIViewController {
         reviewView.snp.makeConstraints { make in
             make.horizontalEdges.equalToSuperview().inset(15)
             make.top.equalTo(dividerView.snp.bottom).offset(10)
+        }
+        
+        portfolioView.snp.makeConstraints { make in
+            make.horizontalEdges.equalToSuperview().inset(15)
+            make.top.equalTo(reviewView.snp.bottom).offset(50)
+            make.bottom.equalToSuperview().offset(-100) // FIXME: 아래에 뷰 추가되면 제거
         }
         
         bind()
