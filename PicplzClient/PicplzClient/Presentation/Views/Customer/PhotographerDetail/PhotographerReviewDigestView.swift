@@ -47,6 +47,19 @@ final class PhotographerReviewDigestView: UIView {
         return label
     }()
     private let chartView = PhotographerReviewChartView()
+    private let goToDetailButton: UIButton = {
+        let button = UIButton()
+        
+        var configuration = UIButton.Configuration.plain()
+        configuration.image = UIImage(named: "ChevronLeft")
+        configuration.imagePlacement = .trailing
+        configuration.imagePadding = 6
+        configuration.contentInsets = .init(top: 0, leading: 0, bottom: 0, trailing: 0) // 우측 패딩 제거해 차트와 정렬
+        
+        button.configuration = configuration
+        
+        return button
+    }()
     
     override init(frame: CGRect) {
         self.reviews = []
@@ -63,6 +76,7 @@ final class PhotographerReviewDigestView: UIView {
         addSubview(titleLabel)
         addSubview(starsWrapperView)
         addSubview(chartView)
+        addSubview(goToDetailButton)
         
         titleLabel.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
@@ -72,7 +86,6 @@ final class PhotographerReviewDigestView: UIView {
         starsWrapperView.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.top.equalTo(titleLabel.snp.bottom).offset(7)
-            make.bottom.equalToSuperview().inset(20)
         }
         
         starsWrapperView.addArrangedSubview(starsIndicatorView)
@@ -81,7 +94,11 @@ final class PhotographerReviewDigestView: UIView {
         chartView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
             make.top.equalTo(starsWrapperView.snp.bottom).offset(17)
-//            make.bottom.equalToSuperview().inset(20) // FIXME: 밑에 뷰를 추가하면 제거
+        }
+        
+        goToDetailButton.snp.makeConstraints { make in
+            make.top.equalTo(chartView.snp.bottom).offset(8)
+            make.trailing.bottom.equalToSuperview()
         }
     }
     
@@ -89,6 +106,16 @@ final class PhotographerReviewDigestView: UIView {
         self.reviews = reviews
         starsIndicatorView.configure(rating: rating)
         ratingLabel.text = "\(rating.roundedToHalf())"
+        
+        let totalCount = reviews.reduce(0) { partialResult, review in
+            partialResult + review.likesCount
+        }
+        
+        let attributedString = NSAttributedString(string: "전체 리뷰 보러가기 (\(totalCount))", attributes: [
+            .font: UIFont.caption,
+            .foregroundColor: UIColor.grey4
+        ])
+        goToDetailButton.setAttributedTitle(attributedString, for: .normal)
     }
     
     required init?(coder: NSCoder) {

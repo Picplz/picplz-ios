@@ -16,20 +16,6 @@ final class PhotographerReviewChartView: UIView {
         return stackView
     }()
     
-    let goToDetailButton: UIButton = {
-        let button = UIButton()
-        
-        var configuration = UIButton.Configuration.plain()
-        configuration.image = UIImage(named: "ChevronLeft")
-        configuration.imagePlacement = .trailing
-        configuration.imagePadding = 6
-        configuration.contentInsets = .init(top: 0, leading: 0, bottom: 0, trailing: 0) // 우측 패딩 제거해 차트와 정렬
-        
-        button.configuration = configuration
-        
-        return button
-    }()
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
         layout()
@@ -41,16 +27,9 @@ final class PhotographerReviewChartView: UIView {
     
     private func layout() {
         addSubview(stackView)
-        addSubview(goToDetailButton)
         
         stackView.snp.makeConstraints { make in
-            make.top.leading.trailing.equalToSuperview()
-        }
-        
-        goToDetailButton.snp.makeConstraints { make in
-            make.top.equalTo(stackView.snp.bottom).offset(8)
-            make.trailing.equalToSuperview()
-            make.bottom.equalToSuperview()
+            make.top.leading.trailing.bottom.equalToSuperview()
         }
     }
     
@@ -72,12 +51,6 @@ final class PhotographerReviewChartView: UIView {
             
             stackView.addArrangedSubview(barView)
         }
-        
-        let attributedString = NSAttributedString(string: "전체 리뷰 보러가기 (\(totalCount))", attributes: [
-            .font: UIFont.caption,
-            .foregroundColor: UIColor.grey4
-        ])
-        goToDetailButton.setAttributedTitle(attributedString, for: .normal)
     }
 }
 
