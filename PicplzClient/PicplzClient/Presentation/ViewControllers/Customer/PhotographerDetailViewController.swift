@@ -15,10 +15,6 @@ class PhotographerDetailViewController: UIViewController {
     private let infoView = PhotographerInfoView()
     private let dividerView = DividerView(backgroundColor: .grey1)
     private let reviewView = PhotographerReviewDigestView()
-    private let reviewView2 = PhotographerReviewDigestView()
-    private let reviewView3 = PhotographerReviewDigestView()
-    private let reviewView4 = PhotographerReviewDigestView()
-    private let reviewView5 = PhotographerReviewDigestView()
     
     var viewModel: PhotographerDetailViewModel!
     
