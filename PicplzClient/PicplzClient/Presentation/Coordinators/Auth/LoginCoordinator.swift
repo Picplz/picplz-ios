@@ -43,20 +43,6 @@ final class LoginCoordinator: Coordinator {
 }
 
 extension LoginCoordinator: OnboardingViewModelDelegate {
-    func goToLogin(authProvider: AuthProvider) {
-        log.debug("LoginCoordinator goToLogin called")
-        
-        // FIXME: should inject VM to VC in DIContainer
-        var viewModel = container.resolve(LoginViewModelProtocol.self)
-        viewModel?.delegate = self
-        let viewController = LoginViewController()
-        viewController.viewModel = viewModel
-        
-        navigationController.pushViewController(viewController, animated: true)
-    }
-}
-
-extension LoginCoordinator: LoginViewModelDelegate {
     func loggedIn() {
         log.debug("LoginCoordinator loggedIn called")
         if shouldSignUp {

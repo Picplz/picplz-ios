@@ -68,11 +68,6 @@ final class DIContainerProvider {
             viewModel.getAuthInfoUseCase = r.resolve(GetAuthInfoUseCase.self)
             return viewModel
         }
-        container.register(LoginViewModelProtocol.self) { r in
-            let viewModel = LoginViewModel()
-            viewModel.loginUseCase = r.resolve(LoginUseCase.self)!
-            return viewModel
-        }
         container.register(OnboardingViewModelProtocol.self) { _ in OnboardingViewModel() }
         container.register(SignUpNicknamePageViewModelProtocol.self) { _ in SignUpNicknamePageViewModel() }
         container.register(SignUpProfileImagePageViewModelProtocol.self) { _ in SignUpProfileImagePageViewModel() }
