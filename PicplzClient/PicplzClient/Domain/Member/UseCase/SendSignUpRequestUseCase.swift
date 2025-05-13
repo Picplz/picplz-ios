@@ -49,7 +49,7 @@ final class SendSignUpRequestUseCaseImpl: SendSignUpRequestUseCase {
             careerType = nil
         }
         
-        let newAuthUser = AuthUser(name: savedAuthUser.name, nickname: signUpSession.nickname, birth: savedAuthUser.birth, role: savedAuthUser.role, kakaoEmail: savedAuthUser.kakaoEmail, profileImageUrl: signUpSession.profileImageUrl?.path ?? "", memberType: memberType, photoCareerType: careerType, photoCareerYears: signUpSession.photoCareerYears, photoCareerMonths: signUpSession.photoCareerMonths, photoSpecializedThemes: signUpSession.photoSpecializedThemes)
+        let newAuthUser = AuthUser(sub: savedAuthUser.sub, name: savedAuthUser.name, nickname: signUpSession.nickname, birth: savedAuthUser.birth, role: savedAuthUser.role, kakaoEmail: savedAuthUser.kakaoEmail, profileImageUrl: signUpSession.profileImageUrl?.path ?? "", memberType: memberType, photoCareerType: careerType, photoCareerYears: signUpSession.photoCareerYears, photoCareerMonths: signUpSession.photoCareerMonths, photoSpecializedThemes: signUpSession.photoSpecializedThemes)
         
         authManaging.updateUserInfo(user: newAuthUser)
     }
