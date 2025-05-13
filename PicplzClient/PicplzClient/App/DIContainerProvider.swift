@@ -33,10 +33,15 @@ final class DIContainerProvider {
         }
         .inObjectScope(.container)
         
+        container.register(AuthRequestable.self) { _ in
+            AuthRequests()
+        }
+        
         // MARK: Domain
         container.register(LoginUseCase.self) { r in
             let authManaging = r.resolve(AuthManaging.self)!
-            return LoginUseCaseImpl(authManaging: authManaging)
+            let authReqeusts = r.resolve(AuthRequestable.self)!
+            return LoginUseCaseImpl(authManaging: authManaging, authRequests: authReqeusts)
         }
         container.register(LogoutUseCase.self) { r in
             let authManaging = r.resolve(AuthManaging.self)!
@@ -88,6 +93,7 @@ final class DIContainerProvider {
         container.register(OnboardingViewController.self) { r in
             let vc = OnboardingViewController()
             vc.viewModel = r.resolve(OnboardingViewModelProtocol.self)
+            vc.viewModel.loginUseCase = r.resolve(LoginUseCase.self)
             return vc
         }
         container.register(MainViewController.self) { r in

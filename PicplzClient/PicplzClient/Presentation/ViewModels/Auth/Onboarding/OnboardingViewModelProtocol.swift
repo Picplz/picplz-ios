@@ -9,6 +9,7 @@ import Combine
 
 protocol OnboardingViewModelProtocol {
     var delegate: OnboardingViewModelDelegate? { get set }
+    var loginUseCase: LoginUseCase? { get set }
     
     var currentPageIndex: Int { get }
     var currentPageIndexPublisher: Published<Int>.Publisher { get }
@@ -23,5 +24,5 @@ protocol OnboardingViewModelProtocol {
 }
 
 protocol OnboardingViewModelDelegate: AnyObject {
-    func goToLogin(authProvider: AuthProvider)
+    func loggedIn()
 }
