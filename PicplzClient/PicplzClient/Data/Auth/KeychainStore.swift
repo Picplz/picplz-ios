@@ -103,6 +103,7 @@ final class KeychainStore {
     
     enum ReservedAccount: String {
         case AccessToken
+        case RefreshToken
     }
     
     enum KeyChainStoreError: Error {
