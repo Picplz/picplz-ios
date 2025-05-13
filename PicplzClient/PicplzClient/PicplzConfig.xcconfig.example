@@ -9,3 +9,4 @@
 // https://help.apple.com/xcode/#/dev745c5c974
 
 SERVER_BASE_URL=https:/$()/YOUR_SERVER_HOST/api/v1 // caution: any double slashed are treated as a starting of a comment
+KAKAO_APP_KEY=
