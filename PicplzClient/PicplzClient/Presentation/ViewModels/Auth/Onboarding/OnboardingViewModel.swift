@@ -9,6 +9,7 @@ import Combine
 
 final class OnboardingViewModel: OnboardingViewModelProtocol {
     var delegate: OnboardingViewModelDelegate?
+    var loginUseCase: LoginUseCase?
     
     @Published var currentPageIndex = 0
     var currentPageIndexPublisher: Published<Int>.Publisher {
@@ -28,6 +29,18 @@ final class OnboardingViewModel: OnboardingViewModelProtocol {
     }
     
     func kakaoLoginButtonTapped() {
-        delegate?.goToLogin(authProvider: .kakao)
+        Task {
+            do {
+                try await loginUseCase?.login()
+                print("loggedIn")
+                
+                await MainActor.run {
+                    delegate?.loggedIn()
+                }
+            } catch {
+                print("login failed")
+                print(error)
+            }
+        }
     }
 }
