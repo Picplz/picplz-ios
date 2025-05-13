@@ -37,8 +37,6 @@ class PhotographerDetailViewController: UIViewController {
         }
         
         scrollContentView.snp.makeConstraints { make in
-//            make.leading.trailing.equalTo(view)
-//            make.width.height.top.bottom.equalTo(scrollView)
             make.edges.equalTo(scrollView.contentLayoutGuide)
             make.width.equalTo(scrollView.frameLayoutGuide)
         }
