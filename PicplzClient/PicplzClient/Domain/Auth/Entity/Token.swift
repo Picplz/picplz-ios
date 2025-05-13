@@ -7,7 +7,8 @@
 
 import Foundation
 
-struct AccessToken {
-    let token: String
+struct Token {
+    let accessToken: String
+    let refreshToken: String
     let expiresDate: Date
 }

@@ -118,6 +118,6 @@ final class UserDefaultsHelper {
         }
         
         static let accessTokenExpiresAt = Key(rawValue: "accessTokenExpiresAt", expectedType: Date.self)
-        static let authUser = Key(rawValue: "authUser", expectedType: AuthUserModel.self)
+        static let authUser = Key(rawValue: "authUser", expectedType: AuthUser.self)
     }
 }

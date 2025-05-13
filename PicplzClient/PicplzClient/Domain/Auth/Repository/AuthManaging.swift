@@ -12,7 +12,7 @@ protocol AuthManaging {
     var currentUser: AuthUser? { get }
     var isLogin: Bool { get }
     
-    func login(accessToken: String, expiresDate: Date, user currentUserEntity: AuthUser)
+    func login(accessToken: String, refreshToken: String, expiresDate: Date)
     func logout()
     func validateToken() -> Bool
     func updateUserInfo(user currentUserEntity: AuthUser)

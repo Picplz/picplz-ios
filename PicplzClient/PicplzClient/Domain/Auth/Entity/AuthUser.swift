@@ -7,7 +7,8 @@
 
 import Foundation
 
-struct AuthUser: CustomStringConvertible {
+struct AuthUser: CustomStringConvertible, Codable {
+    let sub: Int
     let name: String
     let nickname: String
     let birth: Date
@@ -20,12 +21,12 @@ struct AuthUser: CustomStringConvertible {
     var photoCareerMonths: Int?
     var photoSpecializedThemes: [String]?
     
-    enum MemberType {
+    enum MemberType: Codable {
         case customer
         case photographer
     }
     
-    enum CareerType {
+    enum CareerType: Codable {
         case major // 사진 전공
         case job // 수익 창출
         case influencer // SNS 계정 운영
