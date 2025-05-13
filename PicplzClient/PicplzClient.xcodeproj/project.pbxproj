@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		3D6299A52DA1464D00929978 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 3D6299A42DA1464D00929978 /* SnapKit */; };
 		3D8449A52D59B54100AEFB66 /* Swinject in Frameworks */ = {isa = PBXBuildFile; productRef = 3D8449A42D59B54100AEFB66 /* Swinject */; };
+		3DB719642DD36087004FB5BB /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 3DB719632DD36087004FB5BB /* Alamofire */; };
 		3DE489942DD2F9DD00D3F310 /* KakaoSDKAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 3DE489932DD2F9DD00D3F310 /* KakaoSDKAuth */; };
 		3DE489962DD2F9DD00D3F310 /* KakaoSDKCommon in Frameworks */ = {isa = PBXBuildFile; productRef = 3DE489952DD2F9DD00D3F310 /* KakaoSDKCommon */; };
 		3DE489982DD2F9DD00D3F310 /* KakaoSDKUser in Frameworks */ = {isa = PBXBuildFile; productRef = 3DE489972DD2F9DD00D3F310 /* KakaoSDKUser */; };
@@ -76,6 +77,7 @@
 				3DE489962DD2F9DD00D3F310 /* KakaoSDKCommon in Frameworks */,
 				3D8449A52D59B54100AEFB66 /* Swinject in Frameworks */,
 				3D6299A52DA1464D00929978 /* SnapKit in Frameworks */,
+				3DB719642DD36087004FB5BB /* Alamofire in Frameworks */,
 				3DE489982DD2F9DD00D3F310 /* KakaoSDKUser in Frameworks */,
 				3DE489942DD2F9DD00D3F310 /* KakaoSDKAuth in Frameworks */,
 			);
@@ -143,6 +145,7 @@
 				3DE489932DD2F9DD00D3F310 /* KakaoSDKAuth */,
 				3DE489952DD2F9DD00D3F310 /* KakaoSDKCommon */,
 				3DE489972DD2F9DD00D3F310 /* KakaoSDKUser */,
+				3DB719632DD36087004FB5BB /* Alamofire */,
 			);
 			productName = PicplzClient;
 			productReference = 3DBF92A52D55BB65009EF4C3 /* PicplzClient.app */;
@@ -231,6 +234,7 @@
 				3D8449A32D59B54100AEFB66 /* XCRemoteSwiftPackageReference "Swinject" */,
 				3D6299A32DA1464D00929978 /* XCRemoteSwiftPackageReference "SnapKit" */,
 				3DE489922DD2F9DD00D3F310 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */,
+				3DB719622DD36087004FB5BB /* XCRemoteSwiftPackageReference "Alamofire" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 3DBF92A62D55BB65009EF4C3 /* Products */;
@@ -625,6 +629,14 @@
 				version = 2.9.1;
 			};
 		};
+		3DB719622DD36087004FB5BB /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire";
+			requirement = {
+				kind = exactVersion;
+				version = 5.10.2;
+			};
+		};
 		3DE489922DD2F9DD00D3F310 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/kakao/kakao-ios-sdk";
@@ -645,6 +657,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 3D8449A32D59B54100AEFB66 /* XCRemoteSwiftPackageReference "Swinject" */;
 			productName = Swinject;
+		};
+		3DB719632DD36087004FB5BB /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3DB719622DD36087004FB5BB /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
 		};
 		3DE489932DD2F9DD00D3F310 /* KakaoSDKAuth */ = {
 			isa = XCSwiftPackageProductDependency;
