@@ -5,12 +5,14 @@
 //  Created by 임영택 on 2/7/25.
 //
 
+import KakaoSDKCommon
 import UIKit
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        let kakaoAppKey = Bundle.main.infoDictionary?["Kakao App Key"] as! String
+        KakaoSDK.initSDK(appKey: kakaoAppKey)
         return true
     }
 
