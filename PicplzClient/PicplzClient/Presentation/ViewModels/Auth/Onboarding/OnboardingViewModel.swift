@@ -6,10 +6,13 @@
 //
 
 import Combine
+import OSLog
 
 final class OnboardingViewModel: OnboardingViewModelProtocol {
     var delegate: OnboardingViewModelDelegate?
     var loginUseCase: LoginUseCase?
+    
+    private let log = Logger.of("OnboardingViewModel")
     
     @Published var currentPageIndex = 0
     var currentPageIndexPublisher: Published<Int>.Publisher {
@@ -32,14 +35,13 @@ final class OnboardingViewModel: OnboardingViewModelProtocol {
         Task {
             do {
                 try await loginUseCase?.login()
-                print("loggedIn")
+                log.info("loggedIn")
                 
                 await MainActor.run {
                     delegate?.loggedIn()
                 }
             } catch {
-                print("login failed")
-                print(error)
+                log.error("login failed... \(error)")
             }
         }
     }
