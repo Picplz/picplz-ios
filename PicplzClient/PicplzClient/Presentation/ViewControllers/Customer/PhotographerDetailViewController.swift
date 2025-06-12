@@ -16,6 +16,7 @@ class PhotographerDetailViewController: UIViewController {
     private let dividerView = DividerView(backgroundColor: .grey1)
     private let reviewView = PhotographerReviewDigestView()
     private let portfolioView = PhotographerPortfolioDigestView()
+    private let packagesView = PhotographerPackageTabsView(packageInformations: PhotographerPackage.debugData)
     
     var viewModel: PhotographerDetailViewModel!
     
@@ -31,6 +32,7 @@ class PhotographerDetailViewController: UIViewController {
         scrollContentView.addSubview(dividerView)
         scrollContentView.addSubview(reviewView)
         scrollContentView.addSubview(portfolioView)
+        scrollContentView.addSubview(packagesView)
         
         scrollView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
@@ -60,7 +62,12 @@ class PhotographerDetailViewController: UIViewController {
         portfolioView.snp.makeConstraints { make in
             make.horizontalEdges.equalToSuperview().inset(15)
             make.top.equalTo(reviewView.snp.bottom).offset(50)
-            make.bottom.equalToSuperview().offset(-100) // FIXME: 아래에 뷰 추가되면 제거
+        }
+        
+        packagesView.snp.makeConstraints { make in
+            make.horizontalEdges.equalToSuperview().inset(15)
+            make.top.equalTo(portfolioView.snp.bottom).offset(50)
+            make.bottom.equalToSuperview().offset(-100)
         }
         
         bind()
@@ -78,6 +85,23 @@ class PhotographerDetailViewController: UIViewController {
                 }
             }
             .store(in: &subscriptions)
+        
+        packagesView.didSelectPackage = { [weak self] index in
+            self?.viewModel.selectedPackageIndex = index
+        }
+        
+        viewModel.selectedPackageIndexPublisher
+            .receive(on: RunLoop.main)
+            .sink { [weak self] index in
+                self?.packagesView.configure(selectedIndex: index)
+            }
+            .store(in: &subscriptions)
+    }
+}
+
+extension PhotographerDetailViewController {
+    private func configurePackageTabView(index: Int) {
+        
     }
 }
 

@@ -11,4 +11,7 @@ import Combine
 protocol PhotographerDetailViewModelProtocol {
     var photographerId: Int? { get }
     var photographerIdPublisher: AnyPublisher<Int, Never> { get }
+    
+    var selectedPackageIndex: Int { get }
+    var selectedPackageIndexPublisher: AnyPublisher<Int, Never> { get }
 }
