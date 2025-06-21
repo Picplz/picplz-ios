@@ -50,6 +50,10 @@ class CustomerMapViewController: UIViewController {
             .init(name: "원장", distance: nil, distanceUnit: nil, active: true, image: UIImage(named: "ProfileImagePlaceholder")!),
         ]
         
+        bottomSheetContentView.onPhotographerSelected = { [weak self] photographerId in
+            self?.viewModel.photographerSelected(id: photographerId)
+        }
+        
         bind()
         viewModel.onLoad()
     }
@@ -149,6 +153,11 @@ class CustomerMapViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         animateBlinkSearchingLable(count: 3)
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        navigationController?.setNavigationBarHidden(false, animated: false)
     }
     
     // FIXME: 애니메이션이 자연스럽지 않음

@@ -11,6 +11,8 @@ import MapKit
 import OSLog
 
 final class CustomerMapViewModel: NSObject, CustomerMapViewModelProtocol {
+    var delegate: (any CustomerMapViewModelDelegate)?
+    
     @Published var shortAddress: String?
     var shortAddressPublisher: AnyPublisher<String, Never> {
         $shortAddress
@@ -45,5 +47,9 @@ final class CustomerMapViewModel: NSObject, CustomerMapViewModelProtocol {
         Task { @MainActor in
             self.shortAddress = await self.getShortAddressUseCase.getShortAddress()
         }
+    }
+    
+    func photographerSelected(id: Int) {
+        delegate?.selectPhotographerDetail(photographerId: id)
     }
 }

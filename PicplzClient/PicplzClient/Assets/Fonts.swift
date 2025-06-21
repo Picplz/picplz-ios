@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import OSLog
 
 enum FontFamily: String {
     case pretendardExtraBold = "Pretendard-ExtraBold"
@@ -19,6 +20,17 @@ enum FontFamily: String {
 }
 
 extension UIFont {
+    static let logger = Logger.of("UIFont+")
+    
+    static func custom(_ fontFamily: FontFamily, size: CGFloat) -> UIFont {
+        if let font = UIFont(name: fontFamily.rawValue, size: size) {
+            return font
+        } else {
+            logger.warning("font not found: \(fontFamily.rawValue)")
+            return UIFont.systemFont(ofSize: size)
+        }
+    }
+    
     static func listFontFamilies() {
         let families = familyNames.reduce("") { partialResult, family in
             return partialResult + "\n" + family
@@ -32,6 +44,7 @@ extension UIFont {
     static let buttonTitle = UIFont(name: FontFamily.pretendardBold.rawValue, size: 16)!
     static let title = UIFont(name: FontFamily.pretendardBold.rawValue, size: 20)!
     static let bigTitle = UIFont(name: FontFamily.pretendardBold.rawValue, size: 24)!
+    static let smallTitle = UIFont(name: FontFamily.pretendardBold.rawValue, size: 18)!
     static let caption = UIFont(name: FontFamily.pretendardRegular.rawValue, size: 12)!
     static let captionSemiBold = UIFont(name: FontFamily.pretendardSemiBold.rawValue, size: 12)!
     static let middleTitleSemiBold = UIFont(name: FontFamily.pretendardSemiBold.rawValue, size: 18)!

@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - 네비게이션 바 커스텀 디자인 적용
 - 작가/고객 라우팅 분기처리
 - 작가/고객 탭바 작성
+- 고객 상세 뷰
 
 ### Fixed
 - 경력 없음 선택 시에도 경력 선택 페이지로 이동했던 문제

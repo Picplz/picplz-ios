@@ -82,6 +82,7 @@ final class DIContainerProvider {
                 )
             )
         }
+        container.register(PhotographerDetailViewModel.self) { r in PhotographerDetailViewModel() }
         
         // MARK:              ...  View Controllers
         container.register(OnboardingViewController.self) { r in
@@ -136,6 +137,11 @@ final class DIContainerProvider {
         container.register(CustomerMapViewController.self) { r in
             let vc = CustomerMapViewController()
             vc.viewModel = r.resolve(CustomerMapViewModelProtocol.self)
+            return vc
+        }
+        container.register(PhotographerDetailViewController.self) { r in
+            let vc = PhotographerDetailViewController()
+            vc.viewModel = r.resolve(PhotographerDetailViewModel.self)
             return vc
         }
         return container

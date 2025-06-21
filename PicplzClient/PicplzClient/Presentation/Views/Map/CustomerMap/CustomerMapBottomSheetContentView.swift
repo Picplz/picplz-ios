@@ -18,7 +18,9 @@ class CustomerMapBottomSheetContentView: UIView {
     // FIXME: should be injected from outside
     private var photographerFilters: [MapListFilter] = MapListFilter.photographerFilters
     private var hashTagFilters: [MapListFilter] = MapListFilter.hashTagFilters
-    private var photographerList: [MapListPhotographer] = MapListPhotographer.debugList
+    private var photographerList: [PhotographerDetail] = PhotographerDetail.debugList
+    
+    var onPhotographerSelected: (_ photographerId: Int) -> Void = { _ in }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -184,9 +186,9 @@ class CustomerMapBottomSheetContentView: UIView {
         print(order)
     }
     
-    private func didPhotographerSelected(photographer: MapListPhotographer) {
+    private func didPhotographerSelected(photographer: PhotographerDetail) {
         // TODO: Connect to viewModel
-        print(photographer)
+        onPhotographerSelected(photographer.id)
     }
 }
 
@@ -200,7 +202,7 @@ fileprivate enum Section {
 fileprivate enum Item: Hashable {
     case filter(MapListFilter)
     case order
-    case photographerList(MapListPhotographer)
+    case photographerList(PhotographerDetail)
 }
 
 
@@ -269,8 +271,8 @@ fileprivate final class PhotographerItemCell: UICollectionViewCell {
         return stackView
     }()
     
-    private var photographer: MapListPhotographer?
-    private var didSelectHandler: ((_ orderBy: MapListPhotographer) -> Void)?
+    private var photographer: PhotographerDetail?
+    private var didSelectHandler: ((_ orderBy: PhotographerDetail) -> Void)?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -381,7 +383,7 @@ fileprivate final class PhotographerItemCell: UICollectionViewCell {
         didSelectHandler?(photographer)
     }
     
-    func configure(photographer: MapListPhotographer, didSelectHandler: ((_ photographer: MapListPhotographer) -> Void)?) {
+    func configure(photographer: PhotographerDetail, didSelectHandler: ((_ photographer: PhotographerDetail) -> Void)?) {
         self.photographer = photographer
         self.didSelectHandler = didSelectHandler
         
