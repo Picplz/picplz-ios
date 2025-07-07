@@ -58,46 +58,4 @@ final class MainCoordinator: Coordinator {
             delegate?.finished(mainCoordinator: self)
         }
     }
-    
-    func loggedOut(_ childCoordinator: Coordinator) {
-        childCoordinators = childCoordinators.filter { $0 !== childCoordinator }
-        delegate?.finished(mainCoordinator: self)
-    }
-    
-    func switchToAnother(_ childCoordinator: Coordinator) {
-        childCoordinators = childCoordinators.filter { $0 !== childCoordinator }
-        
-        if childCoordinator is CustomerTabBarCoordinator {
-            delegate?.switchToCustomer()
-            return
-        }
-        
-        if childCoordinator is PhotographerTabBarCoordinator {
-            delegate?.switchToPhotographer()
-            return
-        }
-        
-        log.warning("unexpected child coordinator: \(String(describing: childCoordinator.self))")
-    }
 }
-
-extension MainCoordinator: CustomerTabBarCoordinatorDelegate {
-    func switchToPhotographer(customerCoordinator: CustomerTabBarCoordinator) {
-        switchToAnother(customerCoordinator)
-    }
-    
-    func loggedOut(customerCoordinator: CustomerTabBarCoordinator) {
-        loggedOut(customerCoordinator)
-    }
-}
-
-extension MainCoordinator: PhotographerTabBarCoordinatorDelegate {
-    func switchToCustomer(photographerCoordinator: PhotographerTabBarCoordinator) {
-        switchToAnother(photographerCoordinator)
-    }
-    
-    func loggedOut(photographerCoordinator: PhotographerTabBarCoordinator) {
-        loggedOut(photographerCoordinator)
-    }
-}
-

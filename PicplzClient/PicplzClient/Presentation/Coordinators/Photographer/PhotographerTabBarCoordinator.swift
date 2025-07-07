@@ -16,7 +16,7 @@ protocol PhotographerTabBarCoordinatorDelegate: AnyObject {
 class PhotographerTabBarCoordinator: Coordinator {
     var childCoordinators: [any Coordinator] = []
     weak var delegate: PhotographerTabBarCoordinatorDelegate?
-    let tabBarController: UITabBarController
+    let tabBarController: UITabBarController // FIXME: Tabbar 커스텀 스타일링
     private let log = Logger.of("PhotographerTabBarCoordinator")
     
     private lazy var homeCoordinator = PhotographerHomeCoordinator(tabBarTitle: "홈", tabBarImage: UIImage(named: "StarBlack"), tabBarIndex: 0)
@@ -42,7 +42,6 @@ class PhotographerTabBarCoordinator: Coordinator {
         chatCoordinator.start()
         myPageCoordinator.start()
         
-        let tabBarController = UITabBarController() // FIXME: Tabbar 커스텀 스타일링
         tabBarController.tabBar.isTranslucent = false
         tabBarController.tabBar.backgroundColor = .picplzWhite
         tabBarController.viewControllers = [

@@ -21,7 +21,6 @@ final class AppCoordinator: Coordinator {
         guard let window = window else { return nil }
         
         self.window = window
-        navigationController = UIPicplzNavigationController()
         
         self.container = container
         
@@ -38,8 +37,7 @@ final class AppCoordinator: Coordinator {
     }
     
     func start() {
-        window.rootViewController = navigationController
-        window.makeKeyAndVisible()
+        initNavigationController()
         
         if !authManaging.isLogin {
             showLogin()
@@ -51,24 +49,22 @@ final class AppCoordinator: Coordinator {
     }
     
     func showLogin() {
-        guard let navigationController = navigationController else {
-            log.error("navigationController is nil")
-            return
+        if navigationController == nil {
+            initNavigationController()
         }
         
-        let coordinator = LoginCoordinator(navigationController: navigationController, container: container)
+        let coordinator = LoginCoordinator(navigationController: navigationController!, container: container)
         childCoordinators.append(coordinator)
         coordinator.delegate = self
         coordinator.start()
     }
     
     func showMain() {
-        guard let navigationController = navigationController else {
-            log.error("navigationController is nil")
-            return
+        if navigationController == nil {
+            initNavigationController()
         }
         
-        let coordinator = MainCoordinator(navigationController: navigationController, container: container)
+        let coordinator = MainCoordinator(navigationController: navigationController!, container: container)
         childCoordinators.append(coordinator)
         coordinator.delegate = self
         coordinator.start()
@@ -94,25 +90,81 @@ extension AppCoordinator: MainCoordinatorDelegate {
     
     func switchToCustomer() {
         defer {
-            childCoordinators = []
             navigationController = nil
         }
         
         let customerCoordinator = CustomerTabBarCoordinator(container: container)
+        childCoordinators = [customerCoordinator]
         customerCoordinator.start()
+        customerCoordinator.delegate = self
         window.rootViewController = customerCoordinator.tabBarController
         window.makeKeyAndVisible()
     }
     
     func switchToPhotographer() {
         defer {
-            childCoordinators = []
             navigationController = nil
         }
         
         let photographerCoordinator = PhotographerTabBarCoordinator()
+        childCoordinators = [photographerCoordinator]
         photographerCoordinator.start()
+        photographerCoordinator.delegate = self
         window.rootViewController = photographerCoordinator.tabBarController
         window.makeKeyAndVisible()
+    }
+}
+
+extension AppCoordinator: CustomerTabBarCoordinatorDelegate {
+    func switchToPhotographer(customerCoordinator: CustomerTabBarCoordinator) {
+        switchToAnother(customerCoordinator)
+    }
+    
+    func loggedOut(customerCoordinator: CustomerTabBarCoordinator) {
+        loggedOut(customerCoordinator)
+    }
+}
+
+extension AppCoordinator: PhotographerTabBarCoordinatorDelegate {
+    func switchToCustomer(photographerCoordinator: PhotographerTabBarCoordinator) {
+        switchToAnother(photographerCoordinator)
+    }
+    
+    func loggedOut(photographerCoordinator: PhotographerTabBarCoordinator) {
+        loggedOut(photographerCoordinator)
+    }
+}
+
+/// MARK: - Other Logics
+extension AppCoordinator {
+    func initNavigationController() {
+        navigationController = UIPicplzNavigationController()
+        childCoordinators = []
+        window.rootViewController = navigationController
+        window.makeKeyAndVisible()
+    }
+    
+    func loggedOut(_ childCoordinator: Coordinator) {
+        childCoordinators = childCoordinators.filter { $0 !== childCoordinator }
+        showLogin()
+    }
+    
+    func switchToAnother(_ childCoordinator: Coordinator) {
+        guard let childCoordinator = childCoordinators.first else {
+            log.warning("childCoordinators is empty")
+            return
+        }
+        
+        if childCoordinator is CustomerTabBarCoordinator {
+            switchToPhotographer()
+            return
+        }
+        
+        if childCoordinator is PhotographerTabBarCoordinator {
+            switchToCustomer()
+            return
+        }
+        
+        log.warning("unexpected child coordinator: \(String(describing: childCoordinator.self))")
     }
 }
