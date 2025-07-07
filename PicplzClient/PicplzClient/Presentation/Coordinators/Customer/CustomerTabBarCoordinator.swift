@@ -17,7 +17,7 @@ protocol CustomerTabBarCoordinatorDelegate: AnyObject {
 class CustomerTabBarCoordinator: Coordinator {
     var childCoordinators: [any Coordinator] = []
     weak var delegate: CustomerTabBarCoordinatorDelegate?
-    private let navigationController: UINavigationController
+    let tabBarController: UITabBarController // TODO: Tabbar 커스텀 스타일링
     private let container: Container
     private let log = Logger.of("CustomerTabBarCoordinator")
     
@@ -27,8 +27,8 @@ class CustomerTabBarCoordinator: Coordinator {
     private lazy var chatCoordinator = CustomerChatCoordinator(tabBarTitle: "채팅", tabBarImage: UIImage(named: "StarBlack"), tabBarIndex: 3)
     private lazy var myPageCoordinator = CustomerMyPageCoordinator(tabBarTitle: "마이페이지", tabBarImage: UIImage(named: "StarBlack"), tabBarIndex: 4)
     
-    init(navigationController: UINavigationController, container: Container) {
-        self.navigationController = navigationController
+    init(container: Container) {
+        self.tabBarController = UITabBarController()
         self.container = container
         
         homeCoordinator.delegate = self
@@ -45,7 +45,6 @@ class CustomerTabBarCoordinator: Coordinator {
         chatCoordinator.start()
         myPageCoordinator.start()
         
-        let tabBarController = UITabBarController() // FIXME: Tabbar 커스텀 스타일링
         tabBarController.tabBar.isTranslucent = false
         tabBarController.tabBar.backgroundColor = .picplzWhite
         tabBarController.viewControllers = [
@@ -56,8 +55,6 @@ class CustomerTabBarCoordinator: Coordinator {
             myPageCoordinator.navigationController,
         ]
         tabBarController.selectedIndex = 0
-        
-        navigationController.viewControllers = [tabBarController]
     }
 }
 

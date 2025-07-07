@@ -11,6 +11,8 @@ import Swinject
 
 protocol MainCoordinatorDelegate: AnyObject {
     func finished(mainCoordinator: MainCoordinator)
+    func switchToCustomer()
+    func switchToPhotographer()
 }
 
 final class MainCoordinator: Coordinator {
@@ -49,67 +51,11 @@ final class MainCoordinator: Coordinator {
          UserDefaults 등으로 관리해야 할 듯
          */
         if case .customer = memberType {
-            startCustomer()
+            delegate?.switchToCustomer()
         } else if case .photographer = memberType {
-            startPhotographer()
+            delegate?.switchToPhotographer()
         } else {
             delegate?.finished(mainCoordinator: self)
         }
     }
-    
-    func startCustomer() {
-        let coordinator = CustomerTabBarCoordinator(navigationController: navigationController, container: container)
-        childCoordinators.append(coordinator)
-        coordinator.delegate = self
-        coordinator.start()
-    }
-    
-    func startPhotographer() {
-        let coordinator = PhotographerTabBarCoordinator(navigationController: navigationController)
-        childCoordinators.append(coordinator)
-        coordinator.delegate = self
-        coordinator.start()
-    }
-    
-    func loggedOut(_ childCoordinator: Coordinator) {
-        childCoordinators = childCoordinators.filter { $0 !== childCoordinator }
-        delegate?.finished(mainCoordinator: self)
-    }
-    
-    func switchToAnother(_ childCoordinator: Coordinator) {
-        childCoordinators = childCoordinators.filter { $0 !== childCoordinator }
-        
-        if childCoordinator is CustomerTabBarCoordinator {
-            startPhotographer()
-            return
-        }
-        
-        if childCoordinator is PhotographerTabBarCoordinator {
-            startCustomer()
-            return
-        }
-        
-        log.warning("unexpected child coordinator: \(String(describing: childCoordinator.self))")
-    }
 }
-
-extension MainCoordinator: CustomerTabBarCoordinatorDelegate {
-    func switchToPhotographer(customerCoordinator: CustomerTabBarCoordinator) {
-        switchToAnother(customerCoordinator)
-    }
-    
-    func loggedOut(customerCoordinator: CustomerTabBarCoordinator) {
-        loggedOut(customerCoordinator)
-    }
-}
-
-extension MainCoordinator: PhotographerTabBarCoordinatorDelegate {
-    func switchToCustomer(photographerCoordinator: PhotographerTabBarCoordinator) {
-        switchToAnother(photographerCoordinator)
-    }
-    
-    func loggedOut(photographerCoordinator: PhotographerTabBarCoordinator) {
-        loggedOut(photographerCoordinator)
-    }
-}
-
