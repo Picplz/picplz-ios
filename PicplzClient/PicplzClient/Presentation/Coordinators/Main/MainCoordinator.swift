@@ -59,20 +59,6 @@ final class MainCoordinator: Coordinator {
         }
     }
     
-//    func startCustomer() {
-//        let coordinator = CustomerTabBarCoordinator(container: container)
-//        childCoordinators.append(coordinator)
-//        coordinator.delegate = self
-//        coordinator.start()
-//    }
-//    
-//    func startPhotographer() {
-//        let coordinator = PhotographerTabBarCoordinator()
-//        childCoordinators.append(coordinator)
-//        coordinator.delegate = self
-//        coordinator.start()
-//    }
-    
     func loggedOut(_ childCoordinator: Coordinator) {
         childCoordinators = childCoordinators.filter { $0 !== childCoordinator }
         delegate?.finished(mainCoordinator: self)
