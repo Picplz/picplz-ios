@@ -16,7 +16,7 @@ protocol PhotographerTabBarCoordinatorDelegate: AnyObject {
 class PhotographerTabBarCoordinator: Coordinator {
     var childCoordinators: [any Coordinator] = []
     weak var delegate: PhotographerTabBarCoordinatorDelegate?
-    private let navigationController: UINavigationController
+    let tabBarController: UITabBarController
     private let log = Logger.of("PhotographerTabBarCoordinator")
     
     private lazy var homeCoordinator = PhotographerHomeCoordinator(tabBarTitle: "홈", tabBarImage: UIImage(named: "StarBlack"), tabBarIndex: 0)
@@ -25,8 +25,8 @@ class PhotographerTabBarCoordinator: Coordinator {
     private lazy var chatCoordinator = PhotographerChatCoordinator(tabBarTitle: "채팅", tabBarImage: UIImage(named: "StarBlack"), tabBarIndex: 3)
     private lazy var myPageCoordinator = PhotographerMyPageCoordinator(tabBarTitle: "마이페이지", tabBarImage: UIImage(named: "StarBlack"), tabBarIndex: 4)
     
-    init(navigationController: UINavigationController) {
-        self.navigationController = navigationController
+    init() {
+        self.tabBarController = UITabBarController()
         
         homeCoordinator.delegate = self
     }
@@ -53,8 +53,6 @@ class PhotographerTabBarCoordinator: Coordinator {
             myPageCoordinator.navigationController,
         ]
         tabBarController.selectedIndex = 0
-        
-        navigationController.viewControllers = [tabBarController]
     }
 }
 

@@ -12,7 +12,7 @@ import Swinject
 final class AppCoordinator: Coordinator {
     var childCoordinators: [any Coordinator] = []
     private let window: UIWindow
-    private let navigationController: UINavigationController
+    private var navigationController: UINavigationController?
     private let container: Container
     private let authManaging: AuthManaging
     private let log = Logger.of("AppCoordinator")
@@ -38,19 +38,24 @@ final class AppCoordinator: Coordinator {
     }
     
     func start() {
+        window.rootViewController = navigationController
+        window.makeKeyAndVisible()
+        
         if !authManaging.isLogin {
             showLogin()
         } else {
             showMain()
         }
         
-        window.rootViewController = navigationController
-        window.makeKeyAndVisible()
-        
         log.debug("AppCoordinator started")
     }
     
     func showLogin() {
+        guard let navigationController = navigationController else {
+            log.error("navigationController is nil")
+            return
+        }
+        
         let coordinator = LoginCoordinator(navigationController: navigationController, container: container)
         childCoordinators.append(coordinator)
         coordinator.delegate = self
@@ -58,6 +63,11 @@ final class AppCoordinator: Coordinator {
     }
     
     func showMain() {
+        guard let navigationController = navigationController else {
+            log.error("navigationController is nil")
+            return
+        }
+        
         let coordinator = MainCoordinator(navigationController: navigationController, container: container)
         childCoordinators.append(coordinator)
         coordinator.delegate = self
@@ -80,5 +90,29 @@ extension AppCoordinator: MainCoordinatorDelegate {
         
         childCoordinators = childCoordinators.filter { $0 !== mainCoordinator }
         showLogin()
+    }
+    
+    func switchToCustomer() {
+        defer {
+            childCoordinators = []
+            navigationController = nil
+        }
+        
+        let customerCoordinator = CustomerTabBarCoordinator(container: container)
+        customerCoordinator.start()
+        window.rootViewController = customerCoordinator.tabBarController
+        window.makeKeyAndVisible()
+    }
+    
+    func switchToPhotographer() {
+        defer {
+            childCoordinators = []
+            navigationController = nil
+        }
+        
+        let photographerCoordinator = PhotographerTabBarCoordinator()
+        photographerCoordinator.start()
+        window.rootViewController = photographerCoordinator.tabBarController
+        window.makeKeyAndVisible()
     }
 }

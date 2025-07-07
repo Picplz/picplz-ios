@@ -11,6 +11,8 @@ import Swinject
 
 protocol MainCoordinatorDelegate: AnyObject {
     func finished(mainCoordinator: MainCoordinator)
+    func switchToCustomer()
+    func switchToPhotographer()
 }
 
 final class MainCoordinator: Coordinator {
@@ -49,27 +51,27 @@ final class MainCoordinator: Coordinator {
          UserDefaults 등으로 관리해야 할 듯
          */
         if case .customer = memberType {
-            startCustomer()
+            delegate?.switchToCustomer()
         } else if case .photographer = memberType {
-            startPhotographer()
+            delegate?.switchToPhotographer()
         } else {
             delegate?.finished(mainCoordinator: self)
         }
     }
     
-    func startCustomer() {
-        let coordinator = CustomerTabBarCoordinator(navigationController: navigationController, container: container)
-        childCoordinators.append(coordinator)
-        coordinator.delegate = self
-        coordinator.start()
-    }
-    
-    func startPhotographer() {
-        let coordinator = PhotographerTabBarCoordinator(navigationController: navigationController)
-        childCoordinators.append(coordinator)
-        coordinator.delegate = self
-        coordinator.start()
-    }
+//    func startCustomer() {
+//        let coordinator = CustomerTabBarCoordinator(container: container)
+//        childCoordinators.append(coordinator)
+//        coordinator.delegate = self
+//        coordinator.start()
+//    }
+//    
+//    func startPhotographer() {
+//        let coordinator = PhotographerTabBarCoordinator()
+//        childCoordinators.append(coordinator)
+//        coordinator.delegate = self
+//        coordinator.start()
+//    }
     
     func loggedOut(_ childCoordinator: Coordinator) {
         childCoordinators = childCoordinators.filter { $0 !== childCoordinator }
@@ -80,12 +82,12 @@ final class MainCoordinator: Coordinator {
         childCoordinators = childCoordinators.filter { $0 !== childCoordinator }
         
         if childCoordinator is CustomerTabBarCoordinator {
-            startPhotographer()
+            delegate?.switchToCustomer()
             return
         }
         
         if childCoordinator is PhotographerTabBarCoordinator {
-            startCustomer()
+            delegate?.switchToPhotographer()
             return
         }
         
