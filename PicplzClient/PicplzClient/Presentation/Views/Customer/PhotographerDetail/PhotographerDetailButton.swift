@@ -12,7 +12,7 @@ final class PhotographerDetailButton: UIButton {
         super.init(frame: .zero)
         var configuration = UIButton.Configuration.plain()
         configuration.background.strokeWidth = 1
-        configuration.background.backgroundColor = .grey2
+        configuration.background.backgroundColor = .ppGrey2
         configuration.background.cornerRadius = 5
         
         configuration.image = image
@@ -23,7 +23,7 @@ final class PhotographerDetailButton: UIButton {
         
         var attributedTitle = AttributedString(title)
         attributedTitle.font = UIFont.caption
-        attributedTitle.foregroundColor = .grey4
+        attributedTitle.foregroundColor = .ppGrey4
         configuration.attributedTitle = attributedTitle
         
         self.configuration = configuration
@@ -32,7 +32,7 @@ final class PhotographerDetailButton: UIButton {
     func changeTitle(_ title: String) {
         var attributedTitle = AttributedString(title)
         attributedTitle.font = UIFont.caption
-        attributedTitle.foregroundColor = .grey4
+        attributedTitle.foregroundColor = .ppGrey4
         self.setAttributedTitle(NSAttributedString(attributedTitle), for: .normal)
     }
     

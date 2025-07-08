@@ -16,7 +16,7 @@ class BottomSheetExampleViewController: UIViewController {
     private let contentView: UIView = {
         let view = UILabel()
         view.text = "Hello, World!"
-        view.backgroundColor = .picplzWhite
+        view.backgroundColor = .ppWhite
         return view
     }()
 

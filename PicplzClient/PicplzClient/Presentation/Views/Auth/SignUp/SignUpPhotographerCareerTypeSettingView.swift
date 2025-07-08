@@ -41,7 +41,7 @@ final class SignUpPhotographerCareerTypeSettingView: UIView {
         
         subtitleLabel.translatesAutoresizingMaskIntoConstraints = false
         subtitleLabel.font = .body
-        subtitleLabel.textColor = .picplzBlack
+        subtitleLabel.textColor = .ppBlack
         subtitleLabel.text = "여기 라이팅 바꿔야할거같은데 우리이거 수정하기로햇던듯?"
         
         majorButton.translatesAutoresizingMaskIntoConstraints = false
@@ -98,16 +98,16 @@ final class SignUpPhotographerCareerTypeSettingView: UIView {
 }
 
 final class CareerTypeButton: UIButton {
-    private let defaultFont = UIFont(name: FontFamily.pretendardRegular.rawValue, size: 14)!
-    private let selectedFont = UIFont(name: FontFamily.pretendardBold.rawValue, size: 14)!
+    private let defaultFont = UIFont(name: CustomFontFamily.pretendardRegular.rawValue, size: 14)!
+    private let selectedFont = UIFont(name: CustomFontFamily.pretendardBold.rawValue, size: 14)!
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         var configuration = UIButton.Configuration.plain()
         configuration.contentInsets = .init(top: 0, leading: 11.5, bottom: 0, trailing: 11.5)
-        configuration.baseBackgroundColor = .picplzWhite
-        configuration.baseForegroundColor = .grey4
+        configuration.baseBackgroundColor = .ppWhite
+        configuration.baseForegroundColor = .ppGrey4
         configuration.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { [weak self] incoming in
             guard let self else { return incoming }
             
@@ -124,7 +124,7 @@ final class CareerTypeButton: UIButton {
         configuration.background.cornerRadius = 5.0
         configuration.cornerStyle = .fixed
         
-        configuration.background.strokeColor = .grey3
+        configuration.background.strokeColor = .ppGrey3
         configuration.background.strokeWidth = 1.0
         
         self.configuration = configuration
@@ -132,8 +132,8 @@ final class CareerTypeButton: UIButton {
     
     override var isSelected: Bool {
         didSet {
-            self.configuration?.background.strokeColor = self.isSelected ? .picplzBlack : .grey3
-            self.configuration?.baseForegroundColor = self.isSelected ? .picplzBlack : .grey4
+            self.configuration?.background.strokeColor = self.isSelected ? .ppBlack : .ppGrey3
+            self.configuration?.baseForegroundColor = self.isSelected ? .ppBlack : .ppGrey4
         }
     }
     

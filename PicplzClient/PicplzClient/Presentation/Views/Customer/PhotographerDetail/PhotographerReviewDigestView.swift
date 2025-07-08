@@ -29,7 +29,7 @@ final class PhotographerReviewDigestView: UIView {
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.font = .smallTitle
-        label.textColor = .picplzBlack
+        label.textColor = .ppBlack
         label.text = "촬영 만족도"
         return label
     }()
@@ -43,7 +43,7 @@ final class PhotographerReviewDigestView: UIView {
     private let ratingLabel: UILabel = {
         let label = UILabel()
         label.font = .bodySemibold
-        label.textColor = .grey4
+        label.textColor = .ppGrey4
         return label
     }()
     private let chartView = PhotographerReviewChartView()
@@ -66,7 +66,7 @@ final class PhotographerReviewDigestView: UIView {
         
         super.init(frame: frame)
         
-        backgroundColor = .picplzWhite
+        backgroundColor = .ppWhite
         layout()
         
         chartView.configure(reviewAnalysisList)
@@ -113,7 +113,7 @@ final class PhotographerReviewDigestView: UIView {
         
         let attributedString = NSAttributedString(string: "전체 리뷰 보러가기 (\(totalCount))", attributes: [
             .font: UIFont.caption,
-            .foregroundColor: UIColor.grey4
+            .foregroundColor: UIColor.ppGrey4
         ])
         goToDetailButton.setAttributedTitle(attributedString, for: .normal)
     }

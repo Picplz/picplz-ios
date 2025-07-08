@@ -77,13 +77,13 @@ final class OnboardingPageControl: UIView {
         
         func updateAppearance() {
             if enabled {
-                backgroundColor = .picplzBlack
+                backgroundColor = .ppBlack
                 layer.borderWidth = .zero
                 layer.borderColor = UIColor.clear.cgColor
             } else {
-                backgroundColor = .picplzWhite
+                backgroundColor = .ppWhite
                 layer.borderWidth = 0.8
-                layer.borderColor = UIColor.picplzBlack.cgColor
+                layer.borderColor = UIColor.ppBlack.cgColor
             }
         }
     }

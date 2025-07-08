@@ -12,9 +12,9 @@ class UIPicplzButton3: UIButton {
     init(title: String, image: UIImage) {
         super.init(frame: .zero)
         var configuration = UIButton.Configuration.plain()
-        configuration.background.strokeColor = .grey2
+        configuration.background.strokeColor = .ppGrey2
         configuration.background.strokeWidth = 1
-        configuration.background.backgroundColor = .grey1
+        configuration.background.backgroundColor = .ppGrey1
         configuration.cornerStyle = .capsule
         
         configuration.image = image
@@ -23,7 +23,7 @@ class UIPicplzButton3: UIButton {
         
         var attributedTitle = AttributedString(title)
         attributedTitle.font = UIFont.caption
-        attributedTitle.foregroundColor = .grey4
+        attributedTitle.foregroundColor = .ppGrey4
         configuration.attributedTitle = attributedTitle
         
         self.configuration = configuration
@@ -32,7 +32,7 @@ class UIPicplzButton3: UIButton {
     func changeTitle(_ title: String) {
         var attributedTitle = AttributedString(title)
         attributedTitle.font = UIFont.caption
-        attributedTitle.foregroundColor = .grey4
+        attributedTitle.foregroundColor = .ppGrey4
         self.setAttributedTitle(NSAttributedString(attributedTitle), for: .normal)
     }
     

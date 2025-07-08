@@ -43,7 +43,7 @@ class PhotographerTabBarCoordinator: Coordinator {
         myPageCoordinator.start()
         
         tabBarController.tabBar.isTranslucent = false
-        tabBarController.tabBar.backgroundColor = .picplzWhite
+        tabBarController.tabBar.backgroundColor = .ppWhite
         tabBarController.viewControllers = [
             homeCoordinator.navigationController,
             mapCoordinator.navigationController,

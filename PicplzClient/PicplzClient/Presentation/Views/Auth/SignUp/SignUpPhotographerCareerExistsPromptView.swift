@@ -46,7 +46,7 @@ final class SignUpPhotographerCareerExistsPromptView: UIView {
         
         subtitleLabel.translatesAutoresizingMaskIntoConstraints = false
         subtitleLabel.font = .body
-        subtitleLabel.textColor = .picplzBlack
+        subtitleLabel.textColor = .ppBlack
         subtitleLabel.text = "픽플즈는 사진 경력이 없는 금손님도 환영해요!"
         
         informationButton.translatesAutoresizingMaskIntoConstraints = false
@@ -98,12 +98,12 @@ final class selectablePicPlzButton: UIPicplzButton {
                 self.backgroundColor = .black
                 self.layer.borderColor = .none
                 self.layer.borderWidth = .zero
-                self.setTitleColor(.picplzWhite, for: .normal)
+                self.setTitleColor(.ppWhite, for: .normal)
             } else {
                 self.backgroundColor = .white
-                self.layer.borderColor = UIColor.grey3.cgColor
+                self.layer.borderColor = UIColor.ppGrey3.cgColor
                 self.layer.borderWidth = 1.0
-                self.setTitleColor(.picplzBlack, for: .normal)
+                self.setTitleColor(.ppBlack, for: .normal)
             }
         }
     }

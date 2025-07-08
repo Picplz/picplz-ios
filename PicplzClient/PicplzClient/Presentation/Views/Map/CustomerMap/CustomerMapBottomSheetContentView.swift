@@ -25,7 +25,7 @@ class CustomerMapBottomSheetContentView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        backgroundColor = .picplzWhite
+        backgroundColor = .ppWhite
         
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: .init())
         collectionView.showsVerticalScrollIndicator = false
@@ -220,7 +220,7 @@ fileprivate final class PhotographerItemCell: UICollectionViewCell {
         
         let label = UILabel()
         label.text = "우리 동네 작가"
-        label.font = UIFont.init(name: FontFamily.pretendardSemiBold.rawValue, size: 9)
+        label.font = UIFont.init(name: CustomFontFamily.pretendardSemiBold.rawValue, size: 9)
         label.textColor = .init(red: 0, green: 135 / 255, blue: 218 / 255, alpha: 1)
         
         view.addSubview(label)
@@ -291,14 +291,14 @@ fileprivate final class PhotographerItemCell: UICollectionViewCell {
     
     private func style() {
         profileImageView.layer.cornerRadius = 5
-        profileImageView.layer.borderColor = UIColor.grey2.cgColor
+        profileImageView.layer.borderColor = UIColor.ppGrey2.cgColor
         profileImageView.layer.borderWidth = 1
         
         nameLabel.font = .middleTitleSemiBold
-        nameLabel.textColor = .picplzBlack
+        nameLabel.textColor = .ppBlack
         
         infoLabel.font = .body
-        infoLabel.textColor = .grey4
+        infoLabel.textColor = .ppGrey4
         
         scrollView.showsVerticalScrollIndicator = false
         scrollView.showsHorizontalScrollIndicator = false
@@ -359,14 +359,14 @@ fileprivate final class PhotographerItemCell: UICollectionViewCell {
     
     private func getTagBadge(title: String) -> UIView {
         let view = UIView()
-        view.backgroundColor = .grey2
+        view.backgroundColor = .ppGrey2
         view.layer.cornerRadius = 5
         view.clipsToBounds = true
         
         let label = UILabel()
         label.text = title
         label.font = .body
-        label.textColor = .grey4
+        label.textColor = .ppGrey4
         
         view.addSubview(label)
         
@@ -401,7 +401,7 @@ fileprivate final class PhotographerItemCell: UICollectionViewCell {
 fileprivate final class SeparatorView: UICollectionReusableView {
     let lineView: UIView = {
         let view = UIView()
-        view.backgroundColor = .grey2
+        view.backgroundColor = .ppGrey2
         return view
     }()
     

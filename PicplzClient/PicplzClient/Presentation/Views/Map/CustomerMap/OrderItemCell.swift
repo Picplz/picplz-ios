@@ -44,7 +44,7 @@ final class OrderItemCell: UICollectionViewCell, UIPickerViewDelegate, UIPickerV
     private func layout() {
         textField.text = selectedRule.title
         textField.font = UIFont.caption
-        textField.textColor = .grey5
+        textField.textColor = .ppGrey5
         
         addSubview(textField)
         textField.snp.makeConstraints { make in

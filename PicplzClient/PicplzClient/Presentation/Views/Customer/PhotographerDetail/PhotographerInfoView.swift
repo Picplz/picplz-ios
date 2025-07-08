@@ -10,7 +10,7 @@ import UIKit
 final class PhotographerInfoView: UIView {
     let followersCountLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .grey4
+        label.textColor = .ppGrey4
         label.font = .caption
         return label
     }()
@@ -40,7 +40,7 @@ final class PhotographerInfoView: UIView {
     let snsIdLabel: UILabel = {
         let label = UILabel()
         label.font = .caption
-        label.textColor = .grey3
+        label.textColor = .ppGrey3
         return label
     }()
     
@@ -53,7 +53,7 @@ final class PhotographerInfoView: UIView {
         
         let badgeCaption = UILabel()
         badgeCaption.font = .captionSemiBold
-        badgeCaption.textColor = .greend120
+        badgeCaption.textColor = .ppGreend120
         badgeCaption.text = "바로 촬영"
         
         // layout
@@ -76,8 +76,8 @@ final class PhotographerInfoView: UIView {
     }()
     
     let introductionLabel: CustomTruncatedLabel = {
-        let normalFont = UIFont(name: FontFamily.pretendardRegular.rawValue, size: 11)!
-        let boldFont = UIFont(name: FontFamily.pretendardBold.rawValue, size: 11)!
+        let normalFont = UIFont(name: CustomFontFamily.pretendardRegular.rawValue, size: 11)!
+        let boldFont = UIFont(name: CustomFontFamily.pretendardBold.rawValue, size: 11)!
         
         let label = CustomTruncatedLabel(ellipsisString: "...더보기", ellipsisFont: boldFont, normalFont: normalFont)
         label.numberOfLines = 2
@@ -86,14 +86,14 @@ final class PhotographerInfoView: UIView {
     
     let divderView: UIView = {
         let view = UIView()
-        view.backgroundColor = .grey2
+        view.backgroundColor = .ppGrey2
         return view
     }()
     
     let townsTitleLabel: UILabel = {
         let label = UILabel()
         label.font = .captionSemiBold
-        label.textColor = .picplzBlack
+        label.textColor = .ppBlack
         label.text = "촬영지"
         return label
     }()
@@ -101,7 +101,7 @@ final class PhotographerInfoView: UIView {
     let townsContentLabel: UILabel = {
         let label = UILabel()
         label.font = .caption
-        label.textColor = .grey4
+        label.textColor = .ppGrey4
         return label
     }()
     
@@ -114,7 +114,7 @@ final class PhotographerInfoView: UIView {
     let keywordTitleLabel: UILabel = {
         let label = UILabel()
         label.font = .captionSemiBold
-        label.textColor = .picplzBlack
+        label.textColor = .ppBlack
         label.text = "키워드"
         return label
     }()
@@ -122,14 +122,14 @@ final class PhotographerInfoView: UIView {
     let keywordContentLabel: UILabel = {
         let label = UILabel()
         label.font = .caption
-        label.textColor = .grey4
+        label.textColor = .ppGrey4
         return label
     }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        self.backgroundColor = .picplzWhite
+        self.backgroundColor = .ppWhite
         self.isUserInteractionEnabled = true
         
         addSubview(followersCountLabel)

@@ -15,7 +15,7 @@ final class MapView: UIView {
         label.text = "주변 작가 찾는 중..."
         label.textAlignment = .center
         label.font = .caption
-        label.textColor = .grey5
+        label.textColor = .ppGrey5
         return label
     }()
     private let myAvatarView: UIImageView = {
@@ -29,7 +29,7 @@ final class MapView: UIView {
         label.text = "나"
         label.textAlignment = .center
         label.font = .captionSemiBold
-        label.textColor = .picplzBlack
+        label.textColor = .ppBlack
         return label
     }()
     

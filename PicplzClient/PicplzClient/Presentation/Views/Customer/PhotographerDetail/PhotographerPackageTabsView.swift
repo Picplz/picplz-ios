@@ -13,7 +13,7 @@ final class PhotographerPackageTabsView: UIView {
         let label = UILabel()
         label.text = "촬영 패키지"
         label.font = .smallTitle
-        label.textColor = .picplzBlack
+        label.textColor = .ppBlack
         return label
     }()
     let headerStackView: UIStackView = {
@@ -93,7 +93,7 @@ final class PhotographerPackageTabItemView: UIView {
 
     let separatorView: UIView = {
         let separatorView = UIView()
-        separatorView.backgroundColor = .picplzBlack
+        separatorView.backgroundColor = .ppBlack
         return separatorView
     }()
     
@@ -136,14 +136,14 @@ final class PhotographerPackageTabItemView: UIView {
         if isActive {
             packageNameButton.setTitleColor(.black, for: .normal)
             
-            separatorView.backgroundColor = .picplzBlack
+            separatorView.backgroundColor = .ppBlack
             separatorView.snp.updateConstraints { make in
                 make.height.equalTo(2)
             }
         } else {
-            packageNameButton.setTitleColor(.grey3, for: .normal)
+            packageNameButton.setTitleColor(.ppGrey3, for: .normal)
             
-            separatorView.backgroundColor = .grey2
+            separatorView.backgroundColor = .ppGrey2
             separatorView.snp.updateConstraints { make in
                 make.height.equalTo(1)
             }

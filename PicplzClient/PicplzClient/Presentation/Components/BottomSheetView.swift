@@ -54,7 +54,7 @@ class BottomSheetView: PassThroughView {
     private let contentView: UIView
     private let barView: UIView = {
         let barView = UIView()
-        barView.backgroundColor = .picplzBlack
+        barView.backgroundColor = .ppBlack
         barView.layer.cornerRadius = 4.0
         return barView
     }()
@@ -84,7 +84,7 @@ class BottomSheetView: PassThroughView {
         contentViewWrapperView.layer.cornerRadius = cornerRadius
         contentViewWrapperView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         contentViewWrapperView.clipsToBounds = true
-        contentViewWrapperView.layer.borderColor = UIColor.grey2.cgColor
+        contentViewWrapperView.layer.borderColor = UIColor.ppGrey2.cgColor
         contentViewWrapperView.layer.borderWidth = 1
         contentViewWrapperView.backgroundColor = contentViewWrapperViewBackgroundColor
         
@@ -227,7 +227,7 @@ class BottomSheetView: PassThroughView {
             return .init(
                 maxYOffset: maxYOffset,
                 minYOffset: minYOffset,
-                backgroundColor: .picplzWhite,
+                backgroundColor: .ppWhite,
                 cornerRadius: 20,
                 handleSize: .init(width: 50, height: 4)
             ) { mode in

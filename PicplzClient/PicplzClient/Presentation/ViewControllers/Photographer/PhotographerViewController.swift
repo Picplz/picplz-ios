@@ -27,7 +27,7 @@ final class PhotographerViewController: UIViewController {
     }
     
     private func setupStyle() {
-        view.backgroundColor = .picplzWhite
+        view.backgroundColor = .ppWhite
         
         label.translatesAutoresizingMaskIntoConstraints = false
         label.numberOfLines = 0

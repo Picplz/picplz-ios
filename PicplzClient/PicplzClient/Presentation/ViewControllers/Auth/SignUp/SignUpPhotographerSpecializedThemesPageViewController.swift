@@ -40,7 +40,7 @@ final class SignUpPhotographerSpecializedThemesPageViewController: UIViewControl
     }
     
     private func setup() {
-        view.backgroundColor = .picplzWhite
+        view.backgroundColor = .ppWhite
         
         // MARK: ContentView
         contentView.translatesAutoresizingMaskIntoConstraints = false

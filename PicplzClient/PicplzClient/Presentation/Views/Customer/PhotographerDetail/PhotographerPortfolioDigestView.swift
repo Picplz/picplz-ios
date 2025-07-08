@@ -15,7 +15,7 @@ final class PhotographerPortfolioDigestView: UIView {
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.font = .smallTitle
-        label.textColor = .picplzBlack
+        label.textColor = .ppBlack
         label.text = "포트폴리오"
         return label
     }()
@@ -35,7 +35,7 @@ final class PhotographerPortfolioDigestView: UIView {
         
         let attributedString = NSAttributedString(string: "포트폴리오 더보기", attributes: [
             .font: UIFont.caption,
-            .foregroundColor: UIColor.grey4
+            .foregroundColor: UIColor.ppGrey4
         ])
         button.setAttributedTitle(attributedString, for: .normal)
         

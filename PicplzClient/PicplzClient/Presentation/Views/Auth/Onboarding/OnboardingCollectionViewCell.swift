@@ -23,7 +23,7 @@ final class OnboardingCollectionViewCell: UICollectionViewCell {
     
     private func setupStyle() {
         onboardingImageView.translatesAutoresizingMaskIntoConstraints = false
-        onboardingImageView.backgroundColor = .grey1 // temp
+        onboardingImageView.backgroundColor = .ppGrey1 // temp
         
         onboardingMessageLabel.translatesAutoresizingMaskIntoConstraints = false
         onboardingMessageLabel.font = .bigTitle
