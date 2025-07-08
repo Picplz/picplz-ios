@@ -36,7 +36,7 @@ final class UIPicplzAlert: UIView {
     
     private let titleLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: FontFamily.pretendardBold.rawValue, size: 14)!
+        label.font = UIFont(name: CustomFontFamily.pretendardBold.rawValue, size: 14)!
         return label
     }()
     

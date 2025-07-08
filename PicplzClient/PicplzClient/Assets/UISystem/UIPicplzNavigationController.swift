@@ -28,10 +28,10 @@ final class UIPicplzNavigationController: UINavigationController {
         barAppearance.tintColor = .black
         
         // MARK: Set title text attributes
-        if let font = UIFont(name: FontFamily.pretendardRegular.rawValue, size: 14) {
+        if let font = UIFont(name: CustomFontFamily.pretendardRegular.rawValue, size: 14) {
             barAppearance.titleTextAttributes = [.font: font]
         } else {
-            log.warning("font missing... name=\(FontFamily.pretendardRegular.rawValue) size=\(14)")
+            log.warning("font missing... name=\(CustomFontFamily.pretendardRegular.rawValue) size=\(14)")
             barAppearance.titleTextAttributes = [.font: UIFont.systemFont(ofSize: 14)]
         }
         

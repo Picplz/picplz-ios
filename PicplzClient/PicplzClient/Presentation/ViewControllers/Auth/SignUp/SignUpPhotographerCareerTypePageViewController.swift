@@ -69,7 +69,7 @@ final class SignUpPhotographerCareerTypePageViewController: UIViewController {
         alertView.title = "사진 촬영 경험이란?"
         
         let alertTextOriginal = "사진 전공 / 사진으로 수익 창출 / 사진 SNS계정 운영 등의 경험이 있는 경우를 말해요."
-        let captionBoldFont = UIFont(name: FontFamily.pretendardBold.rawValue, size: 12)!
+        let captionBoldFont = UIFont(name: CustomFontFamily.pretendardBold.rawValue, size: 12)!
         if let range = alertTextOriginal.range(of: "사진 전공 / 사진으로 수익 창출 / 사진 SNS계정 운영") {
             let alertAttributedString = NSMutableAttributedString(string: alertTextOriginal)
             alertAttributedString.addAttribute(.font, value: captionBoldFont, range: NSRange(range, in: alertTextOriginal))

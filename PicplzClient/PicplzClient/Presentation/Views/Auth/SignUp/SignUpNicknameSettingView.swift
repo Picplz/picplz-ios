@@ -38,12 +38,12 @@ final class SignUpNicknameSettingView: UIView {
         nicknameTextField.attributedPlaceholder = NSAttributedString(
             string: "닉네임 입력",
             attributes: [
-                NSAttributedString.Key.font: UIFont.bigBody,
+                NSAttributedString.Key.font: UIFont.largeBody,
                 NSAttributedString.Key.foregroundColor: UIColor.grey3,
             ]
         )
         nicknameTextField.textColor = .picplzBlack
-        nicknameTextField.font = .bigBody
+        nicknameTextField.font = .largeBody
         nicknameTextField.backgroundColor = .grey1
         nicknameTextField.layer.cornerRadius = 5.0
         nicknameTextField.layer.borderWidth = 1.0

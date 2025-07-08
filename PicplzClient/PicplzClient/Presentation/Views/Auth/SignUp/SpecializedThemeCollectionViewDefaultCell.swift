@@ -41,11 +41,11 @@ class SpecializedThemeCollectionViewDefaultCell: UICollectionViewCell {
     func updateStyle(to isSelected: Bool) {
         if isSelected {
             titleTextField.textColor = .picplzBlack
-            titleTextField.font = UIFont(name: FontFamily.pretendardBold.rawValue, size: 14)!
+            titleTextField.font = UIFont(name: CustomFontFamily.pretendardBold.rawValue, size: 14)!
             layer.borderColor = UIColor.picplzBlack.cgColor
         } else {
             titleTextField.textColor = .grey4
-            titleTextField.font = UIFont(name: FontFamily.pretendardRegular.rawValue, size: 14)!
+            titleTextField.font = UIFont(name: CustomFontFamily.pretendardRegular.rawValue, size: 14)!
             layer.borderColor = UIColor.grey3.cgColor
         }
     }

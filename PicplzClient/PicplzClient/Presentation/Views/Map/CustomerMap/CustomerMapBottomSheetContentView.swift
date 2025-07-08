@@ -220,7 +220,7 @@ fileprivate final class PhotographerItemCell: UICollectionViewCell {
         
         let label = UILabel()
         label.text = "우리 동네 작가"
-        label.font = UIFont.init(name: FontFamily.pretendardSemiBold.rawValue, size: 9)
+        label.font = UIFont.init(name: CustomFontFamily.pretendardSemiBold.rawValue, size: 9)
         label.textColor = .init(red: 0, green: 135 / 255, blue: 218 / 255, alpha: 1)
         
         view.addSubview(label)

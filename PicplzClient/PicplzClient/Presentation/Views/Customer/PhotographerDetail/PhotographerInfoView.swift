@@ -76,8 +76,8 @@ final class PhotographerInfoView: UIView {
     }()
     
     let introductionLabel: CustomTruncatedLabel = {
-        let normalFont = UIFont(name: FontFamily.pretendardRegular.rawValue, size: 11)!
-        let boldFont = UIFont(name: FontFamily.pretendardBold.rawValue, size: 11)!
+        let normalFont = UIFont(name: CustomFontFamily.pretendardRegular.rawValue, size: 11)!
+        let boldFont = UIFont(name: CustomFontFamily.pretendardBold.rawValue, size: 11)!
         
         let label = CustomTruncatedLabel(ellipsisString: "...더보기", ellipsisFont: boldFont, normalFont: normalFont)
         label.numberOfLines = 2

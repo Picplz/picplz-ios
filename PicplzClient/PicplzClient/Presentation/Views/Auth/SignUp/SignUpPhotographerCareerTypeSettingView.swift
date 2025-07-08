@@ -98,8 +98,8 @@ final class SignUpPhotographerCareerTypeSettingView: UIView {
 }
 
 final class CareerTypeButton: UIButton {
-    private let defaultFont = UIFont(name: FontFamily.pretendardRegular.rawValue, size: 14)!
-    private let selectedFont = UIFont(name: FontFamily.pretendardBold.rawValue, size: 14)!
+    private let defaultFont = UIFont(name: CustomFontFamily.pretendardRegular.rawValue, size: 14)!
+    private let selectedFont = UIFont(name: CustomFontFamily.pretendardBold.rawValue, size: 14)!
     
     override init(frame: CGRect) {
         super.init(frame: frame)
