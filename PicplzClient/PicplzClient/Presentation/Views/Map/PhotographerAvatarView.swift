@@ -12,7 +12,7 @@ class PhotographerAvatarView: UIView {
     let nameLabel = UILabel()
     let activeIndicatorView: UIView = {
         let view = UIView()
-        view.backgroundColor = .greend100
+        view.backgroundColor = .ppGreend100
         view.layer.cornerRadius = 4
         return view
     }()
@@ -38,18 +38,18 @@ class PhotographerAvatarView: UIView {
         
         avatarImageView.layer.cornerRadius = 37
         avatarImageView.layer.borderWidth = 1
-        avatarImageView.layer.borderColor = UIColor.picplzBlack.cgColor
+        avatarImageView.layer.borderColor = UIColor.ppBlack.cgColor
         avatarImageView.image = data.image
         
         nameLabel.font = .caption
-        nameLabel.textColor = .picplzBlack
+        nameLabel.textColor = .ppBlack
         nameLabel.text = "\(data.name) 작가"
         nameLabel.textAlignment = .center
         
         activeIndicatorView.isHidden = !data.active
         
         distanceLabel.font = .caption
-        distanceLabel.textColor = .grey3
+        distanceLabel.textColor = .ppGrey3
         distanceLabel.textAlignment = .center
         if let distance = data.distance,
            let unit = data.distanceUnit?.displayString {

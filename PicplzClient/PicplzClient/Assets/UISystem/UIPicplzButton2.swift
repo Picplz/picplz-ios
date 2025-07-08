@@ -11,7 +11,7 @@ class UIPicplzButton2: UIButton {
     init(title: String, image: UIImage) {
         super.init(frame: .zero)
         var configuration = UIButton.Configuration.plain()
-        configuration.background.strokeColor = .grey2
+        configuration.background.strokeColor = .ppGrey2
         configuration.background.strokeWidth = 1
         configuration.background.backgroundColor = .white
         configuration.cornerStyle = .capsule
@@ -22,7 +22,7 @@ class UIPicplzButton2: UIButton {
         
         var attributedTitle = AttributedString(title)
         attributedTitle.font = .body
-        attributedTitle.foregroundColor = .grey4
+        attributedTitle.foregroundColor = .ppGrey4
         configuration.attributedTitle = attributedTitle
         
         self.configuration = configuration

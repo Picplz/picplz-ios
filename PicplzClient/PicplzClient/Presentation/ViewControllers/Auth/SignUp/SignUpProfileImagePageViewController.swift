@@ -30,7 +30,7 @@ final class SignUpProfileImagePageViewController: UIViewController {
     }
     
     private func setup() {
-        view.backgroundColor = .picplzWhite
+        view.backgroundColor = .ppWhite
         
         // MARK: ContentView
         contentView.isUserInteractionEnabled = true

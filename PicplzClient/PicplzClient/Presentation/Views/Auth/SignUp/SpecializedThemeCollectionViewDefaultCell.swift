@@ -32,7 +32,7 @@ class SpecializedThemeCollectionViewDefaultCell: UICollectionViewCell {
         
         updateStyle(to: false)
 
-        backgroundColor = .picplzWhite
+        backgroundColor = .ppWhite
         layer.borderWidth = 1
         layer.cornerRadius = 5
         clipsToBounds = true
@@ -40,13 +40,13 @@ class SpecializedThemeCollectionViewDefaultCell: UICollectionViewCell {
     
     func updateStyle(to isSelected: Bool) {
         if isSelected {
-            titleTextField.textColor = .picplzBlack
+            titleTextField.textColor = .ppBlack
             titleTextField.font = UIFont(name: CustomFontFamily.pretendardBold.rawValue, size: 14)!
-            layer.borderColor = UIColor.picplzBlack.cgColor
+            layer.borderColor = UIColor.ppBlack.cgColor
         } else {
-            titleTextField.textColor = .grey4
+            titleTextField.textColor = .ppGrey4
             titleTextField.font = UIFont(name: CustomFontFamily.pretendardRegular.rawValue, size: 14)!
-            layer.borderColor = UIColor.grey3.cgColor
+            layer.borderColor = UIColor.ppGrey3.cgColor
         }
     }
     

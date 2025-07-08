@@ -19,7 +19,7 @@ class MapHeaderView: UIView {
         locationMarkerView.translatesAutoresizingMaskIntoConstraints = false
         
         addressLabel.translatesAutoresizingMaskIntoConstraints = false
-        addressLabel.textColor = .picplzBlack
+        addressLabel.textColor = .ppBlack
         addressLabel.font = .middleTitleSemiBold
         
         addSubview(locationMarkerView)

@@ -60,7 +60,7 @@ class CustomerMapViewController: UIViewController {
     
     private func style() {
         navigationController?.setNavigationBarHidden(true, animated: false)
-        view.backgroundColor = .grey1
+        view.backgroundColor = .ppGrey1
         
         headerView.translatesAutoresizingMaskIntoConstraints = false
         refreshLocationButton.translatesAutoresizingMaskIntoConstraints = false

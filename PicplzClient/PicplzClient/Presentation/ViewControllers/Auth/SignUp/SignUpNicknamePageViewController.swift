@@ -41,7 +41,7 @@ final class SignUpNicknamePageViewController: UIViewController {
     }
     
     private func setup() {
-        view.backgroundColor = .picplzWhite
+        view.backgroundColor = .ppWhite
         
         // MARK: ContentView
         contentView.nicknameDidUpdatedHandler = { [weak self] (_ value: String) in
@@ -77,10 +77,10 @@ final class SignUpNicknamePageViewController: UIViewController {
             .receive(on: RunLoop.main)
             .sink { [weak self] nextButtonEnabled in
                 if nextButtonEnabled {
-                    self?.nextButton.backgroundColor = .picplzBlack
+                    self?.nextButton.backgroundColor = .ppBlack
                     self?.nextButton.isEnabled = true
                 } else {
-                    self?.nextButton.backgroundColor = .grey3
+                    self?.nextButton.backgroundColor = .ppGrey3
                     self?.nextButton.isEnabled = false
                 }
             }

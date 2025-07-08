@@ -36,7 +36,7 @@ final class SignUpPhotographerCareerPeriodViewController: UIViewController {
     }
     
     private func setup() {
-        view.backgroundColor = .picplzWhite
+        view.backgroundColor = .ppWhite
         
         // MARK: ContentView
         configureToolbar(for: contentView.yearsToolbar)
@@ -87,8 +87,8 @@ final class SignUpPhotographerCareerPeriodViewController: UIViewController {
         
         viewModel.nextButtonEnabledPublisher
             .sink { [weak self] isEnabled in
-                self?.contentView.yearsTextField.textColor = isEnabled ? .black : .grey3
-                self?.contentView.monthsTextField.textColor = isEnabled ? .black : .grey3
+                self?.contentView.yearsTextField.textColor = isEnabled ? .black : .ppGrey3
+                self?.contentView.monthsTextField.textColor = isEnabled ? .black : .ppGrey3
                 self?.nextButton.isEnabled = isEnabled
             }
             .store(in: &subscriptions)

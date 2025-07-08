@@ -32,7 +32,7 @@ final class SignUpPhotographerCareerTypePageViewController: UIViewController {
     }
     
     private func setup() {
-        view.backgroundColor = .picplzWhite
+        view.backgroundColor = .ppWhite
         
         // MARK: ContentView - Prompting View
         promptContentView.translatesAutoresizingMaskIntoConstraints = false

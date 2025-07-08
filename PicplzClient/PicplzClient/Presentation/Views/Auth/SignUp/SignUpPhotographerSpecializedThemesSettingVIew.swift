@@ -32,7 +32,7 @@ final class SignUpPhotographerSpecializedThemesSettingVIew: UIView {
         
         optionalCaptionLabel.translatesAutoresizingMaskIntoConstraints = false
         optionalCaptionLabel.font = .caption
-        optionalCaptionLabel.textColor = .grey3
+        optionalCaptionLabel.textColor = .ppGrey3
         optionalCaptionLabel.text = "선택"
         
         collectionView.translatesAutoresizingMaskIntoConstraints = false

@@ -14,9 +14,9 @@ final class SpecializedThemeCollectionViewControlCell: SpecializedThemeCollectio
     override func style() {
         super.style()
         
-        titleTextField.textColor = .grey3
-        backgroundColor = .grey1
-        layer.borderColor = UIColor.grey3.cgColor
+        titleTextField.textColor = .ppGrey3
+        backgroundColor = .ppGrey1
+        layer.borderColor = UIColor.ppGrey3.cgColor
     }
     
     func configuration(title: String, isSelected: Bool) {

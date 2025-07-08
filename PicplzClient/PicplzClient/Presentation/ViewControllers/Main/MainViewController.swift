@@ -30,7 +30,7 @@ final class MainViewController: UIViewController {
     }
     
     private func setupStyle() {
-        view.backgroundColor = .picplzWhite
+        view.backgroundColor = .ppWhite
         
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "MainView"
@@ -38,12 +38,12 @@ final class MainViewController: UIViewController {
         
         showUserInfoButton.translatesAutoresizingMaskIntoConstraints = false
         showUserInfoButton.setTitle("유저 정보 보기", for: .normal)
-        showUserInfoButton.setTitleColor(.picplzBlack, for: .normal)
+        showUserInfoButton.setTitleColor(.ppBlack, for: .normal)
         showUserInfoButton.addTarget(self, action: #selector(userInfoButtonTapped), for: .touchUpInside)
         
         logoutButton.translatesAutoresizingMaskIntoConstraints = false
         logoutButton.setTitle("로그아웃", for: .normal)
-        logoutButton.setTitleColor(.picplzBlack, for: .normal)
+        logoutButton.setTitleColor(.ppBlack, for: .normal)
         logoutButton.addTarget(self, action: #selector(logoutButtonTapped), for: .touchUpInside)
     }
     

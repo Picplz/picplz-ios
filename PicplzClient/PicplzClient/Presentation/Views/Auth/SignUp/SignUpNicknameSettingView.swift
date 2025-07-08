@@ -39,15 +39,15 @@ final class SignUpNicknameSettingView: UIView {
             string: "닉네임 입력",
             attributes: [
                 NSAttributedString.Key.font: UIFont.largeBody,
-                NSAttributedString.Key.foregroundColor: UIColor.grey3,
+                NSAttributedString.Key.foregroundColor: UIColor.ppGrey3,
             ]
         )
-        nicknameTextField.textColor = .picplzBlack
+        nicknameTextField.textColor = .ppBlack
         nicknameTextField.font = .largeBody
-        nicknameTextField.backgroundColor = .grey1
+        nicknameTextField.backgroundColor = .ppGrey1
         nicknameTextField.layer.cornerRadius = 5.0
         nicknameTextField.layer.borderWidth = 1.0
-        nicknameTextField.layer.borderColor = UIColor.grey2.cgColor
+        nicknameTextField.layer.borderColor = UIColor.ppGrey2.cgColor
         let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 17, height: 50))
         nicknameTextField.leftView = paddingView
         nicknameTextField.leftViewMode = .always
@@ -66,7 +66,7 @@ final class SignUpNicknameSettingView: UIView {
                                 + "· 이모티콘, 특수문자 사용 불가\n"
                                 + "· 닉네임의 처음과 마지막 부분 공백 사용 불가"
         informationLabel.font = .caption
-        informationLabel.textColor = .grey3
+        informationLabel.textColor = .ppGrey3
     }
     
     private func layout() {

@@ -30,7 +30,7 @@ final class LoginViewController: UIViewController {
     }
     
     private func setup() {
-        self.view.backgroundColor = .picplzWhite
+        self.view.backgroundColor = .ppWhite
         
         webView.translatesAutoresizingMaskIntoConstraints = false
         

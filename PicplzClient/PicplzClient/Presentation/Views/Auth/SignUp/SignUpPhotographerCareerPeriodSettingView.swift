@@ -43,14 +43,14 @@ final class SignUpPhotographerCareerPeriodSettingView: UIView {
         
         subtitleLabel.translatesAutoresizingMaskIntoConstraints = false
         subtitleLabel.font = .body
-        subtitleLabel.textColor = .picplzBlack
+        subtitleLabel.textColor = .ppBlack
         subtitleLabel.text = "1년 미만일 경우 0년 n개월로 입력해주세요."
         
         yearsTextField.translatesAutoresizingMaskIntoConstraints = false
         yearsTextField.text = "0"
         yearsTextField.font = .title
         yearsTextField.textAlignment = .center
-        yearsTextField.textColor = .grey3
+        yearsTextField.textColor = .ppGrey3
         yearsTextField.layer.borderColor = UIColor.black.cgColor
         yearsTextField.layer.borderWidth = 1.0
         yearsTextField.layer.cornerRadius = 5.0
@@ -69,7 +69,7 @@ final class SignUpPhotographerCareerPeriodSettingView: UIView {
         monthsTextField.text = "0"
         monthsTextField.font = .title
         monthsTextField.textAlignment = .center
-        monthsTextField.textColor = .grey3
+        monthsTextField.textColor = .ppGrey3
         monthsTextField.layer.borderColor = UIColor.black.cgColor
         monthsTextField.layer.borderWidth = 1.0
         monthsTextField.layer.cornerRadius = 5.0

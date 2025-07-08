@@ -30,7 +30,7 @@ final class SignUpMemberTypePageViewController: UIViewController {
     }
     
     private func setup() {
-        view.backgroundColor = .picplzWhite
+        view.backgroundColor = .ppWhite
         
         // MARK: ContentView
         contentView.isUserInteractionEnabled = true
@@ -77,10 +77,10 @@ final class SignUpMemberTypePageViewController: UIViewController {
             .receive(on: RunLoop.main)
             .sink { [weak self] nextButtonEnabled in
                 if nextButtonEnabled {
-                    self?.nextButton.backgroundColor = .picplzBlack
+                    self?.nextButton.backgroundColor = .ppBlack
                     self?.nextButton.isEnabled = true
                 } else {
-                    self?.nextButton.backgroundColor = .grey3
+                    self?.nextButton.backgroundColor = .ppGrey3
                     self?.nextButton.isEnabled = false
                 }
             }

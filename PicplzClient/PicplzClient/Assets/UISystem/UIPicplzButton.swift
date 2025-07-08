@@ -12,7 +12,7 @@ class UIPicplzButton: UIButton {
         super.init(frame: frame)
         
         self.titleLabel?.font = .buttonTitle
-        self.backgroundColor = .picplzBlack
+        self.backgroundColor = .ppBlack
         self.layer.cornerRadius = 5.0
         self.clipsToBounds = true
     }
@@ -20,9 +20,9 @@ class UIPicplzButton: UIButton {
     override var isEnabled: Bool {
         didSet {
             if isEnabled {
-                self.backgroundColor = .picplzBlack
+                self.backgroundColor = .ppBlack
             } else {
-                self.backgroundColor = .grey3
+                self.backgroundColor = .ppGrey3
             }
         }
     }
@@ -33,6 +33,6 @@ class UIPicplzButton: UIButton {
     
     override func setTitle(_ title: String?, for state: UIControl.State) {
         super.setTitle(title, for: state)
-        setTitleColor(.grey2, for: state)
+        setTitleColor(.ppGrey2, for: state)
     }
 }

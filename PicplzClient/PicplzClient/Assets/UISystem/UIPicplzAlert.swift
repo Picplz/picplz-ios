@@ -28,7 +28,7 @@ final class UIPicplzAlert: UIView {
     
     private let alertWrapperView: UIView = {
         let view = UIView(frame: .init(x: 0, y: 0, width: 304, height: 112))
-        view.backgroundColor = .picplzWhite
+        view.backgroundColor = .ppWhite
         view.layer.cornerRadius = 5.0
         view.clipsToBounds = true
         return view

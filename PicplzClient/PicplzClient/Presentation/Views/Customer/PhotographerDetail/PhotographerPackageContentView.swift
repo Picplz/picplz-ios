@@ -21,7 +21,7 @@ class PhotographerPackageContentView: UIView {
     private let priceLabel: UILabel = {
         let label = UILabel()
         label.font = .custom(.pretendardBold, size: 22)
-        label.textColor = .picplzBlack
+        label.textColor = .ppBlack
         return label
     }()
     
@@ -100,14 +100,14 @@ extension PhotographerPackageContentView {
         let titleLabel = UILabel()
         titleLabel.text = title
         titleLabel.font = .captionSemiBold
-        titleLabel.textColor = .grey6
+        titleLabel.textColor = .ppGrey6
         titleLabel.setContentHuggingPriority(.required, for: .horizontal) // 제목 레이블은 폭 변동 없도록 지정
         titleLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
         
         let contentLabel = UILabel()
         contentLabel.text = content
         contentLabel.font = .caption
-        contentLabel.textColor = .grey4
+        contentLabel.textColor = .ppGrey4
         contentLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
         contentLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         

@@ -23,8 +23,8 @@ final class OnboardingContentView: UIView {
         loginButton.backgroundColor = .kakaoYellow
         loginButton.setTitle("카카오로 계속하기", for: .normal)
         loginButton.titleLabel?.font = .buttonTitle
-        loginButton.setTitleColor(.picplzBlack, for: .normal)
-        loginButton.setTitleColor(.picplzBlack.withAlphaComponent(0.5), for: .highlighted)
+        loginButton.setTitleColor(.ppBlack, for: .normal)
+        loginButton.setTitleColor(.ppBlack.withAlphaComponent(0.5), for: .highlighted)
     }
     
     func setupLayout() {

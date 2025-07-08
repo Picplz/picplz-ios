@@ -57,8 +57,8 @@ final class PhotographerReviewChartView: UIView {
 fileprivate final class PhotographerReviewChartBar: UIView {
     let backgroundView: UIView = {
         let view = UIView()
-        view.backgroundColor = .grey1
-        view.layer.borderColor = UIColor.grey2.cgColor
+        view.backgroundColor = .ppGrey1
+        view.layer.borderColor = UIColor.ppGrey2.cgColor
         view.layer.borderWidth = 1
         view.layer.cornerRadius = 5
         return view
@@ -66,7 +66,7 @@ fileprivate final class PhotographerReviewChartBar: UIView {
     
     let foregroundView: UIView = {
         let view = UIView()
-        view.backgroundColor = .greend100
+        view.backgroundColor = .ppGreend100
         view.layer.cornerRadius = 5
         return view
     }()
@@ -82,14 +82,14 @@ fileprivate final class PhotographerReviewChartBar: UIView {
     let descriptionLabel: UILabel = {
         let label = UILabel()
         label.font = .body
-        label.textColor = .picplzBlack
+        label.textColor = .ppBlack
         return label
     }()
     
     let countLabel: UILabel = {
         let label = UILabel()
         label.font = .captionSemiBold
-        label.textColor = .grey4
+        label.textColor = .ppGrey4
         return label
     }()
     

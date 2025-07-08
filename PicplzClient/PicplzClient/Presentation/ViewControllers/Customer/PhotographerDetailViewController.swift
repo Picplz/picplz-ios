@@ -13,7 +13,7 @@ class PhotographerDetailViewController: UIViewController {
     private let scrollView = UIScrollView()
     private let scrollContentView = UIView()
     private let infoView = PhotographerInfoView()
-    private let dividerView = DividerView(backgroundColor: .grey1)
+    private let dividerView = DividerView(backgroundColor: .ppGrey1)
     private let reviewView = PhotographerReviewDigestView()
     private let portfolioView = PhotographerPortfolioDigestView()
     private let packagesView = PhotographerPackageTabsView(packageInformations: PhotographerPackage.debugData)
