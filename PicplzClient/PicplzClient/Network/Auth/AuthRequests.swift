@@ -8,10 +8,6 @@
 import Alamofire
 import Foundation
 
-protocol AuthRequestable {
-    func kakaoLogin(kakaoAccessToken: String) async throws -> KakaoLoginResponse?
-}
-
 final class AuthRequests: AuthRequestable {
     private let jsonDecoder: JSONDecoder = {
         let dateFormatter = DateFormatter()
@@ -24,7 +20,8 @@ final class AuthRequests: AuthRequestable {
     }()
     
     func kakaoLogin(kakaoAccessToken: String) async throws -> KakaoLoginResponse? {
-        let response = await AF.request(
+        let session = AFSessionFactory.makeSession()
+        let response = await session.request(
             "\(Constants.serverBaseUrl)/auth/kakao",
             method: .post,
             parameters: KakaoLoginRequest(accessToken: kakaoAccessToken),
@@ -33,27 +30,6 @@ final class AuthRequests: AuthRequestable {
             .validate()
             .serializingDecodable(KakaoLoginResponse.self, decoder: jsonDecoder)
             .response
-        print(response)
         return response.value
-    }
-}
-
-// MARK: DTOs
-struct KakaoLoginRequest: Codable {
-    let accessToken: String
-}
-
-struct KakaoLoginResponse: Decodable {
-    let timestamp: String
-    let statusCode: Int
-    let message: String
-    let data: KakaoLoginResponseData
-    
-    struct KakaoLoginResponseData: Decodable {
-        let grantType: String
-        let accessToken: String
-        let refreshToken: String
-        let accessTokenExpires: Int
-        let accessTokenExpiresDate: Date
     }
 }
