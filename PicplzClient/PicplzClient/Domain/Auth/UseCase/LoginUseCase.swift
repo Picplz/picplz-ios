@@ -58,7 +58,7 @@ final class LoginUseCaseImpl: LoginUseCase {
     private func handleLoginSuccess(accessToken: String?, refreshToken: String?) async throws {
         guard let accessToken = accessToken,
               let _ = refreshToken else {
-            log.error("accessToken or refreshToken is nil.")
+            log.error("accessToken is nil.")
             throw DomainError.venderError("카카오 로그인 시 오류가 발생했습니다.")
         }
         
@@ -66,10 +66,25 @@ final class LoginUseCaseImpl: LoginUseCase {
             throw DomainError.serverError("서버 오류가 발생했습니다")
         }
         
-        guard let token = result.data.token else {
-            throw DomainError.notRegisteredUser
+        let loginResponse = result.data
+        authManaging.updateSocialInfo(
+            socialInfo: SocialInfo(
+                nickname: nil,
+                socialEmail: loginResponse.socialEmail ?? "",
+                socialCode: loginResponse.socialCode,
+                socialProvider: SocialProvider(rawValue: loginResponse.socialCode) ?? .kakao
+            )
+        )
+        
+        guard let token = loginResponse.token,
+              loginResponse.registered else {
+            throw DomainError.notRegisteredUser // 토큰이 존재하지 않으면 회원가입 코디네이터 시작
         }
         
-        authManaging.login(accessToken: token.accessToken, refreshToken: token.refreshToken, expiresDate: token.accessTokenExpiresDate)
+        authManaging.login(tokens: Tokens(
+            accessToken: token.accessToken,
+            refreshToken: token.refreshToken,
+            expiresDate: token.accessTokenExpiresDate
+        ))
     }
 }

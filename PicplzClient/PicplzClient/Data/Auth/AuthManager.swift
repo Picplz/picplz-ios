@@ -14,7 +14,8 @@ final class AuthManager: AuthManaging {
     private let userDefaultHelper: UserDefaultsHelper
     
     // MARK: Properties
-    private var tokenModel: Token?
+    private var socialInfo: SocialInfo?
+    private var tokens: Tokens?
     private(set) var currentUser: AuthUser?
     
     private var log = Logger.of("AuthManager")
@@ -26,23 +27,35 @@ final class AuthManager: AuthManaging {
     }
     
     var accessToken: String? {
-        guard let tokenModel = tokenModel else { return nil }
+        guard let tokens = tokens else { return nil }
         
         let _ = validateToken()
         
-        return tokenModel.accessToken
+        return tokens.accessToken
+    }
+    
+    var refreshToken: String? {
+        guard let tokens = tokens else { return nil }
+        
+        let _ = validateToken()
+        
+        return tokens.refreshToken
     }
     
     var isLogin: Bool {
-        tokenModel != nil && currentUser != nil
+        tokens != nil && socialInfo != nil && currentUser != nil
     }
     
-    func login(accessToken: String, refreshToken: String, expiresDate: Date) {
-        self.tokenModel = Token(accessToken: accessToken, refreshToken: refreshToken, expiresDate: expiresDate)
+    func updateSocialInfo(socialInfo: SocialInfo) {
+        self.socialInfo = socialInfo
+    }
+    
+    func login(tokens: Tokens) {
+        self.tokens = tokens
         self.currentUser = AuthUser(sub: 0, name: "", nickname: "", birth: Date(), role: "", kakaoEmail: "", profileImageUrl: "") // FIXME
         setToDeviceStore()
         
-        log.debug("AuthManager login... token=\(String(describing: self.tokenModel)) currentUser=\(String(describing: self.currentUser))")
+        log.debug("AuthManager login... tokens=\(String(describing: self.tokens)) currentUser=\(String(describing: self.currentUser))")
     }
     
     func logout() {
@@ -52,13 +65,13 @@ final class AuthManager: AuthManaging {
     
     private func reset() {
         log.debug("AuthManager reset...")
-        tokenModel = nil
+        tokens = nil
         currentUser = nil
         setToDeviceStore()
     }
     
     func validateToken() -> Bool {
-        guard let expiresDate = tokenModel?.expiresDate else { return false }
+        guard let expiresDate = tokens?.expiresDate else { return false }
         
         if Date() > expiresDate {
             log.warning("Token expired... currentDate=\(Date()) expiredDate=\(expiresDate)")
@@ -86,28 +99,28 @@ final class AuthManager: AuthManaging {
             log.debug("deleted currentUser from UserDefaults...")
         }
         
-        // MARK: save tokenModel
-        if let tokenModel = tokenModel {
-            userDefaultHelper.save(value: tokenModel.expiresDate, key: .accessTokenExpiresAt)
-            log.debug("saved tokenModel.expiresDate to UserDefaults... value=\(String(describing: tokenModel.expiresDate))")
+        // MARK: save tokens
+        if let tokens = tokens {
+            userDefaultHelper.save(value: tokens.expiresDate, key: .accessTokenExpiresAt)
+            log.debug("saved tokens.expiresDate to UserDefaults... value=\(String(describing: tokens.expiresDate))")
             
             do {
-                try keychainStore.saveValue(tokenModel.accessToken, for: KeychainStore.ReservedAccount.AccessToken.rawValue)
-                try keychainStore.saveValue(tokenModel.refreshToken, for: KeychainStore.ReservedAccount.AccessToken.rawValue)
-                log.debug("saved tokenModel.token to keychain...")
+                try keychainStore.saveValue(tokens.accessToken, for: KeychainStore.ReservedAccount.AccessToken.rawValue)
+                try keychainStore.saveValue(tokens.refreshToken, for: KeychainStore.ReservedAccount.AccessToken.rawValue)
+                log.debug("saved tokens.token to keychain...")
             } catch {
-                log.error("failed to save tokenModel.token to keychain... error: \(error)")
+                log.error("failed to save tokens.token to keychain... error: \(error)")
             }
         } else {
             userDefaultHelper.delete(for: .accessTokenExpiresAt)
-            log.debug("deleted tokenModel.expiresDate from UserDefaults...")
+            log.debug("deleted tokens.expiresDate from UserDefaults...")
             
             do {
                 try keychainStore.remove(for: KeychainStore.ReservedAccount.AccessToken.rawValue)
                 try keychainStore.remove(for: KeychainStore.ReservedAccount.RefreshToken.rawValue)
-                log.debug("deleted tokenModel.token from keychain...")
+                log.debug("deleted tokens.token from keychain...")
             } catch {
-                log.error("failed to delete tokenModel.token from keychain... error: \(error)")
+                log.error("failed to delete tokens.token from keychain... error: \(error)")
             }
         }
     }
@@ -117,14 +130,14 @@ final class AuthManager: AuthManaging {
         currentUser = userDefaultHelper.load(for: .authUser)
         log.debug("loaded currentUser from UserDefaults...")
         
-        // MARK: load tokenModel
+        // MARK: load tokens
         var accessToken: String?
         var refreshToken: String?
         do {
             try accessToken = keychainStore.loadValue(for: KeychainStore.ReservedAccount.AccessToken.rawValue)
             try refreshToken = keychainStore.loadValue(for: KeychainStore.ReservedAccount.RefreshToken.rawValue)
         } catch {
-            log.error("failed to load tokenModel.token from keychain... error: \(error)")
+            log.error("failed to load tokens.token from keychain... error: \(error)")
         }
         let expiresDate: Date? = userDefaultHelper.load(for: .accessTokenExpiresAt)
         
@@ -132,7 +145,7 @@ final class AuthManager: AuthManaging {
               let accessToken = accessToken,
               let refreshToken = refreshToken else { return }
         
-        tokenModel = Token(accessToken: accessToken, refreshToken: refreshToken, expiresDate: expiresDate)
-        log.debug("loaded tokenModel.token from keychain...")
+        tokens = Tokens(accessToken: accessToken, refreshToken: refreshToken, expiresDate: expiresDate)
+        log.debug("loaded tokens.token from keychain...")
     }
 }

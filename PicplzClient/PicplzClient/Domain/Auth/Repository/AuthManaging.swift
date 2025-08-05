@@ -8,11 +8,13 @@
 import Foundation
 
 protocol AuthManaging {
-    var accessToken: String? { get }
     var currentUser: AuthUser? { get }
     var isLogin: Bool { get }
+    var accessToken: String? { get }
+    var refreshToken: String? { get }
     
-    func login(accessToken: String, refreshToken: String, expiresDate: Date)
+    func updateSocialInfo(socialInfo: SocialInfo)
+    func login(tokens: Tokens)
     func logout()
     func validateToken() -> Bool
     func updateUserInfo(user currentUserEntity: AuthUser)
