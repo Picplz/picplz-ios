@@ -14,7 +14,7 @@ final class AuthManager: AuthManaging {
     private let userDefaultHelper: UserDefaultsHelper
     
     // MARK: Properties
-    private var socialInfo: SocialInfo?
+    private(set) var socialInfo: SocialInfo?
     private var tokens: Tokens?
     private(set) var currentUser: AuthUser?
     

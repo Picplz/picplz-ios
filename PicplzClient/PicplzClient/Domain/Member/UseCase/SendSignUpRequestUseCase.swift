@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import os.log
 
 protocol SendSignUpRequestUseCase {
     func execute(signUpSession: SignUpSession)
@@ -13,15 +14,36 @@ protocol SendSignUpRequestUseCase {
 
 final class SendSignUpRequestUseCaseImpl: SendSignUpRequestUseCase {
     let authManaging: AuthManaging
+    let customerRequests: CustomerRequestable
     
-    init(authManaging: AuthManaging) {
+    private let logger = Logger.of("SendSignUpRequestUseCaseImpl")
+    
+    init(
+        authManaging: AuthManaging,
+        customerRequests: CustomerRequestable
+    ) {
         self.authManaging = authManaging
+        self.customerRequests = customerRequests
     }
     
     func execute(signUpSession: SignUpSession) {
-        // TODO: send signin request to server
-        
-        storeUserInfo(signUpSession: signUpSession)
+        Task { @MainActor in
+            do {
+                if signUpSession.memberType == .customer {
+                    try await customerRequests.create(registerDto: CustomerRegisterDTO(
+                        nickname: signUpSession.nickname,
+                        socialEmail: authManaging.socialInfo?.socialEmail ?? "",
+                        socialCode: authManaging.socialInfo?.socialCode ?? "",
+                        socialProvider: authManaging.socialInfo?.socialProvider.rawValue ?? "KAKAO"
+                    ))
+                } else {
+                    // TODO: 작가 회원가입
+                }
+                storeUserInfo(signUpSession: signUpSession)
+            } catch {
+                logger.error("회원가입에 실패했습니다. \(error)")
+            }
+        }
     }
     
     private func storeUserInfo(signUpSession: SignUpSession) {

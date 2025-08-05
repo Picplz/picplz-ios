@@ -37,6 +37,10 @@ final class DIContainerProvider {
             AuthRequests()
         }
         
+        container.register(CustomerRequestable.self) { _ in
+            CustomerRequests()
+        }
+        
         // MARK: Domain
         container.register(LoginUseCase.self) { r in
             let authManaging = r.resolve(AuthManaging.self)!
@@ -53,7 +57,8 @@ final class DIContainerProvider {
         }
         container.register(SendSignUpRequestUseCase.self) { r in
             let authManaging = r.resolve(AuthManaging.self)!
-            return SendSignUpRequestUseCaseImpl(authManaging: authManaging)
+            let customerRequestable = r.resolve(CustomerRequestable.self)!
+            return SendSignUpRequestUseCaseImpl(authManaging: authManaging, customerRequests: customerRequestable)
         }
         container.register(GetShortAddressUseCase.self) { r in
             let locationService = r.resolve(LocationService.self)!
