@@ -25,4 +25,5 @@ protocol OnboardingViewModelProtocol {
 
 protocol OnboardingViewModelDelegate: AnyObject {
     func loggedIn()
+    func showSignUp()
 }

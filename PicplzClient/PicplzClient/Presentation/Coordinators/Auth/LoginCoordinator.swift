@@ -45,12 +45,10 @@ final class LoginCoordinator: Coordinator {
 extension LoginCoordinator: OnboardingViewModelDelegate {
     func loggedIn() {
         log.debug("LoginCoordinator loggedIn called")
-        if shouldSignUp {
-            showSignUp()
-        }
+        delegate?.finished(loginCoordinator: self)
     }
     
-    private func showSignUp() {
+    func showSignUp() {
         let coordinator = SignUpCoordinator(navigationController: navigationController, container: container)
         childCoordinators.append(coordinator)
         coordinator.delegate = self

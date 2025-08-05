@@ -41,6 +41,16 @@ final class OnboardingViewModel: OnboardingViewModelProtocol {
                     delegate?.loggedIn()
                 }
             } catch {
+                if let error = error as? DomainError {
+                    if case .notRegisteredUser = error {
+                        await MainActor.run {
+                            delegate?.showSignUp()
+                        }
+                        
+                        return
+                    }
+                }
+                
                 log.error("login failed... \(error)")
             }
         }

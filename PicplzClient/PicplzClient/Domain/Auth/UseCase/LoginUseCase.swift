@@ -65,5 +65,11 @@ final class LoginUseCaseImpl: LoginUseCase {
         guard let result = try await authRequests.kakaoLogin(kakaoAccessToken: accessToken) else {
             throw DomainError.serverError("서버 오류가 발생했습니다")
         }
+        
+        guard let token = result.data.token else {
+            throw DomainError.notRegisteredUser
+        }
+        
+        authManaging.login(accessToken: token.accessToken, refreshToken: token.refreshToken, expiresDate: token.accessTokenExpiresDate)
     }
 }
