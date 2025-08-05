@@ -24,6 +24,11 @@ final class OnboardingViewModel: OnboardingViewModelProtocol {
         $showLoginButton
     }
     
+    @Published var errorMessage: String?
+    var errorMessagePublisher: Published<String?>.Publisher {
+        $errorMessage
+    }
+    
     let onboardingPages = OnboardingPage.pages
     
     func currentPageChanged(pageIndex: Int) {
@@ -49,6 +54,10 @@ final class OnboardingViewModel: OnboardingViewModelProtocol {
                         
                         return
                     }
+                    
+                    errorMessage = error.errorDescription
+                } else {
+                    errorMessage = error.localizedDescription
                 }
                 
                 log.error("login failed... \(error)")

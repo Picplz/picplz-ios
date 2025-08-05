@@ -17,6 +17,9 @@ protocol OnboardingViewModelProtocol {
     var showLoginButton: Bool { get }
     var showLoginButtonPublisher: Published<Bool>.Publisher { get }
     
+    var errorMessage: String? { get }
+    var errorMessagePublisher: Published<String?>.Publisher { get }
+    
     var onboardingPages: [OnboardingPage] { get }
     
     func currentPageChanged(pageIndex: Int)
