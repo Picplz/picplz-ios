@@ -59,13 +59,11 @@ final class LoginUseCaseImpl: LoginUseCase {
         guard let accessToken = accessToken,
               let _ = refreshToken else {
             log.error("accessToken or refreshToken is nil.")
-            throw NSError(domain: "accessToken or refreshToken is nil.", code: 400) // TODO: custom error
+            throw DomainError.venderError("카카오 로그인 시 오류가 발생했습니다.")
         }
         
-        if let result = try await authRequests.kakaoLogin(kakaoAccessToken: accessToken) {
-            authManaging.login(accessToken: result.data.accessToken, refreshToken: result.data.refreshToken, expiresDate: result.data.accessTokenExpiresDate)
-        } else {
-            throw NSError(domain: "response of login request is nil.", code: 400) // TODO: custom error
+        guard let result = try await authRequests.kakaoLogin(kakaoAccessToken: accessToken) else {
+            throw DomainError.serverError("서버 오류가 발생했습니다")
         }
     }
 }
