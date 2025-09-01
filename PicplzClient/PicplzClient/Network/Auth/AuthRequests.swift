@@ -28,7 +28,19 @@ final class AuthRequests: AuthRequestable {
             encoder: JSONParameterEncoder.default
         )
             .validate()
-            .serializingDecodable(KakaoLoginResponse.self, decoder: jsonDecoder)
+            .serializingDecodable(BaseResponse<KakaoLoginResponse>.self, decoder: jsonDecoder)
+            .response
+        return response.value
+    }
+    
+    func getUserInfo(accessToken: String, memberId: String) async throws -> BaseResponse<UserInfoResponse>? {
+        let session = AFSessionFactory.makeSession()
+        let response = await session.request(
+            "\(Constants.serverBaseUrl)/members/\(memberId)/info",
+            headers: .init(dictionaryLiteral: ("Authorization", "Bearer \(accessToken)"))
+        )
+            .validate()
+            .serializingDecodable(BaseResponse<UserInfoResponse>.self, decoder: jsonDecoder)
             .response
         return response.value
     }
