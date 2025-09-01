@@ -108,7 +108,7 @@ final class LoginUseCaseImpl: LoginUseCase {
                     userInfo: AuthUser(
                         sub: userInfo.id,
                         nickname: userInfo.nickname,
-                        profileImageUrl: "",
+                        profileImageUrl: userInfo.profileImage,
                         memberType: .init(rawValue: userInfo.role) ?? .customer,
                         socialEmail: userInfo.socialEmail,
                         socialCode: userInfo.socialCode,

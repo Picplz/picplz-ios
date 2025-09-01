@@ -12,6 +12,7 @@ struct UserInfoResponse: Decodable {
     let nickname: String
     let role: String
     let socialEmail: String
+    let profileImage: String?
     let socialProvider: String
     let socialCode: String
 }

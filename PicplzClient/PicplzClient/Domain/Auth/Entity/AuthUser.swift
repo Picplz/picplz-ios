@@ -11,7 +11,7 @@ struct AuthUser: CustomStringConvertible, Codable {
     // TODO: 프로퍼티 정리 필요
     let sub: Int
     let nickname: String
-    let profileImageUrl: String
+    let profileImageUrl: String?
     var memberType: MemberType?
     var photoCareerType: CareerType?
     var photoCareerYears: Int?
