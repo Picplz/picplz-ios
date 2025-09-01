@@ -56,6 +56,7 @@ final class LoginUseCaseImpl: LoginUseCase {
     }
     
     private func handleLoginSuccess(accessToken: String?, refreshToken: String?) async throws {
+        // MARK: 카카오 로그인 결과 처리
         guard let accessToken = accessToken,
               let _ = refreshToken else {
             log.error("accessToken is nil.")
@@ -67,24 +68,56 @@ final class LoginUseCaseImpl: LoginUseCase {
         }
         
         let loginResponse = result.data
-        authManaging.updateSocialInfo(
-            socialInfo: SocialInfo(
-                nickname: nil,
-                socialEmail: loginResponse.socialEmail ?? "",
-                socialCode: loginResponse.socialCode,
-                socialProvider: SocialProvider(rawValue: loginResponse.socialCode) ?? .kakao
-            )
-        )
         
-        guard let token = loginResponse.token,
-              loginResponse.registered else {
-            throw DomainError.notRegisteredUser // 토큰이 존재하지 않으면 회원가입 코디네이터 시작
+        // MARK: 픽플즈 서버로부터 전달받은 유저 인증 정보를 로컬에 저장
+        guard let email = loginResponse.socialEmail else {
+            throw DomainError.validationError("소셜 아메일이 제공되지 않았습니다.")
         }
         
-        authManaging.login(tokens: Tokens(
-            accessToken: token.accessToken,
-            refreshToken: token.refreshToken,
-            expiresDate: token.accessTokenExpiresDate
-        ))
+        guard let socialProvider = SocialProvider(rawValue: loginResponse.socialProvider) else {
+            throw DomainError.validationError("소셜 아이디 제공자가 잘못되었습니다.")
+        }
+        
+        authManaging.updateSocialInfo(email: email, code: loginResponse.socialCode, provider: socialProvider)
+        
+        guard let tokenResponse = loginResponse.token,
+              loginResponse.registered else {
+            throw DomainError.notRegisteredUser // 가입되지 않은 계정이면 회원가입 코디네이터 시작
+        }
+        
+        // 추가적인 유저 정보를 픽플즈 서버에서 불러옴
+        let token = Tokens(
+            accessToken: tokenResponse.accessToken,
+            refreshToken: tokenResponse.refreshToken,
+            expiresDate: tokenResponse.accessTokenExpiresDate
+        )
+        guard let accessTokenPayload = token.accessTokenPayload else {
+            throw DomainError.validationError("Access Token에서 Payload를 추출하지 못했습니다.")
+        }
+        
+        do {
+            if let userInfoResponse = try await authRequests.getUserInfo(accessToken: token.accessToken, memberId: accessTokenPayload.sub) {
+                let userInfo = userInfoResponse.data
+                
+                authManaging.login(
+                    tokens: Tokens(
+                        accessToken: token.accessToken,
+                        refreshToken: token.refreshToken,
+                        expiresDate: token.expiresDate
+                    ),
+                    userInfo: AuthUser(
+                        sub: userInfo.id,
+                        nickname: userInfo.nickname,
+                        profileImageUrl: "",
+                        memberType: .init(rawValue: userInfo.role) ?? .customer,
+                        socialEmail: userInfo.socialEmail,
+                        socialCode: userInfo.socialCode,
+                        socialProvider: .init(rawValue: userInfo.socialProvider) ?? .kakao
+                    )
+                )
+            }
+        } catch {
+            throw DomainError.serverError("유저 정보를 얻는데 실패했습니다. \(error)")
+        }
     }
 }
