@@ -20,6 +20,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - 고객 상세 뷰
 
 ### Fixed
+
 - 경력 없음 선택 시에도 경력 선택 페이지로 이동했던 문제
+
+### Changed
+
+- 새로운 로그인 API 대응
 
 [unreleased]: https://github.com/Picplz/picplz-ios
