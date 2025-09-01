@@ -14,7 +14,6 @@ final class AuthManager: AuthManaging {
     private let userDefaultHelper: UserDefaultsHelper
     
     // MARK: Properties
-    private(set) var socialInfo: SocialInfo?
     private var tokens: Tokens?
     private(set) var currentUser: AuthUser?
     
@@ -43,16 +42,37 @@ final class AuthManager: AuthManaging {
     }
     
     var isLogin: Bool {
-        tokens != nil && socialInfo != nil && currentUser != nil
+        tokens != nil && currentUser != nil
     }
     
-    func updateSocialInfo(socialInfo: SocialInfo) {
-        self.socialInfo = socialInfo
+    /// 소셜 계정 정보를 업데이트 한다. 로그인 완료 전에도 호출될 수 있다.
+    /// 소셜 로그인은 했지만, 가입이 완료되지 않은 유저의 경우 로그인되지 않았으나 소셜로그인 정보가 되어있는 상태가 있을 수 있다.
+    func updateSocialInfo(email: String, code: String, provider: SocialProvider) {
+        let user = self.currentUser
+            ?? AuthUser( // Fallback...
+                sub: 0,
+                nickname: "",
+                profileImageUrl: "",
+                memberType: nil,
+                socialEmail: "",
+                socialCode: "",
+                socialProvider: .kakao
+            )
+        
+        self.currentUser = AuthUser( // 복제 후 업데이트한다
+            sub: user.sub,
+            nickname: user.nickname,
+            profileImageUrl: user.profileImageUrl,
+            memberType: user.memberType,
+            socialEmail: email,
+            socialCode: code,
+            socialProvider: provider
+        )
     }
     
-    func login(tokens: Tokens) {
+    func login(tokens: Tokens, userInfo: AuthUser) {
         self.tokens = tokens
-        self.currentUser = AuthUser(sub: 0, name: "", nickname: "", birth: Date(), role: "", kakaoEmail: "", profileImageUrl: "") // FIXME
+        self.currentUser = userInfo
         setToDeviceStore()
         
         log.debug("AuthManager login... tokens=\(String(describing: self.tokens)) currentUser=\(String(describing: self.currentUser))")

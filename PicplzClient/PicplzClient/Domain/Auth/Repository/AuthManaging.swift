@@ -12,10 +12,9 @@ protocol AuthManaging {
     var isLogin: Bool { get }
     var accessToken: String? { get }
     var refreshToken: String? { get }
-    var socialInfo: SocialInfo? { get }
     
-    func updateSocialInfo(socialInfo: SocialInfo)
-    func login(tokens: Tokens)
+    func updateSocialInfo(email: String, code: String, provider: SocialProvider)
+    func login(tokens: Tokens, userInfo: AuthUser)
     func logout()
     func validateToken() -> Bool
     func updateUserInfo(user currentUserEntity: AuthUser)

@@ -8,12 +8,9 @@
 import Foundation
 
 struct AuthUser: CustomStringConvertible, Codable {
+    // TODO: 프로퍼티 정리 필요
     let sub: Int
-    let name: String
     let nickname: String
-    let birth: Date
-    let role: String
-    let kakaoEmail: String
     let profileImageUrl: String
     var memberType: MemberType?
     var photoCareerType: CareerType?
@@ -21,9 +18,14 @@ struct AuthUser: CustomStringConvertible, Codable {
     var photoCareerMonths: Int?
     var photoSpecializedThemes: [String]?
     
-    enum MemberType: Codable {
-        case customer
-        case photographer
+    // MARK: Social Login
+    let socialEmail: String
+    let socialCode: String
+    let socialProvider: SocialProvider
+    
+    enum MemberType: String, Codable {
+        case customer = "CUSTOMER"
+        case photographer = "PHOTOGRAPHER"
     }
     
     enum CareerType: Codable {
@@ -33,11 +35,8 @@ struct AuthUser: CustomStringConvertible, Codable {
     }
     
     var description: String {
-        "AuthUser: name: \(name) "
+        "AuthUser: "
         + "/ nickname: \(nickname) "
-        + "/ birth: \(birth) "
-        + "/ role: \(role) "
-        + "/ kakaoEmail: \(kakaoEmail) "
         + "/ profileImageUrl: \(String(describing: profileImageUrl)) "
         + "/ memberType: \(String(describing: memberType)) "
         + "/ photoCareerType: \(String(describing: photoCareerType)) "
@@ -45,4 +44,9 @@ struct AuthUser: CustomStringConvertible, Codable {
         + "/ photoCareerMonths: \(String(describing: photoCareerMonths)) "
         + "/ photoSpecializedThemes: \(String(describing: photoSpecializedThemes))"
     }
+}
+
+enum SocialProvider: String, Codable {
+    case kakao = "KAKAO"
+    case apple = "APPLE"
 }

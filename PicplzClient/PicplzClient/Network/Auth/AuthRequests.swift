@@ -19,7 +19,7 @@ final class AuthRequests: AuthRequestable {
         return decoder
     }()
     
-    func kakaoLogin(kakaoAccessToken: String) async throws -> KakaoLoginResponse? {
+    func kakaoLogin(kakaoAccessToken: String) async throws -> BaseResponse<KakaoLoginResponse>? {
         let session = AFSessionFactory.makeSession()
         let response = await session.request(
             "\(Constants.serverBaseUrl)/auth/kakao",
