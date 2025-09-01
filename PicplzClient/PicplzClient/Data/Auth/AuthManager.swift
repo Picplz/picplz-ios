@@ -14,8 +14,8 @@ final class AuthManager: AuthManaging {
     private let userDefaultHelper: UserDefaultsHelper
     
     // MARK: Properties
-    private var accessTokenModel: AccessToken?
-    private var currentUserModel: AuthUserModel?
+    private var tokens: Tokens?
+    private(set) var currentUser: AuthUser?
     
     private var log = Logger.of("AuthManager")
     
@@ -26,27 +26,56 @@ final class AuthManager: AuthManaging {
     }
     
     var accessToken: String? {
-        guard let accessTokenModel = accessTokenModel else { return nil }
+        guard let tokens = tokens else { return nil }
         
         let _ = validateToken()
         
-        return accessTokenModel.token
+        return tokens.accessToken
     }
     
-    var currentUser: AuthUser? {
-        currentUserModel?.toEntity()
+    var refreshToken: String? {
+        guard let tokens = tokens else { return nil }
+        
+        let _ = validateToken()
+        
+        return tokens.refreshToken
     }
     
     var isLogin: Bool {
-        accessTokenModel != nil && currentUserModel != nil
+        tokens != nil && currentUser != nil
     }
     
-    func login(accessToken: String, expiresDate: Date, user currentUserEntity: AuthUser) {
-        self.accessTokenModel = AccessToken(token: accessToken, expiresDate: expiresDate)
-        self.currentUserModel = AuthUserModel.from(entity: currentUserEntity)
+    /// 소셜 계정 정보를 업데이트 한다. 로그인 완료 전에도 호출될 수 있다.
+    /// 소셜 로그인은 했지만, 가입이 완료되지 않은 유저의 경우 로그인되지 않았으나 소셜로그인 정보가 되어있는 상태가 있을 수 있다.
+    func updateSocialInfo(email: String, code: String, provider: SocialProvider) {
+        let user = self.currentUser
+            ?? AuthUser( // Fallback...
+                sub: 0,
+                nickname: "",
+                profileImageUrl: "",
+                memberType: nil,
+                socialEmail: "",
+                socialCode: "",
+                socialProvider: .kakao
+            )
+        
+        self.currentUser = AuthUser( // 복제 후 업데이트한다
+            sub: user.sub,
+            nickname: user.nickname,
+            profileImageUrl: user.profileImageUrl,
+            memberType: user.memberType,
+            socialEmail: email,
+            socialCode: code,
+            socialProvider: provider
+        )
+    }
+    
+    func login(tokens: Tokens, userInfo: AuthUser) {
+        self.tokens = tokens
+        self.currentUser = userInfo
         setToDeviceStore()
         
-        log.debug("AuthManager login... token=\(String(describing: self.accessTokenModel)) currentUser=\(String(describing: self.currentUserModel))")
+        log.debug("AuthManager login... tokens=\(String(describing: self.tokens)) currentUser=\(String(describing: self.currentUser))")
     }
     
     func logout() {
@@ -56,13 +85,13 @@ final class AuthManager: AuthManaging {
     
     private func reset() {
         log.debug("AuthManager reset...")
-        accessTokenModel = nil
-        currentUserModel = nil
+        tokens = nil
+        currentUser = nil
         setToDeviceStore()
     }
     
     func validateToken() -> Bool {
-        guard let expiresDate = accessTokenModel?.expiresDate else { return false }
+        guard let expiresDate = tokens?.expiresDate else { return false }
         
         if Date() > expiresDate {
             log.warning("Token expired... currentDate=\(Date()) expiredDate=\(expiresDate)")
@@ -74,64 +103,69 @@ final class AuthManager: AuthManaging {
     }
     
     func updateUserInfo(user currentUserEntity: AuthUser) {
-        self.currentUserModel = AuthUserModel.from(entity: currentUserEntity)
+        self.currentUser = currentUserEntity
         setToDeviceStore()
         
-        log.debug("AuthManager updateUserInfo... currentUser=\(String(describing: self.currentUserModel))")
+        log.debug("AuthManager updateUserInfo... currentUser=\(String(describing: self.currentUser))")
     }
     
     private func setToDeviceStore() {
-        // MARK: save currentUserModel
-        if let currentUserModel = currentUserModel {
-            userDefaultHelper.save(value: currentUserModel, key: .authUser)
-            log.debug("saved currentUserModel to UserDefaults... value=\(String(describing: currentUserModel))")
+        // MARK: save currentUser
+        if let currentUser = currentUser {
+            userDefaultHelper.save(value: currentUser, key: .authUser)
+            log.debug("saved currentUser to UserDefaults... value=\(String(describing: currentUser))")
         } else {
             userDefaultHelper.delete(for: .authUser)
-            log.debug("deleted currentUserModel from UserDefaults...")
+            log.debug("deleted currentUser from UserDefaults...")
         }
         
-        // MARK: save accessTokenModel
-        if let accessTokenModel = accessTokenModel {
-            userDefaultHelper.save(value: accessTokenModel.expiresDate, key: .accessTokenExpiresAt)
-            log.debug("saved accessTokenModel.expiresDate to UserDefaults... value=\(String(describing: accessTokenModel.expiresDate))")
+        // MARK: save tokens
+        if let tokens = tokens {
+            userDefaultHelper.save(value: tokens.expiresDate, key: .accessTokenExpiresAt)
+            log.debug("saved tokens.expiresDate to UserDefaults... value=\(String(describing: tokens.expiresDate))")
             
             do {
-                try keychainStore.saveValue(accessTokenModel.token, for: KeychainStore.ReservedAccount.AccessToken.rawValue)
-                log.debug("saved accessTokenModel.token to keychain...")
+                try keychainStore.saveValue(tokens.accessToken, for: KeychainStore.ReservedAccount.AccessToken.rawValue)
+                try keychainStore.saveValue(tokens.refreshToken, for: KeychainStore.ReservedAccount.AccessToken.rawValue)
+                log.debug("saved tokens.token to keychain...")
             } catch {
-                log.error("failed to save accessTokenModel.token to keychain... error: \(error)")
+                log.error("failed to save tokens.token to keychain... error: \(error)")
             }
         } else {
             userDefaultHelper.delete(for: .accessTokenExpiresAt)
-            log.debug("deleted accessTokenModel.expiresDate from UserDefaults...")
+            log.debug("deleted tokens.expiresDate from UserDefaults...")
             
             do {
                 try keychainStore.remove(for: KeychainStore.ReservedAccount.AccessToken.rawValue)
-                log.debug("deleted accessTokenModel.token from keychain...")
+                try keychainStore.remove(for: KeychainStore.ReservedAccount.RefreshToken.rawValue)
+                log.debug("deleted tokens.token from keychain...")
             } catch {
-                log.error("failed to delete accessTokenModel.token from keychain... error: \(error)")
+                log.error("failed to delete tokens.token from keychain... error: \(error)")
             }
         }
     }
     
     private func loadFromDeviceStore() {
-        // MARK: load currentUserModel
-        currentUserModel = userDefaultHelper.load(for: .authUser)
-        log.debug("loaded currentUserModel from UserDefaults...")
+        // MARK: load currentUser
+        currentUser = userDefaultHelper.load(for: .authUser)
+        log.debug("loaded currentUser from UserDefaults...")
         
-        // MARK: load accessTokenModel
+        // MARK: load tokens
         var accessToken: String?
+        var refreshToken: String?
         do {
             try accessToken = keychainStore.loadValue(for: KeychainStore.ReservedAccount.AccessToken.rawValue)
+            try refreshToken = keychainStore.loadValue(for: KeychainStore.ReservedAccount.RefreshToken.rawValue)
         } catch {
-            log.error("failed to load accessTokenModel.token from keychain... error: \(error)")
+            log.error("failed to load tokens.token from keychain... error: \(error)")
         }
         let expiresDate: Date? = userDefaultHelper.load(for: .accessTokenExpiresAt)
         
         guard let expiresDate = expiresDate,
-              let accessToken = accessToken else { return }
+              let accessToken = accessToken,
+              let refreshToken = refreshToken else { return }
         
-        accessTokenModel = AccessToken(token: accessToken, expiresDate: expiresDate)
-        log.debug("loaded accessTokenModel.token from keychain...")
+        tokens = Tokens(accessToken: accessToken, refreshToken: refreshToken, expiresDate: expiresDate)
+        log.debug("loaded tokens.token from keychain...")
     }
 }

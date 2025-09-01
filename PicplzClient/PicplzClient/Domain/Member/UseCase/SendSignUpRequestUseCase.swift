@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import os.log
 
 protocol SendSignUpRequestUseCase {
     func execute(signUpSession: SignUpSession)
@@ -13,17 +14,47 @@ protocol SendSignUpRequestUseCase {
 
 final class SendSignUpRequestUseCaseImpl: SendSignUpRequestUseCase {
     let authManaging: AuthManaging
+    let customerRequests: CustomerRequestable
     
-    init(authManaging: AuthManaging) {
+    private let logger = Logger.of("SendSignUpRequestUseCaseImpl")
+    
+    init(
+        authManaging: AuthManaging,
+        customerRequests: CustomerRequestable
+    ) {
         self.authManaging = authManaging
+        self.customerRequests = customerRequests
     }
     
     func execute(signUpSession: SignUpSession) {
-        // TODO: send signin request to server
-        
-        storeUserInfo(signUpSession: signUpSession)
+        Task { @MainActor in
+            do {
+                if signUpSession.memberType == .customer {
+                    guard let socialCode = authManaging.currentUser?.socialCode else {
+                        throw DomainError.validationError("Social Coode가 없습니다")
+                    }
+                    
+                    guard let socialProvider = authManaging.currentUser?.socialProvider else {
+                        throw DomainError.validationError("Social Provider가 없습니다")
+                    }
+                    
+                    try await customerRequests.create(registerDto: CustomerRegisterDTO(
+                        nickname: signUpSession.nickname,
+                        socialEmail: authManaging.currentUser?.socialEmail ?? "",
+                        socialCode: socialCode,
+                        socialProvider: socialProvider.rawValue
+                    ))
+                } else {
+                    // TODO: 작가 회원가입
+                }
+                storeUserInfo(signUpSession: signUpSession)
+            } catch {
+                logger.error("회원가입에 실패했습니다. \(error)")
+            }
+        }
     }
     
+    /// 회원가입 페이지에서 입력한 내용을 로컬에 저장한다
     private func storeUserInfo(signUpSession: SignUpSession) {
         guard let savedAuthUser = authManaging.currentUser else { return }
         
@@ -37,19 +68,15 @@ final class SendSignUpRequestUseCaseImpl: SendSignUpRequestUseCase {
             memberType = nil
         }
         
-        let careerType: AuthUser.CareerType?
-        switch signUpSession.photoCareerType {
-        case .major:
-            careerType = AuthUser.CareerType.major
-        case .job:
-            careerType = AuthUser.CareerType.job
-        case .influencer:
-            careerType = AuthUser.CareerType.influencer
-        case .none:
-            careerType = nil
-        }
-        
-        let newAuthUser = AuthUser(name: savedAuthUser.name, nickname: signUpSession.nickname, birth: savedAuthUser.birth, role: savedAuthUser.role, kakaoEmail: savedAuthUser.kakaoEmail, profileImageUrl: signUpSession.profileImageUrl?.path ?? "", memberType: memberType, photoCareerType: careerType, photoCareerYears: signUpSession.photoCareerYears, photoCareerMonths: signUpSession.photoCareerMonths, photoSpecializedThemes: signUpSession.photoSpecializedThemes)
+        let newAuthUser = AuthUser(
+            sub: savedAuthUser.sub,
+            nickname: signUpSession.nickname,
+            profileImageUrl: signUpSession.profileImageUrl?.absoluteString,
+            memberType: memberType,
+            socialEmail: savedAuthUser.socialEmail,
+            socialCode: savedAuthUser.socialCode,
+            socialProvider: savedAuthUser.socialProvider
+        )
         
         authManaging.updateUserInfo(user: newAuthUser)
     }

@@ -66,12 +66,12 @@ final class GetShortAddressUserCaseImpl: GetShortAddressUseCase {
             if let place = places.first {
                 return try locationDebugDescriptionToShortAddress(place: place)
             } else {
-                throw DomainError.internalError("첫번째 장소가 nil입니다")
+                throw DomainError.serverError("첫번째 장소가 nil입니다")
             }
         } catch let error as DomainError {
             throw error
         } catch {
-            throw DomainError.internalError("\(error)")
+            throw DomainError.serverError("\(error)")
         }
     }
     
@@ -84,7 +84,7 @@ final class GetShortAddressUserCaseImpl: GetShortAddressUseCase {
                 if addressComponents.count >= 4 {
                     return "\(addressComponents[2]) \(addressComponents[3])"
                 } else {
-                    throw DomainError.internalError("addressComponents 원소 수가 4보다 작습니다")
+                    throw DomainError.serverError("addressComponents 원소 수가 4보다 작습니다")
                 }
             } else {
                 return "\(place.locality ?? "") \(place.subLocality ?? "")"

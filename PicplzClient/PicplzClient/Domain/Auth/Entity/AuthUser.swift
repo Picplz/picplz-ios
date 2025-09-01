@@ -7,41 +7,33 @@
 
 import Foundation
 
-struct AuthUser: CustomStringConvertible {
-    let name: String
+struct AuthUser: CustomStringConvertible, Codable {
+    let sub: Int
     let nickname: String
-    let birth: Date
-    let role: String
-    let kakaoEmail: String
-    let profileImageUrl: String
+    let profileImageUrl: String?
     var memberType: MemberType?
-    var photoCareerType: CareerType?
-    var photoCareerYears: Int?
-    var photoCareerMonths: Int?
-    var photoSpecializedThemes: [String]?
     
-    enum MemberType {
-        case customer
-        case photographer
-    }
+    // MARK: Social Login
+    let socialEmail: String
+    let socialCode: String
+    let socialProvider: SocialProvider
     
-    enum CareerType {
-        case major // 사진 전공
-        case job // 수익 창출
-        case influencer // SNS 계정 운영
+    // TODO: 작가의 경우 주촬영지, 촬영 기기 프로퍼티 정의 필요
+    
+    enum MemberType: String, Codable {
+        case customer = "CUSTOMER"
+        case photographer = "PHOTOGRAPHER"
     }
     
     var description: String {
-        "AuthUser: name: \(name) "
+        "AuthUser: "
         + "/ nickname: \(nickname) "
-        + "/ birth: \(birth) "
-        + "/ role: \(role) "
-        + "/ kakaoEmail: \(kakaoEmail) "
         + "/ profileImageUrl: \(String(describing: profileImageUrl)) "
         + "/ memberType: \(String(describing: memberType)) "
-        + "/ photoCareerType: \(String(describing: photoCareerType)) "
-        + "/ photoCareerYears: \(String(describing: photoCareerYears)) "
-        + "/ photoCareerMonths: \(String(describing: photoCareerMonths)) "
-        + "/ photoSpecializedThemes: \(String(describing: photoSpecializedThemes))"
     }
+}
+
+enum SocialProvider: String, Codable {
+    case kakao = "KAKAO"
+    case apple = "APPLE"
 }

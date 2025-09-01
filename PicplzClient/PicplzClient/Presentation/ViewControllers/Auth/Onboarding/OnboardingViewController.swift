@@ -57,6 +57,14 @@ final class OnboardingViewController: UIViewController {
                 self?.contentView.loginButton.isHidden = !showLoginButton
             }
             .store(in: &subscriptions)
+        
+        viewModel.errorMessagePublisher
+            .receive(on: RunLoop.main)
+            .compactMap { $0 }
+            .sink { [weak self] errorMessage in
+                self?.showAlert(title: "오류가 발생했습니다.", message: errorMessage)
+            }
+            .store(in: &subscriptions)
     }
     
     private func setupCollectionView() {
@@ -143,6 +151,12 @@ final class OnboardingViewController: UIViewController {
     
     @objc private func kakaoLoginTapped() {
         viewModel.kakaoLoginButtonTapped()
+    }
+    
+    private func showAlert(title: String, message: String) {
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "확인", style: .default))
+        present(alertController, animated: true)
     }
     
     enum Section {
