@@ -21,10 +21,31 @@ class CustomerTabBarCoordinator: Coordinator {
     private let container: Container
     private let log = Logger.of("CustomerTabBarCoordinator")
     
-    private lazy var homeCoordinator = CustomerHomeCoordinator(tabBarTitle: "홈", tabBarImage: UIImage(named: "StarBlack"), tabBarIndex: 0)
-    private lazy var mapCoordinator = CustomerMapCoordinator(container: container, tabBarTitle: "바로 촬영", tabBarImage: UIImage(named: "StarBlack"), tabBarIndex: 1)
-    private lazy var chatCoordinator = CustomerChatCoordinator(tabBarTitle: "채팅", tabBarImage: UIImage(named: "StarBlack"), tabBarIndex: 2)
-    private lazy var myPageCoordinator = CustomerMyPageCoordinator(tabBarTitle: "마이페이지", tabBarImage: UIImage(named: "StarBlack"), tabBarIndex: 3)
+    private lazy var homeCoordinator = CustomerHomeCoordinator(
+        tabBarTitle: "홈",
+        tabBarImage: UIImage(resource: .homeTabDefault),
+        tabBarSelectedImage: UIImage(resource: .homeTabSelected),
+        tabBarIndex: 0
+    )
+    private lazy var mapCoordinator = CustomerMapCoordinator(
+        container: container,
+        tabBarTitle: "바로 촬영",
+        tabBarImage: UIImage(resource: .mapTabDefault),
+        tabBarSelectedImage: UIImage(resource: .mapTabSelected),
+        tabBarIndex: 1
+    )
+    private lazy var chatCoordinator = CustomerChatCoordinator(
+        tabBarTitle: "채팅",
+        tabBarImage: UIImage(resource: .chatTabDefault),
+        tabBarSelectedImage: UIImage(resource: .chatTabSelected),
+        tabBarIndex: 2
+    )
+    private lazy var myPageCoordinator = CustomerMyPageCoordinator(
+        tabBarTitle: "마이페이지",
+        tabBarImage: UIImage(resource: .myPageTabDefault),
+        tabBarSelectedImage: UIImage(resource: .myPageTabSelected),
+        tabBarIndex: 3
+    )
     
     init(container: Container) {
         self.tabBarController = CustomTabBarController()
