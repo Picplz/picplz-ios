@@ -17,7 +17,7 @@ protocol CustomerTabBarCoordinatorDelegate: AnyObject {
 class CustomerTabBarCoordinator: Coordinator {
     var childCoordinators: [any Coordinator] = []
     weak var delegate: CustomerTabBarCoordinatorDelegate?
-    let tabBarController: UITabBarController // TODO: Tabbar 커스텀 스타일링
+    let tabBarController: CustomTabBarController // TODO: Tabbar 커스텀 스타일링
     private let container: Container
     private let log = Logger.of("CustomerTabBarCoordinator")
     
@@ -27,7 +27,7 @@ class CustomerTabBarCoordinator: Coordinator {
     private lazy var myPageCoordinator = CustomerMyPageCoordinator(tabBarTitle: "마이페이지", tabBarImage: UIImage(named: "StarBlack"), tabBarIndex: 3)
     
     init(container: Container) {
-        self.tabBarController = UITabBarController()
+        self.tabBarController = CustomTabBarController()
         self.container = container
         
         homeCoordinator.delegate = self
