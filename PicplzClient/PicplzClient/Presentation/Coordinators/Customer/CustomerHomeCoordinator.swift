@@ -19,11 +19,13 @@ final class CustomerHomeCoordinator: TabBarItemCoordinator {
     
     let tabBarTitle: String
     let tabBarImage: UIImage?
+    let tabBarSelectedImage: UIImage?
     let tabBarIndex: Int
     
-    init(tabBarTitle: String, tabBarImage: UIImage?, tabBarIndex: Int) {
+    init(tabBarTitle: String, tabBarImage: UIImage?, tabBarSelectedImage: UIImage?, tabBarIndex: Int) {
         self.tabBarTitle = tabBarTitle
         self.tabBarImage = tabBarImage
+        self.tabBarSelectedImage = tabBarSelectedImage
         self.tabBarIndex = tabBarIndex
     }
     
@@ -32,6 +34,7 @@ final class CustomerHomeCoordinator: TabBarItemCoordinator {
         viewController.delegate = self
         navigationController.viewControllers = [viewController]
         navigationController.tabBarItem = UITabBarItem(title: tabBarTitle, image: tabBarImage, tag: tabBarIndex)
+        navigationController.tabBarItem.selectedImage = tabBarSelectedImage
     }
 }
 

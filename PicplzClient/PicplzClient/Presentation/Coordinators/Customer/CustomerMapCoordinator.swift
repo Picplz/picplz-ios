@@ -17,12 +17,14 @@ final class CustomerMapCoordinator: TabBarItemCoordinator {
     
     let tabBarTitle: String
     let tabBarImage: UIImage?
+    let tabBarSelectedImage: UIImage?
     let tabBarIndex: Int
     
-    init(container: Container, tabBarTitle: String, tabBarImage: UIImage?, tabBarIndex: Int) {
+    init(container: Container, tabBarTitle: String, tabBarImage: UIImage?, tabBarSelectedImage: UIImage?, tabBarIndex: Int) {
         self.container = container
         self.tabBarTitle = tabBarTitle
         self.tabBarImage = tabBarImage
+        self.tabBarSelectedImage = tabBarSelectedImage
         self.tabBarIndex = tabBarIndex
     }
     
@@ -34,6 +36,7 @@ final class CustomerMapCoordinator: TabBarItemCoordinator {
         navigationController.viewControllers = [viewController]
         viewController.viewModel.delegate = self
         navigationController.tabBarItem = UITabBarItem(title: tabBarTitle, image: tabBarImage, tag: tabBarIndex)
+        navigationController.tabBarItem.selectedImage = tabBarSelectedImage
     }
 }
 

@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "MapTabDefault.svg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

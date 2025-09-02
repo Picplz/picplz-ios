@@ -19,11 +19,30 @@ class PhotographerTabBarCoordinator: Coordinator {
     let tabBarController: UITabBarController // FIXME: Tabbar 커스텀 스타일링
     private let log = Logger.of("PhotographerTabBarCoordinator")
     
-    private lazy var homeCoordinator = PhotographerHomeCoordinator(tabBarTitle: "홈", tabBarImage: UIImage(named: "StarBlack"), tabBarIndex: 0)
-    private lazy var mapCoordinator = PhotographerMapCoordinator(tabBarTitle: "지도", tabBarImage: UIImage(named: "StarBlack"), tabBarIndex: 1)
-    private lazy var feedCoordinator = PhotographerFeedCoordinator(tabBarTitle: "피드", tabBarImage: UIImage(named: "StarBlack"), tabBarIndex: 2)
-    private lazy var chatCoordinator = PhotographerChatCoordinator(tabBarTitle: "채팅", tabBarImage: UIImage(named: "StarBlack"), tabBarIndex: 3)
-    private lazy var myPageCoordinator = PhotographerMyPageCoordinator(tabBarTitle: "마이페이지", tabBarImage: UIImage(named: "StarBlack"), tabBarIndex: 4)
+    private lazy var homeCoordinator = PhotographerHomeCoordinator(
+        tabBarTitle: "홈",
+        tabBarImage: UIImage(resource: .homeTabDefault),
+        tabBarSelectedImage: UIImage(resource: .homeTabSelected),
+        tabBarIndex: 0
+    )
+    private lazy var mapCoordinator = PhotographerMapCoordinator(
+        tabBarTitle: "지도",
+        tabBarImage: UIImage(resource: .mapTabDefault),
+        tabBarSelectedImage: UIImage(resource: .mapTabSelected),
+        tabBarIndex: 1
+    )
+    private lazy var chatCoordinator = PhotographerChatCoordinator(
+        tabBarTitle: "채팅",
+        tabBarImage: UIImage(resource: .chatTabDefault),
+        tabBarSelectedImage: UIImage(resource: .chatTabSelected),
+        tabBarIndex: 2
+    )
+    private lazy var myPageCoordinator = PhotographerMyPageCoordinator(
+        tabBarTitle: "마이페이지",
+        tabBarImage: UIImage(resource: .myPageTabDefault),
+        tabBarSelectedImage: UIImage(resource: .myPageTabSelected),
+        tabBarIndex: 3
+    )
     
     init() {
         self.tabBarController = UITabBarController()
@@ -38,7 +57,6 @@ class PhotographerTabBarCoordinator: Coordinator {
     func start() {
         homeCoordinator.start()
         mapCoordinator.start()
-        feedCoordinator.start()
         chatCoordinator.start()
         myPageCoordinator.start()
         
@@ -47,7 +65,6 @@ class PhotographerTabBarCoordinator: Coordinator {
         tabBarController.viewControllers = [
             homeCoordinator.navigationController,
             mapCoordinator.navigationController,
-            feedCoordinator.navigationController,
             chatCoordinator.navigationController,
             myPageCoordinator.navigationController,
         ]

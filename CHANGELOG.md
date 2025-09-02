@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - 작가/고객 라우팅 분기처리
 - 작가/고객 탭바 작성
 - 고객 상세 뷰
+- 커스텀 탭바 구현
 
 ### Fixed
 
