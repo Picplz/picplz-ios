@@ -16,6 +16,8 @@ final class CustomTabBarController: UITabBarController {
                 viewControllers.forEach { vc in
                     customTabBar.addArangedTabBarItem(vc.tabBarItem)
                 }
+                
+                customTabBar.selectTap(at: 0) // 세팅 후 0번 아이템 선택
             }
         }
     }
@@ -26,6 +28,10 @@ final class CustomTabBarController: UITabBarController {
         tabBar.isHidden = true // 원래 탭바는 숨긴다
         
         setupLayout()
+        
+        customTabBar.didSelectTab = { [weak self] index in
+            self?.selectedIndex = index
+        }
     }
     
     private func setupLayout() {

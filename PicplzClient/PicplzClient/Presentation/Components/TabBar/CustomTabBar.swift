@@ -15,6 +15,8 @@ final class CustomTabBar: UIView {
         return stackView
     }()
     
+    var didSelectTab: (_ index: Int) -> Void = { _ in }
+    
     private let horizontalPadding: CGFloat = 24
     private let verticalPadding: CGFloat = 15
     private let tabBarHeight: CGFloat = 84
@@ -41,8 +43,25 @@ final class CustomTabBar: UIView {
         ])
     }
     
+    /// 탭바에 아이템을 추가
     func addArangedTabBarItem(_ item: UITabBarItem) {
-        let view = CustomTabBarItem(tabBarItem: item)
+        let view = CustomTabBarItemView(tabBarItem: item) { [weak self] index in
+            self?.didSelectTab(index)
+            self?.updateAppearance(selectedIndex: index)
+        }
         stackView.addArrangedSubview(view)
+    }
+    
+    /// 외부에서 특정 탭이 선택되었음을 알려줄 때 사용하는 메서드
+    func selectTap(at index: Int) {
+        updateAppearance(selectedIndex: index)
+    }
+    
+    private func updateAppearance(selectedIndex: Int) {
+        stackView.arrangedSubviews.forEach { view in
+            if let view = view as? CustomTabBarItemView {
+                view.isSelected = view.tabBarItem.tag == selectedIndex
+            }
+        }
     }
 }

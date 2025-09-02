@@ -7,9 +7,15 @@
 
 import UIKit
 
-final class CustomTabBarItem: UIView {
+final class CustomTabBarItemView: UIView {
     // MARK: - Properties
     let tabBarItem: UITabBarItem
+    let didTap: (_ index: Int) -> Void
+    var isSelected: Bool = false {
+        didSet {
+            setAppearance(isActive: isSelected)
+        }
+    }
     
     // MARK: - Constraints
     private let viewSize: CGFloat = 54
@@ -33,10 +39,16 @@ final class CustomTabBarItem: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    init(tabBarItem: UITabBarItem) {
+    init(tabBarItem: UITabBarItem, didTap: @escaping (_ index: Int) -> Void) {
         self.tabBarItem = tabBarItem
+        self.didTap = didTap
         super.init(frame: .zero)
         setupLayout()
+        
+        // Set Gesture Recognizer
+        let tapGesture = UITapGestureRecognizer()
+        tapGesture.delegate = self
+        self.addGestureRecognizer(tapGesture)
     }
     
     private func setupLayout() {
@@ -64,5 +76,37 @@ final class CustomTabBarItem: UIView {
         label.text = tabBarItem.title
         label.font = tabBarItemLabelFont
         stackView.addArrangedSubview(label)
+    }
+    
+    private func setAppearance(isActive: Bool) {
+        if isActive {
+            self.stackView.arrangedSubviews.forEach {
+                if let label = $0 as? UILabel {
+                    label.textColor = .ppBlack
+                }
+                
+                if let imageView = $0 as? UIImageView {
+                    imageView.image = tabBarItem.selectedImage
+                }
+            }
+            return
+        }
+        
+        self.stackView.arrangedSubviews.forEach {
+            if let label = $0 as? UILabel {
+                label.textColor = .ppGrey3
+            }
+            
+            if let imageView = $0 as? UIImageView {
+                imageView.image = tabBarItem.image
+            }
+        }
+    }
+}
+
+extension CustomTabBarItemView: UIGestureRecognizerDelegate {
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        didTap(tabBarItem.tag)
+        return true
     }
 }
