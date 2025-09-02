@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "ChatTabDefault.svg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
