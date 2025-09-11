@@ -1,0 +1,67 @@
+included:
+  - PicplzClient
+  - PicplzClientTests
+  - PicplzClientUITests
+
+excluded:
+  - Carthage
+  - Pods
+  - DerivedData
+  - .build
+  - .swiftpm
+
+reporter: xcode
+
+# ------------------------------------------------------------
+# 기본 규칙
+# ------------------------------------------------------------
+force_cast: warning
+force_try: warning
+
+line_length:
+  warning: 110
+  error: 140
+  ignores_urls: true
+  ignores_comments: true
+
+file_length:
+  warning: 500
+  error: 1200
+
+type_body_length:
+  - 300
+  - 400
+
+function_body_length:
+  - 60
+  - 100
+
+identifier_name:
+  min_length:
+    error: 3
+  excluded:
+    - id
+    - URL
+    - x
+    - y
+
+# ------------------------------------------------------------
+# opt-in
+# ------------------------------------------------------------
+opt_in_rules:
+  - unused_import
+  - duplicate_imports
+  - empty_count
+  - implicit_return
+  - trailing_closure
+
+# ------------------------------------------------------------
+# 커스텀 규칙(필요 최소)
+# ------------------------------------------------------------
+custom_rules:
+  no_print_in_production:
+    included: "PicplzClient"
+    name: "Avoid print()"
+    regex: "\\bprint\\s*\\("
+    message: "print 대신 Logger를 사용하세요."
+    severity: warning
