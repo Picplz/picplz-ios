@@ -14,12 +14,12 @@ protocol CustomerMapViewModelDelegate {
 
 protocol CustomerMapViewModelProtocol {
     var delegate: CustomerMapViewModelDelegate? { get set }
-    
+
     var shortAddress: String? { get }
     var shortAddressPublisher: AnyPublisher<String, Never> { get }
-    
+
     func refreshButtonTapped()
     func onLoad()
-    
+
     func photographerSelected(id: Int)
 }

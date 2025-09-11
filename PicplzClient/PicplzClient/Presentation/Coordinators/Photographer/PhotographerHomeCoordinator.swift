@@ -16,19 +16,19 @@ final class PhotographerHomeCoordinator: TabBarItemCoordinator {
     var childCoordinators: [Coordinator] = []
     private(set) var navigationController = UINavigationController()
     weak var delegate: PhotographerHomeCoordinatorDelegate?
-    
+
     let tabBarTitle: String
     let tabBarImage: UIImage?
     let tabBarSelectedImage: UIImage?
     let tabBarIndex: Int
-    
+
     init(tabBarTitle: String, tabBarImage: UIImage?, tabBarSelectedImage: UIImage?, tabBarIndex: Int) {
         self.tabBarTitle = tabBarTitle
         self.tabBarImage = tabBarImage
         self.tabBarSelectedImage = tabBarSelectedImage
         self.tabBarIndex = tabBarIndex
     }
-    
+
     func start() {
         let viewController = PhotographerViewController()
         viewController.delegate = self
@@ -42,7 +42,7 @@ extension PhotographerHomeCoordinator: PhotographerViewControllerDelegate {
     func switchToCustomer() {
         self.delegate?.switchToCustomer(homeCoordinator: self)
     }
-    
+
     func logOut() {
         self.delegate?.loggedOut(homeCoordinator: self)
     }

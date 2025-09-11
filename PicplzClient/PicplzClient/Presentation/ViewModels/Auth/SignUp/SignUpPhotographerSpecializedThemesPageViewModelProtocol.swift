@@ -10,10 +10,10 @@ import Foundation
 protocol SignUpPhotographerSpecializedThemesPageViewModelProtocol: SignUpVIewModelProtocol {
     var collectionViewItems: [ThemesSettingCollectionViewItem] { get }
     var collectionViewItemsPublisher: Published<[ThemesSettingCollectionViewItem]>.Publisher { get }
-    
+
     func didSelectItem(indexPath: IndexPath)
     func customThemeUpdated(from previousTheme: Theme, to newTheme: Theme)
-    
+
     func nextButtonDidTapped()
 }
 

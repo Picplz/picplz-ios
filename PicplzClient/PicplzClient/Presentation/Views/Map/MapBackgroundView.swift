@@ -9,7 +9,7 @@ import UIKit
 
 final class MapBackgroundView: UIView {
     private let diameters = [129.62, 239.3, 350.64, 457.0, 584.0]
-    
+
     override func draw(_ rect: CGRect) {
         diameters.forEach { diameter in
             let radius = diameter / 2.0
@@ -19,7 +19,7 @@ final class MapBackgroundView: UIView {
             path.stroke()
         }
     }
-    
+
     override var intrinsicContentSize: CGSize {
         .init(width: 600, height: 600)
     }

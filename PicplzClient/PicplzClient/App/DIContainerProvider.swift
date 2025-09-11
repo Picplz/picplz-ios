@@ -10,37 +10,37 @@ import os
 
 final class DIContainerProvider {
     static let shared = DIContainerProvider()
-    
+
     let container: Container
-    
+
     private init() {
         self.container = DIContainerProvider.makeContainer()
         let logger = Logger.of("DIContainerProvider")
         logger.debug("DIContainerProvider init completed")
     }
-    
+
     private static func makeContainer() -> Container {
         let container = Container()
-        
+
         // MARK: Data
         container.register(AuthManaging.self) { _ in
             AuthManager(keychainStore: KeychainStore(), userDefaultHelper: UserDefaultsHelper())
         }
         .inObjectScope(.container)
-        
+
         container.register(LocationService.self) { _ in
             LocationServiceImpl()
         }
         .inObjectScope(.container)
-        
+
         container.register(AuthRequestable.self) { _ in
             AuthRequests()
         }
-        
+
         container.register(CustomerRequestable.self) { _ in
             CustomerRequests()
         }
-        
+
         // MARK: Domain
         container.register(LoginUseCase.self) { r in
             let authManaging = r.resolve(AuthManaging.self)!
@@ -64,9 +64,9 @@ final class DIContainerProvider {
             let locationService = r.resolve(LocationService.self)!
             return GetShortAddressUserCaseImpl(locationService: locationService)
         }
-        
+
         // MARK: Presentaion
-        // MARK:              ...  View Models
+        // MARK: ...  View Models
         container.register(MainViewModelProtocol.self) { r in
             let viewModel = MainViewModel()
             viewModel.logoutUseCase = r.resolve(LogoutUseCase.self)
@@ -87,9 +87,9 @@ final class DIContainerProvider {
                 )
             )
         }
-        container.register(PhotographerDetailViewModel.self) { r in PhotographerDetailViewModel() }
-        
-        // MARK:              ...  View Controllers
+        container.register(PhotographerDetailViewModel.self) { _ in PhotographerDetailViewModel() }
+
+        // MARK: ...  View Controllers
         container.register(OnboardingViewController.self) { r in
             let vc = OnboardingViewController()
             vc.viewModel = r.resolve(OnboardingViewModelProtocol.self)
@@ -132,13 +132,13 @@ final class DIContainerProvider {
             return vc
         }
         container.register(SignUpFinishVIewController.self) { _ in
-            return SignUpFinishVIewController()
+            SignUpFinishVIewController()
         }
         container.register(CustomerViewController.self) { _ in
-            return CustomerViewController()
+            CustomerViewController()
         }
         container.register(PhotographerViewController.self) { _ in
-            return PhotographerViewController()
+            PhotographerViewController()
         }
         container.register(CustomerMapViewController.self) { r in
             let vc = CustomerMapViewController()

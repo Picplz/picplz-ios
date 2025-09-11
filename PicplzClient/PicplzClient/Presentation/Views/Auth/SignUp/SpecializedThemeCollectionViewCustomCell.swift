@@ -15,35 +15,35 @@ final class SpecializedThemeCollectionViewCustomCell: SpecializedThemeCollection
     var delegate: SpecializedThemeCollectionViewCustomCellDelegate?
     var editingTheme: Theme?
     var rightConstraint: NSLayoutConstraint?
-    
+
     private lazy var editButton: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(named: "PencilIcon"), for: .normal)
         button.addTarget(self, action: #selector(editButtonTapped), for: .touchUpInside)
         return button
     }()
-    
+
     private var log = Logger.of("SpecializedThemeCollectionViewCustomCell")
-    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         titleTextField.delegate = self
         titleTextField.addTarget(self, action: #selector(didChangeText), for: .editingChanged)
     }
-    
+
     @MainActor required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     override func style() {
         super.style()
-        
+
         editButton.translatesAutoresizingMaskIntoConstraints = false
     }
-    
+
     override func layout() {
         super.layout()
-        
+
         contentView.addSubview(editButton)
         rightConstraint = contentView.rightAnchor.constraint(equalTo: editButton.rightAnchor, constant: 12)
         NSLayoutConstraint.activate([
@@ -51,10 +51,10 @@ final class SpecializedThemeCollectionViewCustomCell: SpecializedThemeCollection
             editButton.heightAnchor.constraint(equalToConstant: 12),
             editButton.centerYAnchor.constraint(equalTo: titleTextField.centerYAnchor),
             editButton.leftAnchor.constraint(equalTo: titleTextField.rightAnchor, constant: 1),
-            rightConstraint!,
+            rightConstraint!
         ])
     }
-    
+
     @objc private func editButtonTapped() {
         beginEditing()
     }
@@ -64,29 +64,29 @@ final class SpecializedThemeCollectionViewCustomCell: SpecializedThemeCollection
         guard let theme = theme, let editingTheme = editingTheme else { return }
         titleTextField.isUserInteractionEnabled = false
         delegate?.didUpdateCustomThemeTitle(from: theme, to: editingTheme)
-        
+
         self.theme = editingTheme
         self.editingTheme = nil
         editButton.isHidden = false
         rightConstraint?.constant = 12
     }
-    
+
     @objc private func didChangeText() {
         if editingTheme == nil {
             editingTheme = theme
         }
-        
+
         guard var theme = editingTheme,
               theme.setTitle(to: titleTextField.text ?? "") else { return }
         theme.initialized = true
         editingTheme = theme
-        
+
         titleTextField.invalidateIntrinsicContentSize()
         if let collectionView = self.superview as? UICollectionView {
             collectionView.collectionViewLayout.invalidateLayout()
         }
     }
-    
+
     func beginEditing() {
         self.titleTextField.isUserInteractionEnabled = true
         self.titleTextField.becomeFirstResponder()
@@ -101,7 +101,7 @@ extension SpecializedThemeCollectionViewCustomCell: UITextFieldDelegate {
         handleEndEditing()
         return true
     }
-    
+
     func textFieldDidEndEditing(_ textField: UITextField) {
         handleEndEditing()
     }

@@ -11,16 +11,16 @@ import Foundation
 protocol SignUpProfileImagePageViewModelProtocol: SignUpVIewModelProtocol {
     var nextButtonTitle: String { get }
     var nextButtonTitlePublisher: Published<String>.Publisher { get }
-    
+
     var informationLabelText: String { get }
     var informationLabelTextPublisher: Published<String>.Publisher { get }
-    
+
     var userNickname: String { get }
     var userNicknamePublisher: Published<String>.Publisher { get }
-    
+
     var profileImagePath: URL? { get }
     var profileImagePathPublisher: AnyPublisher<URL, Never> { get }
-    
+
     func nextButtonDidTapped()
     func profileImageSelected(path: URL)
 }

@@ -20,7 +20,7 @@ class CustomerTabBarCoordinator: Coordinator {
     let tabBarController: CustomTabBarController // TODO: Tabbar 커스텀 스타일링
     private let container: Container
     private let log = Logger.of("CustomerTabBarCoordinator")
-    
+
     private lazy var homeCoordinator = CustomerHomeCoordinator(
         tabBarTitle: "홈",
         tabBarImage: UIImage(resource: .homeTabDefault),
@@ -46,31 +46,31 @@ class CustomerTabBarCoordinator: Coordinator {
         tabBarSelectedImage: UIImage(resource: .myPageTabSelected),
         tabBarIndex: 3
     )
-    
+
     init(container: Container) {
         self.tabBarController = CustomTabBarController()
         self.container = container
-        
+
         homeCoordinator.delegate = self
     }
-    
+
     deinit {
         log.debug("CustomerTabBarCoordinator deinit")
     }
-    
+
     func start() {
         homeCoordinator.start()
         mapCoordinator.start()
         chatCoordinator.start()
         myPageCoordinator.start()
-        
+
         tabBarController.tabBar.isTranslucent = false
         tabBarController.tabBar.backgroundColor = .ppWhite
         tabBarController.viewControllers = [
             homeCoordinator.navigationController,
             mapCoordinator.navigationController,
             chatCoordinator.navigationController,
-            myPageCoordinator.navigationController,
+            myPageCoordinator.navigationController
         ]
         tabBarController.selectedIndex = 0
     }
@@ -80,7 +80,7 @@ extension CustomerTabBarCoordinator: CustomerHomeCoordinatorDelegate {
     func switchToPhotographer(homeCoordinator: CustomerHomeCoordinator) {
         self.delegate?.switchToPhotographer(customerCoordinator: self)
     }
-    
+
     func loggedOut(homeCoordinator: CustomerHomeCoordinator) {
         self.delegate?.loggedOut(customerCoordinator: self)
     }

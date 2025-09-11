@@ -13,11 +13,11 @@ protocol LogoutUseCase {
 
 final class LogoutUseCaseImpl: LogoutUseCase {
     let authManaging: AuthManaging
-    
+
     init(authManaging: AuthManaging) {
         self.authManaging = authManaging
     }
-    
+
     func logout() {
         authManaging.logout()
     }

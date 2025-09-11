@@ -12,19 +12,19 @@ struct AuthUser: CustomStringConvertible, Codable {
     let nickname: String
     let profileImageUrl: String?
     var memberType: MemberType?
-    
+
     // MARK: Social Login
     let socialEmail: String
     let socialCode: String
     let socialProvider: SocialProvider
-    
+
     // TODO: 작가의 경우 주촬영지, 촬영 기기 프로퍼티 정의 필요
-    
+
     enum MemberType: String, Codable {
         case customer = "CUSTOMER"
         case photographer = "PHOTOGRAPHER"
     }
-    
+
     var description: String {
         "AuthUser: "
         + "/ nickname: \(nickname) "

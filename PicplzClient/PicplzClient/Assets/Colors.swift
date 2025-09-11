@@ -43,7 +43,7 @@ extension UIColor {
             alpha: 1.0
         )
     }
-    
+
     func toHex() -> String? {
         var r: CGFloat = 0
         var g: CGFloat = 0

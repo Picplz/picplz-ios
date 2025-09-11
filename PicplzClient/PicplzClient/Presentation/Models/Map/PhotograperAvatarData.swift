@@ -13,11 +13,11 @@ struct PhotograperAvatarData {
     let distanceUnit: DistanceUnit?
     let active: Bool
     let image: UIImage
-    
+
     enum DistanceUnit {
         case km
         case m
-        
+
         var displayString: String {
             switch self {
             case .km: return "km"

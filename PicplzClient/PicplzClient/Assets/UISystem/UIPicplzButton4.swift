@@ -11,7 +11,7 @@ import UIKit
 class UIPicplzButton4: UIButton {
     init(title: String) {
         super.init(frame: .zero)
-        
+
         var configuration = UIButton.Configuration.plain()
         configuration.background.strokeColor = .black
         configuration.background.strokeWidth = 1
@@ -19,11 +19,11 @@ class UIPicplzButton4: UIButton {
         configuration.cornerStyle = .medium
         configuration.contentInsets = .init(top: 5, leading: 12, bottom: 5, trailing: 12)
         self.configuration = configuration
-        
+
         self.layer.cornerRadius = 5
         self.clipsToBounds = true
         self.tintColor = .ppGrey4
-        
+
         self.configurationUpdateHandler = { button in
             switch button.state {
             case .selected:
@@ -39,7 +39,7 @@ class UIPicplzButton4: UIButton {
             }
         }
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

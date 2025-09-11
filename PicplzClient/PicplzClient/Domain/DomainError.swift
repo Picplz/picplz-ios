@@ -11,11 +11,11 @@ enum DomainError: LocalizedError {
     // MARK: - Common
     case validationError(String)
     case serverError(String)
-    
+
     // MARK: - Auth
     case notRegisteredUser
     case venderError(String)
-    
+
     public var errorDescription: String? {
         switch self {
         case .validationError(let message):

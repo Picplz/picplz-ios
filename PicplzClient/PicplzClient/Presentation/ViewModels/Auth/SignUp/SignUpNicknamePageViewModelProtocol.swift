@@ -10,7 +10,7 @@ import Combine
 protocol SignUpNicknamePageViewModelProtocol: SignUpVIewModelProtocol {
     var nicknameCheckResult: NicknameCheckResult { get }
     var nicknameCheckResultPublisher: Published<NicknameCheckResult>.Publisher { get }
-    
+
     func nicknameDidSet(nickname: String)
     func nextButtonDidTapped()
 }
@@ -20,4 +20,3 @@ enum NicknameCheckResult {
     case duplicated
     case invalidFormat
 }
-

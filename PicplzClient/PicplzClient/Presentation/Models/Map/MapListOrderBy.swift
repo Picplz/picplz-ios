@@ -10,7 +10,7 @@ import Foundation
 enum MapListOrderBy: CaseIterable {
     case distance
     case popularity
-    
+
     var title: String {
         switch self {
         case .distance:

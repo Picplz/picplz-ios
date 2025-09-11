@@ -22,11 +22,11 @@ final class MainCoordinator: Coordinator {
     private let container: Container
     private let authManaging: AuthManaging
     private var log = Logger.of("MainCoordinator")
-    
+
     init(navigationController: UINavigationController, container: Container) {
         self.navigationController = navigationController
         self.container = container
-        
+
         if let authManaging = container.resolve(AuthManaging.self) {
             self.authManaging = authManaging
         } else {
@@ -34,18 +34,18 @@ final class MainCoordinator: Coordinator {
             preconditionFailure("AuthManaging could not be resolved...")
         }
     }
-    
+
     deinit {
         log.debug("MainCoordinator deinit")
     }
-    
+
     func start() {
         guard let currentUser = authManaging.currentUser,
         let memberType = currentUser.memberType else {
             delegate?.finished(mainCoordinator: self)
             return
         }
-        
+
         /**
          FIXME: 작가의 경우 전환이 가능하므로 currentUser의 memberType을 바로 바라보지 말고
          UserDefaults 등으로 관리해야 할 듯

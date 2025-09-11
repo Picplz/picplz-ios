@@ -10,7 +10,7 @@ import Foundation
 enum AuthProvider {
     case kakao
     case apple
-    
+
     func getAuthEntrypointPath() -> String {
         switch self {
         case .kakao:

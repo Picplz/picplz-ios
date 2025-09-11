@@ -13,12 +13,12 @@ final class AuthRequests: AuthRequestable {
         let dateFormatter = DateFormatter()
         dateFormatter.locale = Locale(identifier: "en_US_POSIX")
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSXXXXX" // .iso8601로 지원하지 않는 형식
-        
+
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .formatted(dateFormatter)
         return decoder
     }()
-    
+
     func kakaoLogin(kakaoAccessToken: String) async throws -> BaseResponse<KakaoLoginResponse>? {
         let session = AFSessionFactory.makeSession()
         let response = await session.request(
@@ -32,7 +32,7 @@ final class AuthRequests: AuthRequestable {
             .response
         return response.value
     }
-    
+
     func getUserInfo(accessToken: String, memberId: String) async throws -> BaseResponse<UserInfoResponse>? {
         let session = AFSessionFactory.makeSession()
         let response = await session.request(

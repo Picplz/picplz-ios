@@ -11,37 +11,37 @@ import OSLog
 final class OnboardingViewModel: OnboardingViewModelProtocol {
     var delegate: OnboardingViewModelDelegate?
     var loginUseCase: LoginUseCase?
-    
+
     private let log = Logger.of("OnboardingViewModel")
-    
+
     @Published var currentPageIndex = 0
     var currentPageIndexPublisher: Published<Int>.Publisher {
         $currentPageIndex
     }
-    
+
     @Published var showLoginButton = false
     var showLoginButtonPublisher: Published<Bool>.Publisher {
         $showLoginButton
     }
-    
+
     @Published var errorMessage: String?
     var errorMessagePublisher: Published<String?>.Publisher {
         $errorMessage
     }
-    
+
     let onboardingPages = OnboardingPage.pages
-    
+
     func currentPageChanged(pageIndex: Int) {
         currentPageIndex = pageIndex
         showLoginButton = pageIndex == onboardingPages.count - 1
     }
-    
+
     func kakaoLoginButtonTapped() {
         Task {
             do {
                 try await loginUseCase?.login()
                 log.info("loggedIn")
-                
+
                 await MainActor.run {
                     delegate?.loggedIn()
                 }
@@ -51,15 +51,15 @@ final class OnboardingViewModel: OnboardingViewModelProtocol {
                         await MainActor.run {
                             delegate?.showSignUp()
                         }
-                        
+
                         return
                     }
-                    
+
                     errorMessage = error.errorDescription
                 } else {
                     errorMessage = error.localizedDescription
                 }
-                
+
                 log.error("login failed... \(error)")
             }
         }

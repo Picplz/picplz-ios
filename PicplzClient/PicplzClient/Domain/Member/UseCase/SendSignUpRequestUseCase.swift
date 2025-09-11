@@ -15,9 +15,9 @@ protocol SendSignUpRequestUseCase {
 final class SendSignUpRequestUseCaseImpl: SendSignUpRequestUseCase {
     let authManaging: AuthManaging
     let customerRequests: CustomerRequestable
-    
+
     private let logger = Logger.of("SendSignUpRequestUseCaseImpl")
-    
+
     init(
         authManaging: AuthManaging,
         customerRequests: CustomerRequestable
@@ -25,7 +25,7 @@ final class SendSignUpRequestUseCaseImpl: SendSignUpRequestUseCase {
         self.authManaging = authManaging
         self.customerRequests = customerRequests
     }
-    
+
     func execute(signUpSession: SignUpSession) {
         Task { @MainActor in
             do {
@@ -33,11 +33,11 @@ final class SendSignUpRequestUseCaseImpl: SendSignUpRequestUseCase {
                     guard let socialCode = authManaging.currentUser?.socialCode else {
                         throw DomainError.validationError("Social Coode가 없습니다")
                     }
-                    
+
                     guard let socialProvider = authManaging.currentUser?.socialProvider else {
                         throw DomainError.validationError("Social Provider가 없습니다")
                     }
-                    
+
                     try await customerRequests.create(registerDto: CustomerRegisterDTO(
                         nickname: signUpSession.nickname,
                         socialEmail: authManaging.currentUser?.socialEmail ?? "",
@@ -53,11 +53,11 @@ final class SendSignUpRequestUseCaseImpl: SendSignUpRequestUseCase {
             }
         }
     }
-    
+
     /// 회원가입 페이지에서 입력한 내용을 로컬에 저장한다
     private func storeUserInfo(signUpSession: SignUpSession) {
         guard let savedAuthUser = authManaging.currentUser else { return }
-        
+
         let memberType: AuthUser.MemberType?
         switch signUpSession.memberType {
         case .customer:
@@ -67,7 +67,7 @@ final class SendSignUpRequestUseCaseImpl: SendSignUpRequestUseCase {
         case .none:
             memberType = nil
         }
-        
+
         let newAuthUser = AuthUser(
             sub: savedAuthUser.sub,
             nickname: signUpSession.nickname,
@@ -77,7 +77,7 @@ final class SendSignUpRequestUseCaseImpl: SendSignUpRequestUseCase {
             socialCode: savedAuthUser.socialCode,
             socialProvider: savedAuthUser.socialProvider
         )
-        
+
         authManaging.updateUserInfo(user: newAuthUser)
     }
 }

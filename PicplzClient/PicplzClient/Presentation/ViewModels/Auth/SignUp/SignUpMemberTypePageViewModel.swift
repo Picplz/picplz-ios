@@ -17,33 +17,33 @@ final class SignUpMemberTypePageViewModel: SignUpMemberTypePageViewModelProtocol
             selectedMemberType = signUpSession.memberType
         }
     }
-    
+
     @Published private(set) var nextButtonEnabled = false
     var nextButtonEnabledPublisher: Published<Bool>.Publisher {
         $nextButtonEnabled
     }
-    
-    @Published private(set) var selectedMemberType: SignUpSession.MemberType? = nil {
+
+    @Published private(set) var selectedMemberType: SignUpSession.MemberType? {
         didSet {
             guard let signUpSession = signUpSession else {
                 log.warning("signUpSession is nil")
                 return
             }
-            
+
             signUpSession.memberType = selectedMemberType
             nextButtonEnabled = selectedMemberType != nil
         }
     }
-    var selectedMemberTypePublisher: Published<SignUpSession.MemberType?>.Publisher  {
+    var selectedMemberTypePublisher: Published<SignUpSession.MemberType?>.Publisher {
         $selectedMemberType
     }
-    
+
     private var log = Logger.of("SignUpMemberTypePageViewModel")
-    
+
     func didSelectedMemberType(for memberType: SignUpSession.MemberType?) {
         selectedMemberType = memberType
     }
-    
+
     func nextButtonDidTapped() {
         delegate?.goToNextPage(current: currentPage, session: signUpSession)
     }

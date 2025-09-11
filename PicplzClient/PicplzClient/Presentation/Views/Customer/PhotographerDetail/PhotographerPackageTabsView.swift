@@ -24,22 +24,22 @@ final class PhotographerPackageTabsView: UIView {
         return stackView
     }()
     let tabsContentView = PhotographerPackageContentView()
-    
+
     let packageInformations: [PhotographerPackage]
-    
+
     var didSelectPackage: ((Int) -> Void)?
-    
+
     init(packageInformations: [PhotographerPackage]) {
         self.packageInformations = packageInformations
         super.init(frame: .zero)
-        
+
         setLayout()
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     private func setLayout() {
         packageInformations.enumerated().forEach { (index, package) in
             let tabView = PhotographerPackageTabItemView(packageName: package.packageName) { [weak self] in
@@ -47,35 +47,35 @@ final class PhotographerPackageTabsView: UIView {
             }
             headerStackView.addArrangedSubview(tabView)
         }
-        
+
         addSubview(titleLabelView)
         addSubview(headerStackView)
         addSubview(tabsContentView)
-        
+
         titleLabelView.snp.makeConstraints { make in
             make.top.leading.trailing.equalToSuperview()
         }
-        
+
         headerStackView.snp.makeConstraints { make in
             make.top.equalTo(titleLabelView.snp.bottom).offset(17)
             make.leading.trailing.equalToSuperview()
         }
-        
+
         tabsContentView.snp.makeConstraints { make in
             make.top.equalTo(headerStackView.snp.bottom).offset(19)
             make.leading.trailing.bottom.equalToSuperview()
         }
-        
+
         tabsContentView.configure(for: packageInformations.first)
     }
-    
+
     func configure(selectedIndex: Int) {
         headerStackView.arrangedSubviews.enumerated().forEach { (index, packageItemView) in
             if let packageItemView = packageItemView as? PhotographerPackageTabItemView {
                 packageItemView.setActive(isActive: selectedIndex == index)
             }
         }
-        
+
         if packageInformations.indices.contains(selectedIndex) {
             tabsContentView.configure(for: packageInformations[selectedIndex])
         }
@@ -96,60 +96,60 @@ final class PhotographerPackageTabItemView: UIView {
         separatorView.backgroundColor = .ppBlack
         return separatorView
     }()
-    
+
     let didTap: () -> Void
-    
+
     init(packageName: String, didTap: @escaping () -> Void) {
         self.didTap = didTap
         super.init(frame: .zero)
-        
+
         setLayout()
         packageNameButton.setTitle(packageName, for: .normal)
         packageNameButton.addTarget(self, action: #selector(didTapPackageNameButton), for: .touchUpInside)
     }
-    
+
     required init(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     private func setLayout() {
         addSubview(packageNameButton)
         addSubview(separatorView)
-        
+
         snp.makeConstraints { make in
             make.height.equalTo(30)
         }
-        
+
         packageNameButton.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
             make.centerX.equalToSuperview()
         }
-        
+
         separatorView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
             make.bottom.equalToSuperview()
             make.height.equalTo(2)
         }
     }
-    
+
     func setActive(isActive: Bool) {
         if isActive {
             packageNameButton.setTitleColor(.black, for: .normal)
-            
+
             separatorView.backgroundColor = .ppBlack
             separatorView.snp.updateConstraints { make in
                 make.height.equalTo(2)
             }
         } else {
             packageNameButton.setTitleColor(.ppGrey3, for: .normal)
-            
+
             separatorView.backgroundColor = .ppGrey2
             separatorView.snp.updateConstraints { make in
                 make.height.equalTo(1)
             }
         }
     }
-    
+
     @objc private func didTapPackageNameButton() {
         self.didTap()
     }

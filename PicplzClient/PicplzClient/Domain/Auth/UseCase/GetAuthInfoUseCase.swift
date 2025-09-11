@@ -12,15 +12,15 @@ protocol GetAuthInfoUseCase {
 
 final class GetAuthInfoUseCaseImpl: GetAuthInfoUseCase {
     let authManaging: AuthManaging
-    
+
     init(authManaging: AuthManaging) {
         self.authManaging = authManaging
     }
-    
+
     func getUserInfo() -> AuthUser? {
         authManaging.currentUser
     }
-    
+
     func getAccessToken() -> String? {
         authManaging.accessToken
     }

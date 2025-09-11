@@ -15,7 +15,7 @@ final class PhotographerDetailViewModel: PhotographerDetailViewModelProtocol {
             .compactMap { $0 }
             .eraseToAnyPublisher()
     }
-    
+
     @Published var selectedPackageIndex: Int = 0
     var selectedPackageIndexPublisher: AnyPublisher<Int, Never> {
         $selectedPackageIndex

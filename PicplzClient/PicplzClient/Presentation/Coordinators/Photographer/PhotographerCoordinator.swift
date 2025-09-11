@@ -20,12 +20,12 @@ final class PhotographerCoordinator: Coordinator {
     private let navigationController: UINavigationController
     private let container: Container
     private var log = Logger.of("PhotographerCoordinator")
-    
+
     init(navigationController: UINavigationController, container: Container) {
         self.navigationController = navigationController
         self.container = container
     }
-    
+
     func start() {
         let rootViewController = container.resolve(PhotographerViewController.self)
         if let rootViewController = rootViewController {
@@ -39,7 +39,7 @@ extension PhotographerCoordinator: PhotographerViewControllerDelegate {
     func switchToCustomer() {
         delegate?.switchToCustomer(photographerCoordinator: self)
     }
-    
+
     func logOut() {
         delegate?.loggedOut(photographerCoordinator: self)
     }

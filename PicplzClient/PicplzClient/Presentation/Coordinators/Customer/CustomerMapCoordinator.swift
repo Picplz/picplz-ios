@@ -14,12 +14,12 @@ final class CustomerMapCoordinator: TabBarItemCoordinator {
     private(set) var navigationController = UIPicplzNavigationController()
     private let container: Container
     private let log = Logger.of("CustomerMapCoordinator")
-    
+
     let tabBarTitle: String
     let tabBarImage: UIImage?
     let tabBarSelectedImage: UIImage?
     let tabBarIndex: Int
-    
+
     init(container: Container, tabBarTitle: String, tabBarImage: UIImage?, tabBarSelectedImage: UIImage?, tabBarIndex: Int) {
         self.container = container
         self.tabBarTitle = tabBarTitle
@@ -27,7 +27,7 @@ final class CustomerMapCoordinator: TabBarItemCoordinator {
         self.tabBarSelectedImage = tabBarSelectedImage
         self.tabBarIndex = tabBarIndex
     }
-    
+
     func start() {
         guard let viewController = container.resolve(CustomerMapViewController.self) else {
             log.error("CustomerMapViewController could not be resolved")
@@ -44,7 +44,7 @@ extension CustomerMapCoordinator: CustomerMapViewModelDelegate {
     func selectPhotographerDetail(photographerId: Int) {
         navigateToPhotographerDetail(photographerId: photographerId)
     }
-    
+
     private func navigateToPhotographerDetail(photographerId: Int) {
         guard let viewController = container.resolve(PhotographerDetailViewController.self) else {
             log.error("PhotographerDetailViewController could not be resolved")

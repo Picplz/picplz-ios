@@ -9,7 +9,7 @@ import UIKit
 
 final class MapView: UIView {
     private let backgroundView = MapBackgroundView()
-    
+
     let searchingMessageLabelView: UILabel = {
         let label = UILabel()
         label.text = "주변 작가 찾는 중..."
@@ -32,10 +32,10 @@ final class MapView: UIView {
         label.textColor = .ppBlack
         return label
     }()
-    
+
     var photographerAvatarModels: [PhotograperAvatarData] = [] {
         didSet {
-            photographerAvatarViews = photographerAvatarModels.map{ model in
+            photographerAvatarViews = photographerAvatarModels.map { model in
                 PhotographerAvatarView(of: model)
             }
         }
@@ -43,7 +43,7 @@ final class MapView: UIView {
     var photographerAvatarViews: [PhotographerAvatarView] = [] {
         didSet {
             oldValue.forEach { $0.removeFromSuperview() }
-            
+
             photographerAvatarViews.enumerated()
                 .forEach { index, view in
                     view.translatesAutoresizingMaskIntoConstraints = false
@@ -52,15 +52,14 @@ final class MapView: UIView {
                 }
         }
     }
-    
+
     override init(frame: CGRect) {
-        
-        
+
         super.init(frame: frame)
         style()
         layout()
     }
-    
+
     private func style() {
         backgroundView.translatesAutoresizingMaskIntoConstraints = false
         backgroundView.backgroundColor = .clear
@@ -68,42 +67,42 @@ final class MapView: UIView {
         searchingMessageLabelView.translatesAutoresizingMaskIntoConstraints = false
         myLabelView.translatesAutoresizingMaskIntoConstraints = false
     }
-    
+
     private func layout() {
         addSubview(myAvatarView)
         addSubview(searchingMessageLabelView)
         addSubview(myLabelView)
         addSubview(backgroundView)
-        
+
         NSLayoutConstraint.activate([
             backgroundView.topAnchor.constraint(equalTo: topAnchor),
             backgroundView.leftAnchor.constraint(equalTo: leftAnchor),
             backgroundView.rightAnchor.constraint(equalTo: rightAnchor),
-            backgroundView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            backgroundView.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
-        
+
         NSLayoutConstraint.activate([
             myAvatarView.centerXAnchor.constraint(equalTo: centerXAnchor),
             myAvatarView.centerYAnchor.constraint(equalTo: centerYAnchor),
             myAvatarView.widthAnchor.constraint(equalToConstant: 64),
-            myAvatarView.heightAnchor.constraint(equalToConstant: 64),
+            myAvatarView.heightAnchor.constraint(equalToConstant: 64)
         ])
-        
+
         NSLayoutConstraint.activate([
             searchingMessageLabelView.bottomAnchor.constraint(equalTo: myAvatarView.topAnchor, constant: -3),
-            searchingMessageLabelView.centerXAnchor.constraint(equalTo: centerXAnchor),
+            searchingMessageLabelView.centerXAnchor.constraint(equalTo: centerXAnchor)
         ])
-        
+
         NSLayoutConstraint.activate([
             myLabelView.topAnchor.constraint(equalTo: myAvatarView.bottomAnchor, constant: 3),
-            myLabelView.centerXAnchor.constraint(equalTo: centerXAnchor),
+            myLabelView.centerXAnchor.constraint(equalTo: centerXAnchor)
         ])
     }
-    
+
     private func layoutAvatarView(index: Int, view: UIView) {
         var xConstant: CGFloat = 0
         var yConstant: CGFloat = 0
-        
+
         switch index {
         case 0:
             xConstant = -72
@@ -127,13 +126,13 @@ final class MapView: UIView {
             xConstant = 0
             yConstant = 0
         }
-        
+
         NSLayoutConstraint.activate([
             view.centerXAnchor.constraint(equalTo: myAvatarView.centerXAnchor, constant: xConstant),
-            view.centerYAnchor.constraint(equalTo: myAvatarView.centerYAnchor, constant: yConstant),
+            view.centerYAnchor.constraint(equalTo: myAvatarView.centerYAnchor, constant: yConstant)
         ])
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

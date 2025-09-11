@@ -18,7 +18,7 @@ class PhotographerTabBarCoordinator: Coordinator {
     weak var delegate: PhotographerTabBarCoordinatorDelegate?
     let tabBarController: UITabBarController // FIXME: Tabbar 커스텀 스타일링
     private let log = Logger.of("PhotographerTabBarCoordinator")
-    
+
     private lazy var homeCoordinator = PhotographerHomeCoordinator(
         tabBarTitle: "홈",
         tabBarImage: UIImage(resource: .homeTabDefault),
@@ -43,30 +43,30 @@ class PhotographerTabBarCoordinator: Coordinator {
         tabBarSelectedImage: UIImage(resource: .myPageTabSelected),
         tabBarIndex: 3
     )
-    
+
     init() {
         self.tabBarController = UITabBarController()
-        
+
         homeCoordinator.delegate = self
     }
-    
+
     deinit {
         log.debug("PhotographerTabBarCoordinator deinit")
     }
-    
+
     func start() {
         homeCoordinator.start()
         mapCoordinator.start()
         chatCoordinator.start()
         myPageCoordinator.start()
-        
+
         tabBarController.tabBar.isTranslucent = false
         tabBarController.tabBar.backgroundColor = .ppWhite
         tabBarController.viewControllers = [
             homeCoordinator.navigationController,
             mapCoordinator.navigationController,
             chatCoordinator.navigationController,
-            myPageCoordinator.navigationController,
+            myPageCoordinator.navigationController
         ]
         tabBarController.selectedIndex = 0
     }
@@ -76,7 +76,7 @@ extension PhotographerTabBarCoordinator: PhotographerHomeCoordinatorDelegate {
     func switchToCustomer(homeCoordinator: PhotographerHomeCoordinator) {
         self.delegate?.switchToCustomer(photographerCoordinator: self)
     }
-    
+
     func loggedOut(homeCoordinator: PhotographerHomeCoordinator) {
         self.delegate?.loggedOut(photographerCoordinator: self)
     }
