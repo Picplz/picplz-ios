@@ -1,5 +1,5 @@
 //
-//  SignUpPhotographerSpecializedThemesPageViewController.swift
+//  SignUpPhotographerThemesPageViewController.swift
 //  PicplzClient
 //
 //  Created by 임영택 on 2/24/25.
@@ -9,8 +9,8 @@ import UIKit
 import Combine
 import OSLog
 
-final class SignUpPhotographerSpecializedThemesPageViewController: UIViewController {
-    var viewModel: SignUpPhotographerSpecializedThemesPageViewModelProtocol!
+final class SignUpPhotographerThemesPageViewController: UIViewController {
+    var viewModel: SignUpPhotographerThemesPageViewModelProtocol!
     private var subscriptions: Set<AnyCancellable> = []
 
     private let contentView = SignUpPhotographerSpecializedThemesSettingVIew()
@@ -85,7 +85,7 @@ final class SignUpPhotographerSpecializedThemesPageViewController: UIViewControl
     }
 }
 
-extension SignUpPhotographerSpecializedThemesPageViewController {
+extension SignUpPhotographerThemesPageViewController {
     typealias Section = ThemesSettingCollectionViewSection
     typealias Item = ThemesSettingCollectionViewItem
 
@@ -96,17 +96,24 @@ extension SignUpPhotographerSpecializedThemesPageViewController {
     }
 
     private func initDataSource(to collectionView: UICollectionView) {
-        dataSource = UICollectionViewDiffableDataSource<Section, Item>(collectionView: collectionView) { collectionView, indexPath, item in
+        dataSource =
+        UICollectionViewDiffableDataSource<Section, Item>(collectionView: collectionView) { collectionView, indexPath, item in
             let cell: UICollectionViewCell
 
             switch item {
             case .content(let theme, let isSelected):
                 if !theme.userCreated {
-                    guard let defaultCell = collectionView.dequeueReusableCell(withReuseIdentifier: "DefaultCell", for: indexPath) as? SpecializedThemeCollectionViewDefaultCell else { return nil }
+                    guard let defaultCell = collectionView.dequeueReusableCell(
+                        withReuseIdentifier: "DefaultCell",
+                        for: indexPath
+                    ) as? SpecializedThemeCollectionViewDefaultCell else { return nil }
                     defaultCell.configuration(theme: theme, isSelected: isSelected)
                     cell = defaultCell
                 } else {
-                    guard let customCell = collectionView.dequeueReusableCell(withReuseIdentifier: "CustomCell", for: indexPath) as? SpecializedThemeCollectionViewCustomCell else { return nil }
+                    guard let customCell = collectionView.dequeueReusableCell(
+                        withReuseIdentifier: "CustomCell",
+                        for: indexPath
+                    ) as? SpecializedThemeCollectionViewCustomCell else { return nil }
                     customCell.configuration(theme: theme, isSelected: isSelected)
                     customCell.delegate = self
                     if !theme.initialized {
@@ -118,7 +125,10 @@ extension SignUpPhotographerSpecializedThemesPageViewController {
                     cell = customCell
                 }
             case .control:
-                guard let customCell = collectionView.dequeueReusableCell(withReuseIdentifier: "ControlCell", for: indexPath) as? SpecializedThemeCollectionViewControlCell else { return nil }
+                guard let customCell = collectionView.dequeueReusableCell(
+                    withReuseIdentifier: "ControlCell",
+                    for: indexPath
+                ) as? SpecializedThemeCollectionViewControlCell else { return nil }
                 customCell.configuration(title: "+직접 적어주세요", isSelected: false)
                 cell = customCell
             }
@@ -152,13 +162,13 @@ extension SignUpPhotographerSpecializedThemesPageViewController {
     }
 }
 
-extension SignUpPhotographerSpecializedThemesPageViewController: UICollectionViewDelegate {
+extension SignUpPhotographerThemesPageViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         viewModel.didSelectItem(indexPath: indexPath)
     }
 }
 
-extension SignUpPhotographerSpecializedThemesPageViewController: SpecializedThemeCollectionViewCustomCellDelegate {
+extension SignUpPhotographerThemesPageViewController: SpecializedThemeCollectionViewCustomCellDelegate {
     func didUpdateCustomThemeTitle(from previousTheme: Theme, to newTheme: Theme) {
         viewModel.customThemeUpdated(from: previousTheme, to: newTheme)
     }

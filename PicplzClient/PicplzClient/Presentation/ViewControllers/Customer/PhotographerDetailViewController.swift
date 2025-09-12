@@ -108,12 +108,12 @@ extension PhotographerDetailViewController {
 import SwiftUI
 struct PhotographerDetailViewController_Preview: PreviewProvider {
     static var previews: some View {
-        let vc = PhotographerDetailViewController()
-        let vm = PhotographerDetailViewModel()
-        vc.viewModel = vm
-        vm.photographerId = 1
+        let viewController = PhotographerDetailViewController()
+        let viewModel = PhotographerDetailViewModel()
+        viewController.viewModel = viewModel
+        viewModel.photographerId = 1
 
-        return vc.toPreview()
+        return viewController.toPreview()
             .ignoresSafeArea()
     }
 }

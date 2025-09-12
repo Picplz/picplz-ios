@@ -24,7 +24,10 @@ class BottomSheetExampleViewController: UIViewController {
         super.viewDidLoad()
 
         let safeFrame = view.safeAreaLayoutGuide.layoutFrame
-        buttomSheetView = BottomSheetView(contentView: contentView, prefereces: .getBasicPreferences(maxYOffset: safeFrame.minY + maxYMargin, minYOffset: safeFrame.maxY))
+        buttomSheetView = BottomSheetView(
+            contentView: contentView,
+            prefereces: .getBasicPreferences(maxYOffset: safeFrame.minY + maxYMargin, minYOffset: safeFrame.maxY)
+        )
         buttomSheetView.translatesAutoresizingMaskIntoConstraints = false
 
         view.addSubview(buttomSheetView)

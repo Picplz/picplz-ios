@@ -16,7 +16,7 @@ protocol SignUpCoordinatorDelegate: AnyObject {
 final class SignUpCoordinator: Coordinator {
     var childCoordinators: [Coordinator] = []
     private let navigationController: UINavigationController
-    private let container: Container
+    private let resolver: Resolver
     weak var delegate: SignUpCoordinatorDelegate?
 
     private var currentPage: Page = .nicknameSetting
@@ -28,11 +28,11 @@ final class SignUpCoordinator: Coordinator {
 
     private var log = Logger.of("SignUpCoordinator")
 
-    init(navigationController: UINavigationController, container: Container) {
-        self.container = container
+    init(navigationController: UINavigationController, resolver: Resolver) {
+        self.resolver = resolver
         self.navigationController = navigationController
 
-        self.signUpUseCase = container.resolve(SendSignUpRequestUseCase.self)
+        self.signUpUseCase = resolver.resolve(SendSignUpRequestUseCase.self)
     }
 
     deinit {
@@ -48,59 +48,59 @@ final class SignUpCoordinator: Coordinator {
 
         switch currentPage {
         case .nicknameSetting:
-            guard let vc = container.resolve(SignUpNicknamePageViewController.self) else {
+            guard let viewController = resolver.resolve(SignUpNicknamePageViewController.self) else {
                 handleViewControllerNotResolved()
                 return
             }
-            vc.viewModel.signUpSession = self.signUpSession
-            vc.viewModel.currentPage = currentPage.getPage()
-            vc.viewModel.delegate = self
-            nextVc = vc
+            viewController.viewModel.signUpSession = self.signUpSession
+            viewController.viewModel.currentPage = currentPage.getPage()
+            viewController.viewModel.delegate = self
+            nextVc = viewController
         case .profileImageSetting:
-            guard let vc = container.resolve(SignUpProfileImagePageViewController.self) else {
+            guard let viewController = resolver.resolve(SignUpProfileImagePageViewController.self) else {
                 handleViewControllerNotResolved()
                 return
             }
-            vc.viewModel.signUpSession = self.signUpSession
-            vc.viewModel.currentPage = currentPage.getPage()
-            vc.viewModel.delegate = self
-            nextVc = vc
+            viewController.viewModel.signUpSession = self.signUpSession
+            viewController.viewModel.currentPage = currentPage.getPage()
+            viewController.viewModel.delegate = self
+            nextVc = viewController
         case .memberTypeSetting:
-            guard let vc = container.resolve(SignUpMemberTypePageViewController.self) else {
+            guard let viewController = resolver.resolve(SignUpMemberTypePageViewController.self) else {
                 handleViewControllerNotResolved()
                 return
             }
-            vc.viewModel.signUpSession = self.signUpSession
-            vc.viewModel.currentPage = currentPage.getPage()
-            vc.viewModel.delegate = self
-            nextVc = vc
+            viewController.viewModel.signUpSession = self.signUpSession
+            viewController.viewModel.currentPage = currentPage.getPage()
+            viewController.viewModel.delegate = self
+            nextVc = viewController
         case .photoCareerTypeSetting:
-            guard let vc = container.resolve(SignUpPhotographerCareerTypePageViewController.self) else {
+            guard let viewController = resolver.resolve(SignUpPhotographerCareerTypePageViewController.self) else {
                 handleViewControllerNotResolved()
                 return
             }
-            vc.viewModel.signUpSession = self.signUpSession
-            vc.viewModel.currentPage = currentPage.getPage()
-            vc.viewModel.delegate = self
-            nextVc = vc
+            viewController.viewModel.signUpSession = self.signUpSession
+            viewController.viewModel.currentPage = currentPage.getPage()
+            viewController.viewModel.delegate = self
+            nextVc = viewController
         case .photoCareerPeriodSetting:
-            guard let vc = container.resolve(SignUpPhotographerCareerPeriodViewController.self) else {
+            guard let viewController = resolver.resolve(SignUpPhotographerCareerPeriodViewController.self) else {
                 handleViewControllerNotResolved()
                 return
             }
-            vc.viewModel.signUpSession = self.signUpSession
-            vc.viewModel.currentPage = currentPage.getPage()
-            vc.viewModel.delegate = self
-            nextVc = vc
+            viewController.viewModel.signUpSession = self.signUpSession
+            viewController.viewModel.currentPage = currentPage.getPage()
+            viewController.viewModel.delegate = self
+            nextVc = viewController
         case .photoSpecializedThemesSetting:
-            guard let vc = container.resolve(SignUpPhotographerSpecializedThemesPageViewController.self) else {
+            guard let viewController = resolver.resolve(SignUpPhotographerThemesPageViewController.self) else {
                 handleViewControllerNotResolved()
                 return
             }
-            vc.viewModel.signUpSession = self.signUpSession
-            vc.viewModel.currentPage = currentPage.getPage()
-            vc.viewModel.delegate = self
-            nextVc = vc
+            viewController.viewModel.signUpSession = self.signUpSession
+            viewController.viewModel.currentPage = currentPage.getPage()
+            viewController.viewModel.delegate = self
+            nextVc = viewController
         }
 
         navigationController.pushViewController(nextVc, animated: true)
@@ -150,14 +150,14 @@ extension SignUpCoordinator: SignUpViewModelDelegate {
            currentPage.isLast(to: memberType) {
             sendDataToServer() // MARK: Send sign up requst to server
 
-            guard let vc = container.resolve(SignUpFinishVIewController.self) else {
+            guard let viewController = resolver.resolve(SignUpFinishVIewController.self) else {
                 handleViewControllerNotResolved()
                 return
             }
-            vc.delegate = self
-            vc.nickname = signUpSession.nickname
-            vc.profileImagePath = signUpSession.profileImageUrl
-            navigationController.viewControllers = [vc]
+            viewController.delegate = self
+            viewController.nickname = signUpSession.nickname
+            viewController.profileImagePath = signUpSession.profileImageUrl
+            navigationController.viewControllers = [viewController]
             return
         }
 

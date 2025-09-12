@@ -106,8 +106,18 @@ final class SignUpNicknamePageViewController: UIViewController {
     }
 
     private func registerKeyboardObserver() {
-        NotificationCenter.default.addObserver(self, selector: #selector(adjustViewHeight(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(adjustViewHeight(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(adjustViewHeight(notification:)),
+            name: UIResponder.keyboardWillShowNotification,
+            object: nil
+        )
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(adjustViewHeight(notification:)),
+            name: UIResponder.keyboardWillHideNotification,
+            object: nil
+        )
     }
 
     private func removeKeyboardObserver() {

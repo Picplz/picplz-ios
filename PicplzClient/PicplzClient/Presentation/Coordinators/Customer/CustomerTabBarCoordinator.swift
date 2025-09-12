@@ -18,7 +18,7 @@ class CustomerTabBarCoordinator: Coordinator {
     var childCoordinators: [any Coordinator] = []
     weak var delegate: CustomerTabBarCoordinatorDelegate?
     let tabBarController: CustomTabBarController // TODO: Tabbar 커스텀 스타일링
-    private let container: Container
+    private let resolver: Resolver
     private let log = Logger.of("CustomerTabBarCoordinator")
 
     private lazy var homeCoordinator = CustomerHomeCoordinator(
@@ -28,7 +28,7 @@ class CustomerTabBarCoordinator: Coordinator {
         tabBarIndex: 0
     )
     private lazy var mapCoordinator = CustomerMapCoordinator(
-        container: container,
+        resolver: resolver,
         tabBarTitle: "바로 촬영",
         tabBarImage: UIImage(resource: .mapTabDefault),
         tabBarSelectedImage: UIImage(resource: .mapTabSelected),
@@ -47,9 +47,9 @@ class CustomerTabBarCoordinator: Coordinator {
         tabBarIndex: 3
     )
 
-    init(container: Container) {
+    init(resolver: Resolver) {
         self.tabBarController = CustomTabBarController()
-        self.container = container
+        self.resolver = resolver
 
         homeCoordinator.delegate = self
     }

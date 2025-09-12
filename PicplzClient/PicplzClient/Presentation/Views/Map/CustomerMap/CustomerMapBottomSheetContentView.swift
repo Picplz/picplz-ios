@@ -37,24 +37,31 @@ class CustomerMapBottomSheetContentView: UIView {
         collectionView.register(PhotographerItemCell.self, forCellWithReuseIdentifier: "PhotographerItemCell")
         collectionView.register(SeparatorView.self, forSupplementaryViewOfKind: "SeparatorKind", withReuseIdentifier: "Separator")
 
-        dataSource = UICollectionViewDiffableDataSource<Section, Item>(collectionView: collectionView) { collectionView, indexPath, item in
+        dataSource
+        = UICollectionViewDiffableDataSource<Section, Item>(collectionView: collectionView) { collectionView, indexPath, item in
             switch item {
             case .filter(let filter):
-                if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "FilterItemCell", for: indexPath) as? FilterItemCell {
+                if let cell = collectionView.dequeueReusableCell(
+                    withReuseIdentifier: "FilterItemCell", for: indexPath
+                ) as? FilterItemCell {
                     cell.configure(filter: filter) { [weak self] filter in
                         self?.didFilterButtonTapped(filter: filter)
                     }
                     return cell
                 }
             case .order:
-                if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "OrderItemCell", for: indexPath) as? OrderItemCell {
+                if let cell = collectionView.dequeueReusableCell(
+                    withReuseIdentifier: "OrderItemCell", for: indexPath
+                ) as? OrderItemCell {
                     cell.configure { [weak self] orderBy in
                         self?.didOrderBySelected(order: orderBy)
                     }
                     return cell
                 }
             case .photographerList(let photographer):
-                if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PhotographerItemCell", for: indexPath) as? PhotographerItemCell {
+                if let cell = collectionView.dequeueReusableCell(
+                    withReuseIdentifier: "PhotographerItemCell", for: indexPath
+                ) as? PhotographerItemCell {
                     cell.configure(photographer: photographer) { [weak self] photographer in
                         self?.didPhotographerSelected(photographer: photographer)
                     }
@@ -66,7 +73,10 @@ class CustomerMapBottomSheetContentView: UIView {
         }
 
         dataSource.supplementaryViewProvider = { collectionView, kind, indexPath in
-            if let separatorView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "Separator", for: indexPath) as? SeparatorView {
+            if let separatorView = collectionView.dequeueReusableSupplementaryView(
+                ofKind: kind, withReuseIdentifier: "Separator",
+                for: indexPath
+            ) as? SeparatorView {
                 return separatorView
             }
 
@@ -123,7 +133,10 @@ class CustomerMapBottomSheetContentView: UIView {
 
                 return section
             default: // 그 외
-                let itemSize = NSCollectionLayoutSize(widthDimension: .estimated(100), heightDimension: .absolute(25)) // 너비를 충분히 크게 주지 않으면 버튼이 selected 상태가 될 때 레이블이 줄바꿈됨
+                let itemSize = NSCollectionLayoutSize(
+                    widthDimension: .estimated(100),
+                    heightDimension: .absolute(25)
+                ) // 너비를 충분히 크게 주지 않으면 버튼이 selected 상태가 될 때 레이블이 줄바꿈됨
                 let item = NSCollectionLayoutItem(layoutSize: itemSize)
 
                 let groupSize = NSCollectionLayoutSize(widthDimension: .estimated(1000), heightDimension: .estimated(25))

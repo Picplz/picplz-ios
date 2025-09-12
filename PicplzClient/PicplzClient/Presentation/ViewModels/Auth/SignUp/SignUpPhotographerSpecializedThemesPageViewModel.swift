@@ -8,7 +8,7 @@
 import Combine
 import OSLog
 
-final class SignUpPhotographerSpecializedThemesPageViewModel: SignUpPhotographerSpecializedThemesPageViewModelProtocol {
+final class SignUpPhotographerSpecializedThemesPageViewModel: SignUpPhotographerThemesPageViewModelProtocol {
     typealias Item = ThemesSettingCollectionViewItem
 
     var delegate: SignUpViewModelDelegate?

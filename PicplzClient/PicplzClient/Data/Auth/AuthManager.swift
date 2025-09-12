@@ -125,8 +125,8 @@ final class AuthManager: AuthManaging {
             log.debug("saved tokens.expiresDate to UserDefaults... value=\(String(describing: tokens.expiresDate))")
 
             do {
-                try keychainStore.saveValue(tokens.accessToken, for: KeychainStore.ReservedAccount.AccessToken.rawValue)
-                try keychainStore.saveValue(tokens.refreshToken, for: KeychainStore.ReservedAccount.AccessToken.rawValue)
+                try keychainStore.saveValue(tokens.accessToken, for: KeychainStore.ReservedAccount.accessToken.rawValue)
+                try keychainStore.saveValue(tokens.refreshToken, for: KeychainStore.ReservedAccount.accessToken.rawValue)
                 log.debug("saved tokens.token to keychain...")
             } catch {
                 log.error("failed to save tokens.token to keychain... error: \(error)")
@@ -136,8 +136,8 @@ final class AuthManager: AuthManaging {
             log.debug("deleted tokens.expiresDate from UserDefaults...")
 
             do {
-                try keychainStore.remove(for: KeychainStore.ReservedAccount.AccessToken.rawValue)
-                try keychainStore.remove(for: KeychainStore.ReservedAccount.RefreshToken.rawValue)
+                try keychainStore.remove(for: KeychainStore.ReservedAccount.accessToken.rawValue)
+                try keychainStore.remove(for: KeychainStore.ReservedAccount.refreshToken.rawValue)
                 log.debug("deleted tokens.token from keychain...")
             } catch {
                 log.error("failed to delete tokens.token from keychain... error: \(error)")
@@ -154,8 +154,8 @@ final class AuthManager: AuthManaging {
         var accessToken: String?
         var refreshToken: String?
         do {
-            try accessToken = keychainStore.loadValue(for: KeychainStore.ReservedAccount.AccessToken.rawValue)
-            try refreshToken = keychainStore.loadValue(for: KeychainStore.ReservedAccount.RefreshToken.rawValue)
+            try accessToken = keychainStore.loadValue(for: KeychainStore.ReservedAccount.accessToken.rawValue)
+            try refreshToken = keychainStore.loadValue(for: KeychainStore.ReservedAccount.refreshToken.rawValue)
         } catch {
             log.error("failed to load tokens.token from keychain... error: \(error)")
         }

@@ -15,8 +15,8 @@ final class SignUpPhotographerCareerExistsPromptView: UIView {
         button.setImage(UIImage(named: "InformationIcon"), for: .normal)
         return button
     }()
-    let yesButton = selectablePicPlzButton()
-    let noButton = selectablePicPlzButton()
+    let yesButton = SelectablePicPlzButton()
+    let noButton = SelectablePicPlzButton()
     let buttonsHolderView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
@@ -91,7 +91,7 @@ final class SignUpPhotographerCareerExistsPromptView: UIView {
     }
 }
 
-final class selectablePicPlzButton: UIPicplzButton {
+final class SelectablePicPlzButton: UIPicplzButton {
     override var isSelected: Bool {
         didSet {
             if isSelected {

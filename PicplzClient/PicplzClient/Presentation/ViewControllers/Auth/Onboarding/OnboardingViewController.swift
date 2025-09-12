@@ -76,7 +76,10 @@ final class OnboardingViewController: UIViewController {
 
         // MARK: CollectionView - setup dataSource
         datasource = UICollectionViewDiffableDataSource(collectionView: collectionView) { collectionView, indexPath, item in
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "OnboardingCollectionViewCell", for: indexPath) as? OnboardingCollectionViewCell else {
+            guard let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: "OnboardingCollectionViewCell",
+                for: indexPath
+            ) as? OnboardingCollectionViewCell else {
                 return UICollectionViewCell()
             }
 

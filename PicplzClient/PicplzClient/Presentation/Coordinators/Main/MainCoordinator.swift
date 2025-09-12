@@ -19,15 +19,15 @@ final class MainCoordinator: Coordinator {
     var childCoordinators: [any Coordinator] = []
     weak var delegate: MainCoordinatorDelegate?
     private let navigationController: UINavigationController
-    private let container: Container
+    private let resolver: Resolver
     private let authManaging: AuthManaging
     private var log = Logger.of("MainCoordinator")
 
-    init(navigationController: UINavigationController, container: Container) {
+    init(navigationController: UINavigationController, resolver: Resolver) {
         self.navigationController = navigationController
-        self.container = container
+        self.resolver = resolver
 
-        if let authManaging = container.resolve(AuthManaging.self) {
+        if let authManaging = resolver.resolve(AuthManaging.self) {
             self.authManaging = authManaging
         } else {
             log.error("AuthManaging could not be resolved...")

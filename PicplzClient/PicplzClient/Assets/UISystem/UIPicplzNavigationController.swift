@@ -20,7 +20,9 @@ final class UIPicplzNavigationController: UINavigationController {
     private func setUpNavigationBar() {
         // MARK: Set back button's image
         let backButtonBackgroundImage = UIImage(named: "BackButton")
-        let barAppearance = UINavigationBar.appearance(whenContainedInInstancesOf: [UIPicplzNavigationController.self]) // returns proxy for setting appearance
+        let barAppearance = UINavigationBar.appearance( // returns proxy for setting appearance
+            whenContainedInInstancesOf: [UIPicplzNavigationController.self]
+        )
         barAppearance.backIndicatorImage = backButtonBackgroundImage
         barAppearance.backIndicatorTransitionMaskImage = backButtonBackgroundImage
 

@@ -12,7 +12,7 @@ import OSLog
 final class CustomerMapCoordinator: TabBarItemCoordinator {
     var childCoordinators: [Coordinator] = []
     private(set) var navigationController = UIPicplzNavigationController()
-    private let container: Container
+    private let resolver: Resolver
     private let log = Logger.of("CustomerMapCoordinator")
 
     let tabBarTitle: String
@@ -20,8 +20,8 @@ final class CustomerMapCoordinator: TabBarItemCoordinator {
     let tabBarSelectedImage: UIImage?
     let tabBarIndex: Int
 
-    init(container: Container, tabBarTitle: String, tabBarImage: UIImage?, tabBarSelectedImage: UIImage?, tabBarIndex: Int) {
-        self.container = container
+    init(resolver: Resolver, tabBarTitle: String, tabBarImage: UIImage?, tabBarSelectedImage: UIImage?, tabBarIndex: Int) {
+        self.resolver = resolver
         self.tabBarTitle = tabBarTitle
         self.tabBarImage = tabBarImage
         self.tabBarSelectedImage = tabBarSelectedImage
@@ -29,7 +29,7 @@ final class CustomerMapCoordinator: TabBarItemCoordinator {
     }
 
     func start() {
-        guard let viewController = container.resolve(CustomerMapViewController.self) else {
+        guard let viewController = resolver.resolve(CustomerMapViewController.self) else {
             log.error("CustomerMapViewController could not be resolved")
             fatalError("CustomerMapViewController could not be resolved")
         }
@@ -46,7 +46,7 @@ extension CustomerMapCoordinator: CustomerMapViewModelDelegate {
     }
 
     private func navigateToPhotographerDetail(photographerId: Int) {
-        guard let viewController = container.resolve(PhotographerDetailViewController.self) else {
+        guard let viewController = resolver.resolve(PhotographerDetailViewController.self) else {
             log.error("PhotographerDetailViewController could not be resolved")
             fatalError("PhotographerDetailViewController could not be resolved")
         }

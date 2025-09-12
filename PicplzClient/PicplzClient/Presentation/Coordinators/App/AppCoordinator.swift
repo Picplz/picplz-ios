@@ -13,18 +13,18 @@ final class AppCoordinator: Coordinator {
     var childCoordinators: [any Coordinator] = []
     private let window: UIWindow
     private var navigationController: UINavigationController?
-    private let container: Container
+    private let resolver: Resolver
     private let authManaging: AuthManaging
     private let log = Logger.of("AppCoordinator")
 
-    init?(window: UIWindow?, container: Container) {
+    init?(window: UIWindow?, resolver: Resolver) {
         guard let window = window else { return nil }
 
         self.window = window
 
-        self.container = container
+        self.resolver = resolver
 
-        if let authManaging = container.resolve(AuthManaging.self) {
+        if let authManaging = resolver.resolve(AuthManaging.self) {
             self.authManaging = authManaging
         } else {
             log.error("AuthManaging could not be resolved...")
@@ -53,7 +53,7 @@ final class AppCoordinator: Coordinator {
             initNavigationController()
         }
 
-        let coordinator = LoginCoordinator(navigationController: navigationController!, container: container)
+        let coordinator = LoginCoordinator(navigationController: navigationController!, resolver: resolver)
         childCoordinators.append(coordinator)
         coordinator.delegate = self
         coordinator.start()
@@ -64,7 +64,7 @@ final class AppCoordinator: Coordinator {
             initNavigationController()
         }
 
-        let coordinator = MainCoordinator(navigationController: navigationController!, container: container)
+        let coordinator = MainCoordinator(navigationController: navigationController!, resolver: resolver)
         childCoordinators.append(coordinator)
         coordinator.delegate = self
         coordinator.start()
@@ -93,7 +93,7 @@ extension AppCoordinator: MainCoordinatorDelegate {
             navigationController = nil
         }
 
-        let customerCoordinator = CustomerTabBarCoordinator(container: container)
+        let customerCoordinator = CustomerTabBarCoordinator(resolver: resolver)
         childCoordinators = [customerCoordinator]
         customerCoordinator.start()
         customerCoordinator.delegate = self

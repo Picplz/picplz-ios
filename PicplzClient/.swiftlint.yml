@@ -19,8 +19,8 @@ force_cast: warning
 force_try: warning
 
 line_length:
-  warning: 110
-  error: 140
+  warning: 130
+  error: 150
   ignores_urls: true
   ignores_comments: true
 
@@ -44,6 +44,11 @@ identifier_name:
     - URL
     - x
     - y
+    - i
+
+type_name:
+  excluded:
+    - ".*_Preview$"
 
 # ------------------------------------------------------------
 # opt-in

@@ -13,8 +13,8 @@ final class CustomTabBarController: UITabBarController {
     override var viewControllers: [UIViewController]? {
         didSet {
             if let viewControllers {
-                viewControllers.forEach { vc in
-                    customTabBar.addArangedTabBarItem(vc.tabBarItem)
+                viewControllers.forEach { viewController in
+                    customTabBar.addArangedTabBarItem(viewController.tabBarItem)
                 }
 
                 customTabBar.selectTap(at: 0) // 세팅 후 0번 아이템 선택

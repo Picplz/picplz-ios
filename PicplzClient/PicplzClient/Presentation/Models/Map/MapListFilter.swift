@@ -16,8 +16,20 @@ struct MapListFilter: Hashable {
     var isSelected: Bool
 
     static var photographerFilters: [MapListFilter] = [
-        .init(filterId: "following", filterTitle: "팔로우", image: UIImage(named: "CheckSymbol"), type: .photographerFilter, isSelected: false),
-        .init(filterId: "direct", filterTitle: "바로 촬영 가능", image: UIImage(named: "CameraSymbol"), type: .photographerFilter, isSelected: false)
+        .init(
+            filterId: "following",
+            filterTitle: "팔로우",
+            image: UIImage(named: "CheckSymbol"),
+            type: .photographerFilter,
+            isSelected: false
+        ),
+        .init(
+            filterId: "direct",
+            filterTitle: "바로 촬영 가능",
+            image: UIImage(named: "CameraSymbol"),
+            type: .photographerFilter,
+            isSelected: false
+        )
     ]
 
     static var hashTagFilters: [MapListFilter] = [
