@@ -53,16 +53,8 @@ final class UserDefaultsHelper {
         let expectedType = key.expectedType
 
         switch expectedType {
-        case is String.Type:
-            fallthrough
-        case is Int.Type:
-            fallthrough
-        case is Double.Type:
-            fallthrough
-        case is Bool.Type:
-            fallthrough
-        case is Data.Type:
-            userDefaults.set(value, forKey: key.rawValue)
+        case is String.Type, is Int.Type, is Double.Type, is Bool.Type, is Data.Type:
+            userDefaults.set(value, forKey: keyRaw)
         case is Codable.Type:
             if let value = value as? Codable {
                 saveCustomObject(value, key: key)

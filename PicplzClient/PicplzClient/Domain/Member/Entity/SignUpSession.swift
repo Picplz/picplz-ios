@@ -19,16 +19,13 @@ final class SignUpSession: CustomStringConvertible {
     var memberType: MemberType?
 
     /// 경험 종류 (삭제 필요)
-    // TODO: 삭제 필요
-    var photoCareerType: CareerType?
+    var photoCareerType: CareerType? // TODO: 삭제 필요
 
     /// 경험 기간 - 연도
-    // TODO: 삭제 필요
-    var photoCareerYears: Int?
+    var photoCareerYears: Int? // TODO: 삭제 필요
 
     /// 경험 기간 - 개월 수 (삭제 필요)
-    // TODO: 삭제 필요
-    var photoCareerMonths: Int?
+    var photoCareerMonths: Int? // TODO: 삭제 필요
 
     /// 자신 있는 분위기
     var photoSpecializedThemes: [String]?

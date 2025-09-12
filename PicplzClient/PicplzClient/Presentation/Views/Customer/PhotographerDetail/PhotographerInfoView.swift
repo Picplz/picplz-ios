@@ -132,6 +132,16 @@ final class PhotographerInfoView: UIView {
         self.backgroundColor = .ppWhite
         self.isUserInteractionEnabled = true
 
+        setupHeaderSection()
+        setupAdditionalInfoSection()
+        setupIntroductionLabelGesture()
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    private func setupHeaderSection() {
         addSubview(followersCountLabel)
         addSubview(followButton)
         addSubview(profileImage)
@@ -141,11 +151,6 @@ final class PhotographerInfoView: UIView {
         addSubview(directShootBadge)
         addSubview(introductionLabel)
         addSubview(divderView)
-        addSubview(townsTitleLabel)
-        addSubview(townsContentLabel)
-        addSubview(townsExtendImage)
-        addSubview(keywordTitleLabel)
-        addSubview(keywordContentLabel)
 
         followButton.snp.makeConstraints { make in
             make.top.equalTo(snp.top)
@@ -198,6 +203,14 @@ final class PhotographerInfoView: UIView {
             make.horizontalEdges.equalTo(snp.horizontalEdges)
             make.height.equalTo(1)
         }
+    }
+
+    private func setupAdditionalInfoSection() {
+        addSubview(townsTitleLabel)
+        addSubview(townsContentLabel)
+        addSubview(townsExtendImage)
+        addSubview(keywordTitleLabel)
+        addSubview(keywordContentLabel)
 
         townsTitleLabel.snp.makeConstraints { make in
             make.top.equalTo(divderView).offset(18)
@@ -225,15 +238,21 @@ final class PhotographerInfoView: UIView {
             make.centerY.equalTo(keywordTitleLabel)
             make.bottom.equalTo(snp.bottom).offset(-18)
         }
+    }
 
+    private func setupIntroductionLabelGesture() {
         introductionLabel.isUserInteractionEnabled = true
         let introductionTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleIntroductionTap))
         introductionLabel.addGestureRecognizer(introductionTapGestureRecognizer)
     }
 
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    @objc private func handleIntroductionTap() {
+        introductionLabel.numberOfLines = 0
     }
+}
+
+extension PhotographerInfoView {
+    // MARK: - Configuration
 
     func configure(photographer: PhotographerDetail) {
         followersCountLabel.text = String(photographer.followers)
@@ -285,9 +304,5 @@ final class PhotographerInfoView: UIView {
         }
 
         return "\(result) 외 \(remained)개"
-    }
-
-    @objc private func handleIntroductionTap() {
-        introductionLabel.numberOfLines = 0
     }
 }

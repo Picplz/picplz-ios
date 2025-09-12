@@ -57,10 +57,16 @@ final class PhotographerPortfolioDigestView: UIView {
     }
 
     private func createCollecionViewLayout() -> UICollectionViewCompositionalLayout {
-        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0 / numOfCellsInRow), heightDimension: .fractionalHeight(1))
+        let itemSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1.0 / numOfCellsInRow),
+            heightDimension: .fractionalHeight(1)
+        )
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
 
-        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalWidth(1.0 / numOfCellsInRow))
+        let groupSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1),
+            heightDimension: .fractionalWidth(1.0 / numOfCellsInRow)
+        )
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, repeatingSubitem: item, count: 3)
         group.interItemSpacing = .fixed(photoGridSpacing)
 

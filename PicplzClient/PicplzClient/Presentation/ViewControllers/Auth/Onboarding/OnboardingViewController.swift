@@ -26,7 +26,8 @@ final class OnboardingViewController: UIViewController {
         setupLayout()
         contentView.pageControl.numberOfPages = viewModel.onboardingPages.count
 
-        collectionViewHeightConstraint = contentView.collectionView.heightAnchor.constraint(equalToConstant: 600) // initial height
+        collectionViewHeightConstraint = contentView.collectionView
+            .heightAnchor.constraint(equalToConstant: 600) // initial height
         collectionViewHeightConstraint.isActive = true
         updateCollectionViewHeight()
 

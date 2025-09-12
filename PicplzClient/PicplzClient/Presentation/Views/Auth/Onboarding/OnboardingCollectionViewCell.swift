@@ -41,7 +41,10 @@ final class OnboardingCollectionViewCell: UICollectionViewCell {
 
         addSubview(onboardingMessageLabel)
         NSLayoutConstraint.activate([
-            onboardingMessageLabel.topAnchor.constraint(equalToSystemSpacingBelow: onboardingImageView.bottomAnchor, multiplier: 4),
+            onboardingMessageLabel.topAnchor.constraint(
+                equalToSystemSpacingBelow: onboardingImageView.bottomAnchor,
+                multiplier: 4
+            ), // FIXME: 우리 디자인에서 System Spacing을 따르지 않는데 여기 왜 썼는지 모르겠음
             onboardingMessageLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
             onboardingMessageLabel.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
@@ -55,7 +58,11 @@ final class OnboardingCollectionViewCell: UICollectionViewCell {
         paragraphStyle.alignment = .center
 
         let attributedString = NSMutableAttributedString(string: page.onboardingMessage)
-        attributedString.addAttribute(.paragraphStyle, value: paragraphStyle, range: NSRange(location: 0, length: attributedString.length))
+        attributedString.addAttribute(
+            .paragraphStyle,
+            value: paragraphStyle,
+            range: NSRange(location: 0, length: attributedString.length)
+        )
 
         onboardingMessageLabel.attributedText = attributedString
 

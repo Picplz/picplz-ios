@@ -150,7 +150,7 @@ extension SignUpCoordinator: SignUpViewModelDelegate {
            currentPage.isLast(to: memberType) {
             sendDataToServer() // MARK: Send sign up requst to server
 
-            guard let viewController = resolver.resolve(SignUpFinishVIewController.self) else {
+            guard let viewController = resolver.resolve(SignUpFinishViewController.self) else {
                 handleViewControllerNotResolved()
                 return
             }
@@ -170,7 +170,7 @@ extension SignUpCoordinator: SignUpViewModelDelegate {
     }
 }
 
-extension SignUpCoordinator: SignUpFinishVIewControllerDelegate {
+extension SignUpCoordinator: SignUpFinishViewControllerDelegate {
     func didTapFinishButton() {
         delegate?.finished(signUpCoordinator: self)
     }

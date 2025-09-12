@@ -113,7 +113,11 @@ final class UIPicplzAlert: UIView {
         paragraphStyle.lineSpacing = 6
         paragraphStyle.alignment = .left
 
-        attributedText.addAttribute(.paragraphStyle, value: paragraphStyle, range: NSRange(location: 0, length: attributedText.length))
+        attributedText.addAttribute(
+            .paragraphStyle,
+            value: paragraphStyle,
+            range: NSRange(location: 0, length: attributedText.length)
+        )
 
         contentLabel.attributedText = attributedText
     }

@@ -54,14 +54,20 @@ type_name:
 # opt-in
 # ------------------------------------------------------------
 opt_in_rules:
-  - unused_import
   - duplicate_imports
   - empty_count
   - implicit_return
   - trailing_closure
 
 # ------------------------------------------------------------
-# 커스텀 규칙(필요 최소)
+# analyzer
+# ------------------------------------------------------------
+
+analyzer_rules:
+  - unused_import
+
+# ------------------------------------------------------------
+# 커스텀 규칙
 # ------------------------------------------------------------
 custom_rules:
   no_print_in_production:
@@ -70,3 +76,6 @@ custom_rules:
     regex: "\\bprint\\s*\\("
     message: "print 대신 Logger를 사용하세요."
     severity: warning
+    excluded:
+      - "PicplzClientTests"
+      - "PicplzClientUITests"

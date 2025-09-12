@@ -129,7 +129,10 @@ final class SignUpProfileImagePageViewController: UIViewController {
 }
 
 extension SignUpProfileImagePageViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
+    func imagePickerController(
+        _ picker: UIImagePickerController,
+        didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]
+    ) {
         guard let image = info[.editedImage] as? UIImage else { return }
 
         let imageName = "userProfile.jpg"

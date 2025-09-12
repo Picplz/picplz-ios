@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 
-protocol CustomerMapViewModelDelegate {
+protocol CustomerMapViewModelDelegate: AnyObject {
     func selectPhotographerDetail(photographerId: Int)
 }
 

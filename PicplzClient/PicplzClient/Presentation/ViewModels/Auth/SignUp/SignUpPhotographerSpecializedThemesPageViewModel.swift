@@ -11,7 +11,7 @@ import OSLog
 final class SignUpPhotographerSpecializedThemesPageViewModel: SignUpPhotographerThemesPageViewModelProtocol {
     typealias Item = ThemesSettingCollectionViewItem
 
-    var delegate: SignUpViewModelDelegate?
+    weak var delegate: SignUpViewModelDelegate?
     var currentPage: Int = 0
     var signUpSession: SignUpSession?
 

@@ -48,7 +48,11 @@ final class UIPicplzNavigationController: UINavigationController {
 }
 
 extension UIPicplzNavigationController: UINavigationControllerDelegate {
-    func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
+    func navigationController(
+        _ navigationController: UINavigationController,
+        willShow viewController: UIViewController,
+        animated: Bool
+    ) {
         // MARK: Remove current viewController's back button title
          viewController.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
     }

@@ -13,7 +13,9 @@ final class MapBackgroundView: UIView {
     override func draw(_ rect: CGRect) {
         diameters.forEach { diameter in
             let radius = diameter / 2.0
-            let path = UIBezierPath(ovalIn: CGRect(x: bounds.midX - radius, y: bounds.midY - radius, width: diameter, height: diameter))
+            let path = UIBezierPath(
+                ovalIn: CGRect(x: bounds.midX - radius, y: bounds.midY - radius, width: diameter, height: diameter)
+            )
             UIColor.ppGrey2.setStroke()
             path.lineWidth = 1
             path.stroke()

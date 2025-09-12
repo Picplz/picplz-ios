@@ -93,7 +93,11 @@ final class SignUpProfileImageSettingView: UIView {
         paragraphStyle.alignment = .center
 
         let attributedString = NSMutableAttributedString(string: text)
-        attributedString.addAttribute(.paragraphStyle, value: paragraphStyle, range: NSRange(location: 0, length: attributedString.length))
+        attributedString.addAttribute(
+            .paragraphStyle,
+            value: paragraphStyle,
+            range: NSRange(location: 0, length: attributedString.length)
+        )
 
         informationLabel.attributedText = attributedString
     }

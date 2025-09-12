@@ -8,12 +8,12 @@
 import UIKit
 import OSLog
 
-protocol SignUpFinishVIewControllerDelegate {
+protocol SignUpFinishViewControllerDelegate: AnyObject {
     func didTapFinishButton()
 }
 
-final class SignUpFinishVIewController: UIViewController {
-    var delegate: SignUpFinishVIewControllerDelegate?
+final class SignUpFinishViewController: UIViewController {
+    var delegate: SignUpFinishViewControllerDelegate?
     var profileImagePath: URL? {
         didSet {
             if let profileImagePath = profileImagePath {
@@ -65,7 +65,7 @@ final class SignUpFinishVIewController: UIViewController {
     }()
     private let startButton = UIPicplzButton()
 
-    private var log = Logger.of("SignUpFinishVIewController")
+    private var log = Logger.of("SignUpFinishViewController")
 
     override func viewDidLoad() {
         super.viewDidLoad()

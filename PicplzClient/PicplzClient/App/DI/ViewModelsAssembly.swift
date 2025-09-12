@@ -17,13 +17,27 @@ final class ViewModelsAssembly: Assembly {
             viewModel.getAuthInfoUseCase = resolver.resolve(GetAuthInfoUseCase.self)
             return viewModel
         }
-        container.register(OnboardingViewModelProtocol.self) { _ in OnboardingViewModel() }
-        container.register(SignUpNicknamePageViewModelProtocol.self) { _ in SignUpNicknamePageViewModel() }
-        container.register(SignUpProfileImagePageViewModelProtocol.self) { _ in SignUpProfileImagePageViewModel() }
-        container.register(SignUpMemberTypePageViewModelProtocol.self) { _ in SignUpMemberTypePageViewModel() }
-        container.register(SignUpPhotographerCareerTypePageViewModelProtocol.self) { _ in SignUpPhotographerCareerTypePageViewModel() }
-        container.register(SignUpPhotographerCareerPeriodPageViewModelProtocol.self) { _ in SignUpPhotographerCareerPeriodPageViewModel() }
-        container.register(SignUpPhotographerThemesPageViewModelProtocol.self) { _ in SignUpPhotographerSpecializedThemesPageViewModel() }
+        container.register(OnboardingViewModelProtocol.self) { _ in
+            OnboardingViewModel()
+        }
+        container.register(SignUpNicknamePageViewModelProtocol.self) { _ in
+            SignUpNicknamePageViewModel()
+        }
+        container.register(SignUpProfileImagePageViewModelProtocol.self) { _ in
+            SignUpProfileImagePageViewModel()
+        }
+        container.register(SignUpMemberTypePageViewModelProtocol.self) { _ in
+            SignUpMemberTypePageViewModel()
+        }
+        container.register(SignUpPhotographerCareerTypePageViewModelProtocol.self) { _ in
+            SignUpPhotographerCareerTypePageViewModel()
+        }
+        container.register(SignUpPhotographerCareerPeriodPageViewModelProtocol.self) { _ in
+            SignUpPhotographerCareerPeriodPageViewModel()
+        }
+        container.register(SignUpPhotographerThemesPageViewModelProtocol.self) { _ in
+            SignUpPhotographerSpecializedThemesPageViewModel()
+        }
         container.register(CustomerMapViewModelProtocol.self) { resolver in
             CustomerMapViewModel(
                 getShortAddressUseCase: GetShortAddressUserCaseImpl(

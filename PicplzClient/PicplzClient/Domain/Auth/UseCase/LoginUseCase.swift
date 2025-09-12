@@ -58,7 +58,7 @@ final class LoginUseCaseImpl: LoginUseCase {
     private func handleLoginSuccess(accessToken: String?, refreshToken: String?) async throws {
         // MARK: 카카오 로그인 결과 처리
         guard let accessToken = accessToken,
-              let _ = refreshToken else {
+              refreshToken != nil else {
             log.error("accessToken is nil.")
             throw DomainError.venderError("카카오 로그인 시 오류가 발생했습니다.")
         }
@@ -96,7 +96,10 @@ final class LoginUseCaseImpl: LoginUseCase {
         }
 
         do {
-            if let userInfoResponse = try await authRequests.getUserInfo(accessToken: token.accessToken, memberId: accessTokenPayload.sub) {
+            if let userInfoResponse = try await authRequests.getUserInfo(
+                accessToken: token.accessToken,
+                memberId: accessTokenPayload.sub
+            ) {
                 let userInfo = userInfoResponse.data
 
                 authManaging.login(

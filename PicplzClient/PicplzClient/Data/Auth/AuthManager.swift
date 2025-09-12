@@ -75,6 +75,7 @@ final class AuthManager: AuthManaging {
         self.currentUser = userInfo
         setToDeviceStore()
 
+        // swiftlint:disable:next line_length
         log.debug("AuthManager login... tokens=\(String(describing: self.tokens)) currentUser=\(String(describing: self.currentUser))")
     }
 

@@ -42,12 +42,48 @@ class CustomerMapViewController: UIViewController {
 
         // FIXME: Replace to real data
         mapView.photographerAvatarModels = [
-            .init(name: "짱구", distance: 200, distanceUnit: .meters, active: true, image: UIImage(named: "ProfileImagePlaceholder")!),
-            .init(name: "짱아", distance: 400, distanceUnit: .meters, active: true, image: UIImage(named: "ProfileImagePlaceholder")!),
-            .init(name: "흰둥", distance: 800, distanceUnit: .meters, active: true, image: UIImage(named: "ProfileImagePlaceholder")!),
-            .init(name: "훈", distance: 1000, distanceUnit: .meters, active: false, image: UIImage(named: "ProfileImagePlaceholder")!),
-            .init(name: "철수", distance: 1.2, distanceUnit: .kilometers, active: true, image: UIImage(named: "ProfileImagePlaceholder")!),
-            .init(name: "원장", distance: nil, distanceUnit: nil, active: true, image: UIImage(named: "ProfileImagePlaceholder")!)
+            .init(
+                name: "짱구",
+                distance: 200,
+                distanceUnit: .meters,
+                active: true,
+                image: UIImage(named: "ProfileImagePlaceholder")!
+            ),
+            .init(
+                name: "짱아",
+                distance: 400,
+                distanceUnit: .meters,
+                active: true,
+                image: UIImage(named: "ProfileImagePlaceholder")!
+            ),
+            .init(
+                name: "흰둥",
+                distance: 800,
+                distanceUnit: .meters,
+                active: true,
+                image: UIImage(named: "ProfileImagePlaceholder")!
+            ),
+            .init(
+                name: "훈",
+                distance: 1000,
+                distanceUnit: .meters,
+                active: false,
+                image: UIImage(named: "ProfileImagePlaceholder")!
+            ),
+            .init(
+                name: "철수",
+                distance: 12,
+                distanceUnit: .kilometers,
+                active: true,
+                image: UIImage(named: "ProfileImagePlaceholder")!
+            ),
+            .init(
+                name: "원장",
+                distance: nil,
+                distanceUnit: nil,
+                active: true,
+                image: UIImage(named: "ProfileImagePlaceholder")!
+            )
         ]
 
         bottomSheetContentView.onPhotographerSelected = { [weak self] photographerId in

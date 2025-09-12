@@ -9,7 +9,7 @@ import Combine
 import OSLog
 
 final class OnboardingViewModel: OnboardingViewModelProtocol {
-    var delegate: OnboardingViewModelDelegate?
+    weak var delegate: OnboardingViewModelDelegate?
     var loginUseCase: LoginUseCase?
 
     private let log = Logger.of("OnboardingViewModel")

@@ -52,8 +52,8 @@ final class ViewControllersAssembly: Assembly {
             viewController.viewModel = resolver.resolve(SignUpPhotographerThemesPageViewModelProtocol.self)
             return viewController
         }
-        container.register(SignUpFinishVIewController.self) { _ in
-            SignUpFinishVIewController()
+        container.register(SignUpFinishViewController.self) { _ in
+            SignUpFinishViewController()
         }
         container.register(CustomerViewController.self) { _ in
             CustomerViewController()

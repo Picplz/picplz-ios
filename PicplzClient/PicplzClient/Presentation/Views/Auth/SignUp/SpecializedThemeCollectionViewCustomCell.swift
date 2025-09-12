@@ -12,7 +12,7 @@ import OSLog
  사용자가 정의한 감성 항목을 표시하는 셀
  */
 final class SpecializedThemeCollectionViewCustomCell: SpecializedThemeCollectionViewDefaultCell {
-    var delegate: SpecializedThemeCollectionViewCustomCellDelegate?
+    weak var delegate: SpecializedThemeCollectionViewCustomCellDelegate?
     var editingTheme: Theme?
     var rightConstraint: NSLayoutConstraint?
 
@@ -107,6 +107,6 @@ extension SpecializedThemeCollectionViewCustomCell: UITextFieldDelegate {
     }
 }
 
-protocol SpecializedThemeCollectionViewCustomCellDelegate {
+protocol SpecializedThemeCollectionViewCustomCellDelegate: AnyObject {
     func didUpdateCustomThemeTitle(from previousTheme: Theme, to newTheme: Theme)
 }

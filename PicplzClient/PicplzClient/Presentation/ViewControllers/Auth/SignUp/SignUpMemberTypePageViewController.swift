@@ -44,10 +44,16 @@ final class SignUpMemberTypePageViewController: UIViewController {
             contentView.heightAnchor.constraint(equalToConstant: 450)
         ])
 
-        let photographerSelectorTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(didMemberTypeSelected(_:)))
+        let photographerSelectorTapGestureRecognizer = UITapGestureRecognizer(
+            target: self,
+            action: #selector(didMemberTypeSelected(_:))
+        )
         contentView.photographerSelectorView.addGestureRecognizer(photographerSelectorTapGestureRecognizer)
 
-        let customerSelectorTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(didMemberTypeSelected(_:)))
+        let customerSelectorTapGestureRecognizer = UITapGestureRecognizer(
+            target: self,
+            action: #selector(didMemberTypeSelected(_:))
+        )
         contentView.customerSelectorView.addGestureRecognizer(customerSelectorTapGestureRecognizer)
 
         // MARK: Next Button

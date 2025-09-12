@@ -40,7 +40,8 @@ final class LocationServiceImpl: NSObject, LocationService {
         } else if locationManager.authorizationStatus == .notDetermined {
             locationManager.requestWhenInUseAuthorization()
         } else {
-            print("\(String(describing: locationManager.authorizationStatus))")
+            // swiftlint:disable:next line_length
+            log.info("current location is not available because of status. status= \(String(describing: self.locationManager.authorizationStatus))")
         }
     }
 }

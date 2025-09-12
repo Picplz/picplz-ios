@@ -111,7 +111,11 @@ class CustomerMapBottomSheetContentView: UIView {
                 let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
 
                 let footerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(20))
-                let footer = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: footerSize, elementKind: "SeparatorKind", alignment: .bottom)
+                let footer = NSCollectionLayoutBoundarySupplementaryItem(
+                    layoutSize: footerSize,
+                    elementKind: "SeparatorKind",
+                    alignment: .bottom
+                )
                 group.supplementaryItems = [footer]
 
                 let section = NSCollectionLayoutSection(group: group)
@@ -397,7 +401,9 @@ private final class PhotographerItemCell: UICollectionViewCell {
         self.photographer = photographer
         self.didSelectHandler = didSelectHandler
 
-        profileImageView.image = photographer.image != nil ? photographer.image : UIImage(named: "ProfileImagePlaceholderRectangle")
+        profileImageView.image = photographer.image != nil
+            ? photographer.image
+            : UIImage(named: "ProfileImagePlaceholderRectangle")
         nameLabel.text = "\(photographer.name) 작가"
         infoLabel.text = "\(photographer.distanceIntMeters)m / 도보 \(photographer.walkTimeInMinutes)분"
 

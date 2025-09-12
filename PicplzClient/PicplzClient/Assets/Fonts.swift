@@ -89,7 +89,7 @@ extension UIFont {
         let families = familyNames.reduce("") { partialResult, family in
             partialResult + "\n" + family
         }
-        print(families)
+        logger.info("Loaded font families:\n\(families)")
     }
 #endif
 }

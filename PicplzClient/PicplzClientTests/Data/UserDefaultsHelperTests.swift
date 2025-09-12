@@ -79,7 +79,7 @@ struct UserDefaultsHelperTest {
         userDefaultsHelper.save(value: willSaveValue, key: .testSaveStruct)
 
         let savedValue = userDefaultsInstance.data(forKey: UserDefaultsHelper.Key.testSaveStruct.rawValue)!
-        print(String(decoding: savedValue, as: UTF8.self))
+        print(String(bytes: savedValue, encoding: .utf8) ?? "N/A")
 
         let decoder = JSONDecoder()
         let savedObject = try decoder.decode(TestCustomStruct.self, from: savedValue)

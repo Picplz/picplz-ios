@@ -34,11 +34,15 @@ final class SignUpMemberTypeSettingView: UIView {
         }
     }
 
-    private lazy var photographerSelectorViewHeightConstrint = photographerSelectorView.heightAnchor.constraint(equalToConstant: 120.0)
-    private lazy var photographerSelectorViewWidthConstrint = photographerSelectorView.widthAnchor.constraint(equalToConstant: 120.0)
+    private lazy var photographerSelectorViewHeightConstrint = photographerSelectorView
+        .heightAnchor.constraint(equalToConstant: 120.0)
+    private lazy var photographerSelectorViewWidthConstrint = photographerSelectorView
+        .widthAnchor.constraint(equalToConstant: 120.0)
 
-    private lazy var customerSelectorViewHeightConstrint = customerSelectorView.heightAnchor.constraint(equalToConstant: 120.0)
-    private lazy var customerSelectorViewWidthConstrint = customerSelectorView.widthAnchor.constraint(equalToConstant: 120.0)
+    private lazy var customerSelectorViewHeightConstrint = customerSelectorView
+        .heightAnchor.constraint(equalToConstant: 120.0)
+    private lazy var customerSelectorViewWidthConstrint = customerSelectorView
+        .widthAnchor.constraint(equalToConstant: 120.0)
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -64,7 +68,11 @@ final class SignUpMemberTypeSettingView: UIView {
         paragraphStyle.alignment = .center
 
         let attributedString = NSMutableAttributedString(string: "가입하실 회원 타입을\n선택해주세요.")
-        attributedString.addAttribute(.paragraphStyle, value: paragraphStyle, range: NSRange(location: 0, length: attributedString.length))
+        attributedString.addAttribute(
+            .paragraphStyle,
+            value: paragraphStyle,
+            range: NSRange(location: 0, length: attributedString.length)
+        )
 
         titleLabel.attributedText = attributedString
 

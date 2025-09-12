@@ -10,7 +10,7 @@ import Combine
 import OSLog
 
 final class SignUpNicknamePageViewModel: SignUpNicknamePageViewModelProtocol {
-    var delegate: SignUpViewModelDelegate?
+    weak var delegate: SignUpViewModelDelegate?
     var currentPage: Int = 0
     var signUpSession: SignUpSession?
 

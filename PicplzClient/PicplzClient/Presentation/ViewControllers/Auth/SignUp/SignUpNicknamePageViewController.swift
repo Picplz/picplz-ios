@@ -63,7 +63,8 @@ final class SignUpNicknamePageViewController: UIViewController {
         nextButton.addTarget(self, action: #selector(nextButtonTapped), for: .touchUpInside)
         view.addSubview(nextButton)
 
-        nextButtonBottomConstraint = view.safeAreaLayoutGuide.bottomAnchor.constraint(equalTo: nextButton.bottomAnchor, constant: 47)
+        nextButtonBottomConstraint = view.safeAreaLayoutGuide
+            .bottomAnchor.constraint(equalTo: nextButton.bottomAnchor, constant: 47)
         NSLayoutConstraint.activate([
             nextButton.heightAnchor.constraint(equalToConstant: 60),
             nextButton.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 15),

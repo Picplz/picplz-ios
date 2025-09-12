@@ -11,7 +11,7 @@ import MapKit
 import OSLog
 
 final class CustomerMapViewModel: NSObject, CustomerMapViewModelProtocol {
-    var delegate: (any CustomerMapViewModelDelegate)?
+    weak var delegate: CustomerMapViewModelDelegate?
 
     @Published var shortAddress: String?
     var shortAddressPublisher: AnyPublisher<String, Never> {
