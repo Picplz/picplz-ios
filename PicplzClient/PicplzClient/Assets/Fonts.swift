@@ -29,7 +29,7 @@ enum CustomFontTypography {
     case tagContent
     case buttonTitle
     case chatButtonTitle
-    
+
     var size: CGFloat {
         switch self {
         case .largeTitle:
@@ -52,7 +52,7 @@ enum CustomFontTypography {
             12
         }
     }
-    
+
     var lineHeight: CGFloat {
         switch self {
         case .largeTitle, .title, .smallTitle, .largeBody, .body, .caption, .tagContent, .buttonTitle, .chatButtonTitle:
@@ -63,7 +63,7 @@ enum CustomFontTypography {
 
 extension UIFont {
     static let logger = Logger.of("UIFont+")
-    
+
     static func custom(_ fontFamily: CustomFontFamily, size: CGFloat) -> UIFont {
         if let font = UIFont(name: fontFamily.rawValue, size: size) {
             return font
@@ -72,7 +72,7 @@ extension UIFont {
             return UIFont.systemFont(ofSize: size)
         }
     }
-    
+
     static let body = UIFont.custom(.pretendardRegular, size: 14)
     static let bodySemibold = UIFont.custom(.pretendardSemiBold, size: 14)
     static let largeBody = UIFont.custom(.pretendardRegular, size: 16)
@@ -83,13 +83,13 @@ extension UIFont {
     static let caption = UIFont.custom(.pretendardRegular, size: 12)
     static let captionSemiBold = UIFont.custom(.pretendardSemiBold, size: 12)
     static let middleTitleSemiBold = UIFont.custom(.pretendardSemiBold, size: 18)
-    
+
 #if DEBUG
     static func listFontFamilies() {
         let families = familyNames.reduce("") { partialResult, family in
-            return partialResult + "\n" + family
+            partialResult + "\n" + family
         }
-        print(families)
+        logger.info("Loaded font families:\n\(families)")
     }
 #endif
 }

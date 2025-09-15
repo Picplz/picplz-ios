@@ -15,19 +15,19 @@ class UIPicplzButton2: UIButton {
         configuration.background.strokeWidth = 1
         configuration.background.backgroundColor = .white
         configuration.cornerStyle = .capsule
-        
+
         configuration.image = image
         configuration.imagePlacement = .trailing
         configuration.imagePadding = 3
-        
+
         var attributedTitle = AttributedString(title)
         attributedTitle.font = .body
         attributedTitle.foregroundColor = .ppGrey4
         configuration.attributedTitle = attributedTitle
-        
+
         self.configuration = configuration
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

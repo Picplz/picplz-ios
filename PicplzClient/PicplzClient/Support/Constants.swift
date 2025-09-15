@@ -8,5 +8,5 @@
 import Foundation
 
 struct Constants {
-    static let serverBaseUrl: String = Bundle.main.infoDictionary?["Server Base URL"] as! String
+    static let serverBaseUrl: String = Bundle.main.infoDictionary?["Server Base URL"] as? String ?? "serverBaseUrl not set"
 }

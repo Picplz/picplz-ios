@@ -14,32 +14,32 @@ final class PhotographerDetailButton: UIButton {
         configuration.background.strokeWidth = 1
         configuration.background.backgroundColor = .ppGrey2
         configuration.background.cornerRadius = 5
-        
+
         configuration.image = image
         configuration.imagePlacement = .trailing
         configuration.imagePadding = 4
-        
+
         configuration.contentInsets = .init(top: 2, leading: 7, bottom: 2, trailing: 7)
-        
+
         var attributedTitle = AttributedString(title)
         attributedTitle.font = UIFont.caption
         attributedTitle.foregroundColor = .ppGrey4
         configuration.attributedTitle = attributedTitle
-        
+
         self.configuration = configuration
     }
-    
+
     func changeTitle(_ title: String) {
         var attributedTitle = AttributedString(title)
         attributedTitle.font = UIFont.caption
         attributedTitle.foregroundColor = .ppGrey4
         self.setAttributedTitle(NSAttributedString(attributedTitle), for: .normal)
     }
-    
+
     func changeImage(_ image: UIImage) {
         self.setImage(image, for: .normal)
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

@@ -24,6 +24,7 @@ final class NetworkLogger: EventMonitor {
         let headers = httpRequest.allHTTPHeaderFields ?? [:]
         let body = httpRequest.httpBody.flatMap { String(data: $0, encoding: .utf8) } ?? ""
 
+        // swiftlint:disable:next line_length
         logger.info("🚀 RequestStarted {\"method\":\"\(method)\",\"url\":\"\(url)\",\"headers\":\(headers),\"body\":\"\(body.replacingOccurrences(of: "\"", with: "\\\""))\"}")
     }
 
@@ -50,6 +51,7 @@ final class NetworkLogger: EventMonitor {
             let errorMessage = error.localizedDescription.replacingOccurrences(of: "\"", with: "\\\"")
             if let data = response.data,
                let body = String(data: data, encoding: .utf8) {
+                // swiftlint:disable:next line_length
                 logger.error("❌ ResponseError {\"url\":\"\(url)\",\"error\":\"\(errorMessage)\",\"body\":\"\(body.replacingOccurrences(of: "\"", with: "\\\""))\"}")
             } else {
                 logger.error("❌ ResponseError {\"url\":\"\(url)\",\"error\":\"\(errorMessage)\",\"body\":\"\"}")

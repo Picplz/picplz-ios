@@ -11,28 +11,25 @@ import Foundation
 final class SignUpSession: CustomStringConvertible {
     /// 닉네임
     var nickname: String = ""
-    
+
     /// 프로필 이미지 업로드 후 URL
     var profileImageUrl: URL?
-    
+
     /// 회원 종류
     var memberType: MemberType?
-    
+
     /// 경험 종류 (삭제 필요)
-    // TODO: 삭제 필요
-    var photoCareerType: CareerType?
-    
+    var photoCareerType: CareerType? // TODO: 삭제 필요
+
     /// 경험 기간 - 연도
-    // TODO: 삭제 필요
-    var photoCareerYears: Int?
-    
+    var photoCareerYears: Int? // TODO: 삭제 필요
+
     /// 경험 기간 - 개월 수 (삭제 필요)
-    // TODO: 삭제 필요
-    var photoCareerMonths: Int?
-    
+    var photoCareerMonths: Int? // TODO: 삭제 필요
+
     /// 자신 있는 분위기
     var photoSpecializedThemes: [String]?
-    
+
     var description: String {
         "SignUpSession: nickname: \(nickname) "
         + "/ profileImageUrl: \(String(describing: profileImageUrl)) "
@@ -42,12 +39,12 @@ final class SignUpSession: CustomStringConvertible {
         + "/ photoCareerMonths: \(String(describing: photoCareerMonths)) "
         + "/ photoSpecializedThemes: \(String(describing: photoSpecializedThemes))"
     }
-    
+
     enum MemberType {
         case customer
         case photographer
     }
-    
+
     // TODO: 삭제 필요
     enum CareerType {
         case major // 사진 전공

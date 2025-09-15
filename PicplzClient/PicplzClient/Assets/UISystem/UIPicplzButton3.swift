@@ -16,30 +16,30 @@ class UIPicplzButton3: UIButton {
         configuration.background.strokeWidth = 1
         configuration.background.backgroundColor = .ppGrey1
         configuration.cornerStyle = .capsule
-        
+
         configuration.image = image
         configuration.imagePlacement = .leading
         configuration.imagePadding = 3
-        
+
         var attributedTitle = AttributedString(title)
         attributedTitle.font = UIFont.caption
         attributedTitle.foregroundColor = .ppGrey4
         configuration.attributedTitle = attributedTitle
-        
+
         self.configuration = configuration
     }
-    
+
     func changeTitle(_ title: String) {
         var attributedTitle = AttributedString(title)
         attributedTitle.font = UIFont.caption
         attributedTitle.foregroundColor = .ppGrey4
         self.setAttributedTitle(NSAttributedString(attributedTitle), for: .normal)
     }
-    
+
     func changeImage(_ image: UIImage) {
         self.setImage(image, for: .normal)
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

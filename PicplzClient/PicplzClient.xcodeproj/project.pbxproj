@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		3D6299A52DA1464D00929978 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 3D6299A42DA1464D00929978 /* SnapKit */; };
 		3D8449A52D59B54100AEFB66 /* Swinject in Frameworks */ = {isa = PBXBuildFile; productRef = 3D8449A42D59B54100AEFB66 /* Swinject */; };
+		3DA72DCD2E72F87C00C3B0CB /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = 3DA72DCC2E72F87700C3B0CB /* .swiftlint.yml */; };
 		3DB719642DD36087004FB5BB /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 3DB719632DD36087004FB5BB /* Alamofire */; };
 		3DE489942DD2F9DD00D3F310 /* KakaoSDKAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 3DE489932DD2F9DD00D3F310 /* KakaoSDKAuth */; };
 		3DE489962DD2F9DD00D3F310 /* KakaoSDKCommon in Frameworks */ = {isa = PBXBuildFile; productRef = 3DE489952DD2F9DD00D3F310 /* KakaoSDKCommon */; };
@@ -33,6 +34,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3DA72DCC2E72F87700C3B0CB /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		3DBF92A52D55BB65009EF4C3 /* PicplzClient.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PicplzClient.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3DBF92BB2D55BB67009EF4C3 /* PicplzClientTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PicplzClientTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3DBF92C52D55BB67009EF4C3 /* PicplzClientUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PicplzClientUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -103,6 +105,7 @@
 		3DBF929C2D55BB65009EF4C3 = {
 			isa = PBXGroup;
 			children = (
+				3DA72DCC2E72F87700C3B0CB /* .swiftlint.yml */,
 				3DBF92A72D55BB65009EF4C3 /* PicplzClient */,
 				3DBF92BE2D55BB67009EF4C3 /* PicplzClientTests */,
 				3DBF92C82D55BB67009EF4C3 /* PicplzClientUITests */,
@@ -127,6 +130,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 3DBF92CE2D55BB67009EF4C3 /* Build configuration list for PBXNativeTarget "PicplzClient" */;
 			buildPhases = (
+				3DA69E762E72F583003F1CF1 /* SwiftLint */,
 				3DBF92A12D55BB65009EF4C3 /* Sources */,
 				3DBF92A22D55BB65009EF4C3 /* Frameworks */,
 				3DBF92A32D55BB65009EF4C3 /* Resources */,
@@ -235,6 +239,7 @@
 				3D6299A32DA1464D00929978 /* XCRemoteSwiftPackageReference "SnapKit" */,
 				3DE489922DD2F9DD00D3F310 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */,
 				3DB719622DD36087004FB5BB /* XCRemoteSwiftPackageReference "Alamofire" */,
+				3DA69E752E72F447003F1CF1 /* XCRemoteSwiftPackageReference "SwiftLintPlugins" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 3DBF92A62D55BB65009EF4C3 /* Products */;
@@ -253,6 +258,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3DA72DCD2E72F87C00C3B0CB /* .swiftlint.yml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -271,6 +277,27 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		3DA69E762E72F583003F1CF1 /* SwiftLint */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = SwiftLint;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [[ \"$(uname -m)\" == arm64 ]]\nthen\n    export PATH=\"/opt/homebrew/bin:$PATH\"\nfi\n\nif command -v swiftlint >/dev/null 2>&1\nthen\n    swiftlint\nelse\n    echo \"warning: `swiftlint` command not found - See https://github.com/realm/SwiftLint#installation for installation instructions.\"\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		3DBF92A12D55BB65009EF4C3 /* Sources */ = {
@@ -320,6 +347,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 9;
 				DEVELOPMENT_TEAM = XS9UN8F2AX;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = PicplzClient/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = PicPlz;
@@ -354,6 +382,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 9;
 				DEVELOPMENT_TEAM = XS9UN8F2AX;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = PicplzClient/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = PicPlz;
@@ -627,6 +656,14 @@
 			requirement = {
 				kind = exactVersion;
 				version = 2.9.1;
+			};
+		};
+		3DA69E752E72F447003F1CF1 /* XCRemoteSwiftPackageReference "SwiftLintPlugins" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SimplyDanny/SwiftLintPlugins";
+			requirement = {
+				kind = exactVersion;
+				version = 0.61.0;
 			};
 		};
 		3DB719622DD36087004FB5BB /* XCRemoteSwiftPackageReference "Alamofire" */ = {

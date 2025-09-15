@@ -12,17 +12,17 @@ final class MainViewModel: MainViewModelProtocol {
     var userInfo: AuthUser?
     var getAuthInfoUseCase: GetAuthInfoUseCase?
     var logoutUseCase: LogoutUseCase?
-    
+
     @Published var accessToken: String?
     var accessTokenPublisher: Published<String?>.Publisher {
         $accessToken
     }
-    
+
     func viewPrepared() {
         accessToken = getAuthInfoUseCase?.getAccessToken()
         userInfo = getAuthInfoUseCase?.getUserInfo()
     }
-    
+
     func logoutButtonTapped() {
         logoutUseCase?.logout()
         delegate?.loggedOut()

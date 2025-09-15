@@ -11,14 +11,22 @@ import Foundation
 
 struct AuthManagerTests {
     let authManager: AuthManager
-    
-    let dummyUser: AuthUser = .init(name: "테스터", nickname: "테스트 닉네임", birth: Date(), role: "GENERAL", kakaoEmail: "test@kakao.co.kr", profileImageUrl: "http://picplz.com/profile.jpg")
-    
+
+    let dummyUser: AuthUser = .init(
+        sub: 1,
+        nickname: "테스트 닉네임",
+        profileImageUrl: "http://picplz.com/profile.jpg",
+        memberType: .customer,
+        socialEmail: "test@kakao.co.kr",
+        socialCode: "1234",
+        socialProvider: .kakao
+    )
+
     init() {
         authManager = AuthManager(keychainStore: KeychainStore(),
                                   userDefaultHelper: UserDefaultsHelper(userDefaults: UserDefaults())) // UserDefaults 분리
     }
-    
+
     let dummyDate: Date = {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
@@ -28,16 +36,30 @@ struct AuthManagerTests {
     }()
 
     @Test func isLoginShouldBeTrueWhenLogin() async throws {
-        authManager.login(accessToken: "token", expiresDate: Date(), user: dummyUser)
+        authManager.login(
+            tokens: .init(
+                accessToken: "accessToken",
+                refreshToken: "refreshToken",
+                expiresDate: Date()
+            ),
+            userInfo: dummyUser
+        )
         #expect(authManager.isLogin == true)
     }
-    
+
     @Test func isLoginShouldBeFalseWhenNotLogin() async throws {
         #expect(authManager.isLogin == false)
     }
 
     @Test func whenTokenExpiredShouldResetOnCallingValidateToken() async throws {
-        authManager.login(accessToken: "token", expiresDate: dummyDate, user: dummyUser)
+        authManager.login(
+            tokens: .init(
+                accessToken: "accessToken",
+                refreshToken: "refreshToken",
+                expiresDate: dummyDate
+            ),
+            userInfo: dummyUser
+        )
         #expect(authManager.validateToken() == false)
         #expect(authManager.accessToken == nil)
     }

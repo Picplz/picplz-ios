@@ -13,17 +13,17 @@ final class UserDefaultsHelper {
     private let encoder: JSONEncoder
     private let decoder: JSONDecoder
     private let log = Logger.of("UserDefaultsHelper")
-    
+
     init(userDefaults: UserDefaults) {
         self.userDefaults = userDefaults
         encoder = JSONEncoder()
         decoder = JSONDecoder()
     }
-    
+
     convenience init() {
         self.init(userDefaults: UserDefaults.standard)
     }
-    
+
     private func saveCustomObject<T: Encodable>(_ object: T, key: Key) {
         do {
             let jsonData = try encoder.encode(object)
@@ -32,13 +32,13 @@ final class UserDefaultsHelper {
             log.error("Encode data failed... key: \(key.rawValue) value: \(String(describing: object)) error: \(error)")
         }
     }
-    
+
     private func loadCustomData<T: Decodable>(for key: Key, as type: T.Type) -> T? {
         guard let jsonData = userDefaults.data(forKey: key.rawValue) else {
             log.error("No data from UserDefaults... key: \(key.rawValue)")
             return nil
         }
-        
+
         do {
             let object = try decoder.decode(T.self, from: jsonData)
             return object
@@ -47,22 +47,14 @@ final class UserDefaultsHelper {
             return nil
         }
     }
-    
+
     func save(value: Any, key: Key) {
         let keyRaw = key.rawValue
         let expectedType = key.expectedType
-        
+
         switch expectedType {
-        case is String.Type:
-            fallthrough
-        case is Int.Type:
-            fallthrough
-        case is Double.Type:
-            fallthrough
-        case is Bool.Type:
-            fallthrough
-        case is Data.Type:
-            userDefaults.set(value, forKey: key.rawValue)
+        case is String.Type, is Int.Type, is Double.Type, is Bool.Type, is Data.Type:
+            userDefaults.set(value, forKey: keyRaw)
         case is Codable.Type:
             if let value = value as? Codable {
                 saveCustomObject(value, key: key)
@@ -71,10 +63,10 @@ final class UserDefaultsHelper {
             userDefaults.set(value, forKey: keyRaw)
         }
     }
-    
+
     func load<T>(for key: Key) -> T? {
         let expectedType = key.expectedType
-        
+
         switch expectedType {
         case is String.Type:
             log.info("String")
@@ -95,28 +87,28 @@ final class UserDefaultsHelper {
             log.error("Unsupported type \(expectedType) for key \(key.rawValue)")
             return nil
         }
-        
+
         return nil
     }
-    
+
     func delete(for key: Key) {
         userDefaults.removeObject(forKey: key.rawValue)
     }
-    
+
     struct Key: RawRepresentable {
         let rawValue: String
         let expectedType: Any.Type
-        
+
         init?(rawValue: String) {
             self.rawValue = rawValue
             self.expectedType = Any.self
         }
-        
+
         init(rawValue: String, expectedType: Any.Type) {
             self.rawValue = rawValue
             self.expectedType = expectedType
         }
-        
+
         static let accessTokenExpiresAt = Key(rawValue: "accessTokenExpiresAt", expectedType: Date.self)
         static let authUser = Key(rawValue: "authUser", expectedType: AuthUser.self)
     }

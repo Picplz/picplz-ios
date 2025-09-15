@@ -23,7 +23,7 @@ struct PhotographerDetail: Hashable {
     let socialType: SocialType
     let socialId: String
     let reviews: [PhotographerReview]
-    
+
     // FIXME: just for debug. remove after implementing commuincate with backend
     static let debugList: [PhotographerDetail] = [
         .init(
@@ -36,7 +36,7 @@ struct PhotographerDetail: Hashable {
             isAbleToDirectShoot: true,
             image: nil,
             towns: ["서울시 마포구", "서울시 용산구", "서울시 영등포구", "서울시 중구", "서울시 남대문구"],
-            tags: ["#을지로 감성", "#MZ 감성", "#퇴폐 감성",  "#어떤 감성"],
+            tags: ["#을지로 감성", "#MZ 감성", "#퇴폐 감성", "#어떤 감성"],
             followers: 128,
             socialType: .instagram,
             socialId: "Gayoung",
@@ -237,9 +237,9 @@ struct PhotographerDetail: Hashable {
                     likedByCurrentUser: true
                 )
             ]
-        ),
+        )
     ]
-    
+
     enum SocialType {
         case instagram
     }

@@ -17,20 +17,20 @@ protocol GetShortAddressUseCase {
 
 final class GetShortAddressUserCaseImpl: GetShortAddressUseCase {
     private let locationService: LocationService
-    
+
     @Published private var shortAddress: String?
     var shortAddressPublisher: AnyPublisher<String, Never> {
         $shortAddress
             .compactMap { $0 }
             .eraseToAnyPublisher()
     }
-    
+
     private var subscriptions = Set<AnyCancellable>()
     private let log = Logger.of("GetShortAddressUserCaseImpl")
-    
+
     init(locationService: LocationService) {
         self.locationService = locationService
-        
+
         self.locationService.currentLocationPubisher
             .sink { location in
                 Task.detached {
@@ -39,15 +39,15 @@ final class GetShortAddressUserCaseImpl: GetShortAddressUseCase {
             }
             .store(in: &subscriptions)
     }
-    
+
     func getShortAddress() async -> String? {
         guard let currentLocation = locationService.currentLocation else {
             return nil
         }
-        
+
         return await getShortAddress(location: currentLocation)
     }
-    
+
     private func getShortAddress(location: CLLocation) async -> String? {
         do {
             self.shortAddress = try await locationToShortAddress(location: location)
@@ -56,13 +56,13 @@ final class GetShortAddressUserCaseImpl: GetShortAddressUseCase {
             return nil
         }
     }
-    
+
     private func locationToShortAddress(location: CLLocation) async throws -> String {
         let geocoder = CLGeocoder()
-        
+
         do {
             let places = try await geocoder.reverseGeocodeLocation(location, preferredLocale: Locale(identifier: "ko-KR"))
-            
+
             if let place = places.first {
                 return try locationDebugDescriptionToShortAddress(place: place)
             } else {
@@ -74,7 +74,7 @@ final class GetShortAddressUserCaseImpl: GetShortAddressUseCase {
             throw DomainError.serverError("\(error)")
         }
     }
-    
+
     private func locationDebugDescriptionToShortAddress(place: CLPlacemark) throws -> String {
         do {
             let regex = /대한민국.*?,/

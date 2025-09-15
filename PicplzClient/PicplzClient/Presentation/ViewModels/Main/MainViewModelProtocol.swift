@@ -9,20 +9,20 @@ import Foundation
 
 protocol MainViewModelDelegate: AnyObject {
     func loggedOut()
-    
+
     func switchToCustomer()
-    
+
     func switchToPhotographer()
 }
 
 protocol MainViewModelProtocol {
     var delegate: MainViewModelDelegate? { get set }
-    
+
     var accessToken: String? { get }
     var accessTokenPublisher: Published<String?>.Publisher { get }
-    
+
     var userInfo: AuthUser? { get }
-    
+
     func logoutButtonTapped()
     func viewPrepared()
 }

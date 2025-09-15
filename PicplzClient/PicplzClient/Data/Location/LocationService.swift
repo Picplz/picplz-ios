@@ -20,19 +20,19 @@ final class LocationServiceImpl: NSObject, LocationService {
     var currentLocation: CLLocation? {
         locationManager.location
     }
-    
+
     private let locationManager: CLLocationManager
     private let log = Logger.of("LocationServiceImpl")
-    
+
     init(locationManager: CLLocationManager = .init()) {
         self.locationManager = locationManager
         self.currentLocationPubisher = .init()
         super.init()
-        
+
         self.locationManager.delegate = self
         checkAuthorization()
     }
-    
+
     private func checkAuthorization() {
         if locationManager.authorizationStatus == .authorizedWhenInUse,
            let location = locationManager.location {
@@ -40,7 +40,8 @@ final class LocationServiceImpl: NSObject, LocationService {
         } else if locationManager.authorizationStatus == .notDetermined {
             locationManager.requestWhenInUseAuthorization()
         } else {
-            print("\(String(describing: locationManager.authorizationStatus))")
+            // swiftlint:disable:next line_length
+            log.info("current location is not available because of status. status= \(String(describing: self.locationManager.authorizationStatus))")
         }
     }
 }
@@ -54,12 +55,12 @@ extension LocationServiceImpl: CLLocationManagerDelegate {
             log.info("could not get current location because of status. status=\(String(describing: status))")
         }
     }
-    
+
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if locations.count >= 1 {
             log.info("didUpdateLocations - the number of elements is more than one. Whole locations list - \(locations)")
         }
-        
+
         if let firstLocation = locations.first {
             currentLocationPubisher.send(firstLocation)
         }

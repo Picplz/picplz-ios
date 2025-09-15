@@ -10,4 +10,3 @@ import Foundation
 struct KakaoLoginRequest: Codable {
     let accessToken: String
 }
-
