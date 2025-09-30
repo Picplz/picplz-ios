@@ -11,6 +11,10 @@ final class OnboardingCollectionViewCell: UICollectionViewCell {
     let onboardingImageView = UIImageView()
     let onboardingMessageLabel = UILabel()
 
+    // MARK: Constraints
+    private let imageViewHeightMultiplier: CGFloat = 495.0 / 376.0
+    private let imageMessageSpacing: CGFloat = 34
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupStyle()
@@ -31,27 +35,29 @@ final class OnboardingCollectionViewCell: UICollectionViewCell {
     }
 
     private func setupLayout() {
-        addSubview(onboardingImageView)
+        contentView.addSubview(onboardingImageView)
+        contentView.addSubview(onboardingMessageLabel)
+
         NSLayoutConstraint.activate([
-            onboardingImageView.topAnchor.constraint(equalTo: topAnchor),
-            onboardingImageView.leftAnchor.constraint(equalTo: leftAnchor),
-            onboardingImageView.rightAnchor.constraint(equalTo: rightAnchor),
-            onboardingImageView.heightAnchor.constraint(equalTo: onboardingImageView.widthAnchor, multiplier: 6.0 / 5.0)
+            onboardingImageView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            onboardingImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            onboardingImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            onboardingImageView.heightAnchor.constraint(equalTo: onboardingImageView.widthAnchor,
+                                                        multiplier: imageViewHeightMultiplier)
         ])
 
-        addSubview(onboardingMessageLabel)
         NSLayoutConstraint.activate([
-            onboardingMessageLabel.topAnchor.constraint(
-                equalToSystemSpacingBelow: onboardingImageView.bottomAnchor,
-                multiplier: 4
-            ), // FIXME: 우리 디자인에서 System Spacing을 따르지 않는데 여기 왜 썼는지 모르겠음
-            onboardingMessageLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
-            onboardingMessageLabel.bottomAnchor.constraint(equalTo: bottomAnchor)
+            onboardingMessageLabel.topAnchor.constraint(equalTo: onboardingImageView.bottomAnchor, constant: imageMessageSpacing),
+            onboardingMessageLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            onboardingMessageLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            onboardingMessageLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ])
     }
 
     func configure(page: OnboardingPage) {
-//        onboardingImageView.image = UIImage(named: page.onboardingImageName) // TODO: Set Image
+        if let onboardingImage = page.onboardingImage {
+            onboardingImageView.image = UIImage(resource: onboardingImage)
+        }
 
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineSpacing = 6
