@@ -16,6 +16,7 @@ final class OnboardingContentView: UIView {
         translatesAutoresizingMaskIntoConstraints = false
 
         collectionView.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.contentInsetAdjustmentBehavior = .never // SafeArea를 침범해도 레이아웃을 조정하지 않음
 
         pageControl.translatesAutoresizingMaskIntoConstraints = false
 
