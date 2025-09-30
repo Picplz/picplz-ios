@@ -18,6 +18,14 @@ final class OnboardingViewController: UIViewController {
 
     var pageChangedHandler: (Int?) -> Void = { _ in }
 
+    private var isStatusBarHidden = false
+    override var prefersStatusBarHidden: Bool {
+        isStatusBarHidden
+    }
+    override var preferredStatusBarUpdateAnimation: UIStatusBarAnimation {
+        .fade
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -49,6 +57,12 @@ final class OnboardingViewController: UIViewController {
             .receive(on: RunLoop.main)
             .sink { [weak self] page in
                 self?.contentView.pageControl.currentPage = page
+
+                let shouldHideStatusBar = page == 0
+                if self?.isStatusBarHidden != shouldHideStatusBar { // oldValue != newValue
+                    self?.isStatusBarHidden = shouldHideStatusBar
+                    self?.setNeedsStatusBarAppearanceUpdate()
+                }
             }
             .store(in: &subscriptions)
 
