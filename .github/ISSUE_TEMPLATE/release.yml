@@ -1,0 +1,50 @@
+name: "🎤 릴리즈"
+title: "🎤 [Release] 태스크 요약"
+description: 새로운 버전 릴리즈
+labels:
+  - release
+body:
+  - type: textarea
+    id: textarea-0
+    attributes:
+      label: 개요
+      description: 작업 개요를 작성합니다.
+    validations:
+      required: true
+  - type: input
+    id: input-1
+    attributes:
+      label: 버전
+      description: 버전을 지정합니다.
+      placeholder: "1.2.0"
+  - type: textarea
+    id: textarea-2
+    attributes:
+      label: 체크리스트
+      description: 작업헐 내용을 작성합니다.
+      value: |-
+        - [ ] 현재 오픈된 PR 중 릴리즈할 버전에 추가할 범위를 정하고, 릴리즈 일자 전에 develop에 모두 머지했다.
+        - [ ] 이슈를 생성하고, `/start {v릴리즈할 버전}`를 코멘트에 달아 릴리즈 Workflow를 트리거했다. `ex> /start v1.2.3`
+    validations:
+      required: true
+  - type: input
+    id: input-3
+    attributes:
+      label: 릴리즈 일자
+      description: 릴리즈 일자를 지정합니다.
+      placeholder: "2025-10-01 수"
+  - type: textarea
+    id: textarea-4
+    attributes:
+      label: 노션링크
+      value: 없음
+  - type: textarea
+    id: textarea-5
+    attributes:
+      label: 비고
+      value: 없음
+  - type: textarea
+    id: textarea-6
+    attributes:
+      label: 참조자
+      value: cc. @Jeongin-c (PM)
