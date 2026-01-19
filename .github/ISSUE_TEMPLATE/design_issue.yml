@@ -11,18 +11,6 @@ body:
       description: 문제 개요를 작성합니다.
     validations:
       required: true
-  - type: dropdown
-    id: dropdown-1
-    attributes:
-      label: 영역
-      description: 관련 영역을 작성합니다.
-      options:
-        - camera
-        - preview
-        - guiding
-        - other
-    validations:
-      required: true
   - type: textarea
     id: textarea-2
     attributes:
