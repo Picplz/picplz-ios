@@ -14,6 +14,15 @@ let project = Project.create(
   infoPlist: .default,
   hasResources: true,
   dependencies: [.domain],
+  settings: .settings(
+    base: [
+      "ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS": "YES" // Generate Swift Asset Symbol Extensions = YES
+    ],
+    configurations: [
+      .debug(name: "Debug"),
+      .release(name: "Release"),
+    ]
+  ),
   externalPackages: [.composableArchitecture],
   name: "Presentation"
 )
