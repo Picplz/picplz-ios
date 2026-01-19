@@ -18,6 +18,7 @@ public extension Project {
     infoPlist: InfoPlist,
     hasResources: Bool,
     dependencies: [TargetDependency],
+    settings: Settings? = nil,
     externalPackages: [TargetDependency] = [],
     name: String
   ) -> Self {
@@ -43,7 +44,8 @@ public extension Project {
           sources: sources,
           resources: resources,
           dependencies: targetCase == .unitTests ? [.target(name: name)]
-                                                 : dependencies + externalPackages
+                                                 : dependencies + externalPackages,
+          settings: settings
         )
     }
     
