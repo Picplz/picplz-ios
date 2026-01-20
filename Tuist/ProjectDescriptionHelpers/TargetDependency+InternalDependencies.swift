@@ -14,6 +14,7 @@ public extension TargetDependency {
   static let storage: Self = .project(target: "Storage", path: .storagePath)
   static let network: Self = .project(target: "Network", path: .networkPath)
   static let common: Self = .project(target: "Common", path: .commonPath)
+  static let sharedSupports: Self = .project(target: "SharedSupports", path: .sharedSupportsPath)
 }
 
 public extension Path {
@@ -23,4 +24,5 @@ public extension Path {
   static let storagePath: Self = .relativeToRoot("Projects/Storage")
   static let networkPath: Self = .relativeToRoot("Projects/Network")
   static let commonPath: Self = .relativeToRoot("Projects/Common")
+  static let sharedSupportsPath: Self = .relativeToRoot("Projects/SharedSupports")
 }
