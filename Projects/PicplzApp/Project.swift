@@ -20,7 +20,6 @@ let project = Project.create(
     ]
   ),
   hasResources: false,
-  dependencies: [.presentation, .domain, .network, .storage],
-  externalPackages: [.composableArchitecture],
+  dependencies: [.features, .domain, .network, .storage, .sharedSupports],
   name: "PicplzApp"
 )

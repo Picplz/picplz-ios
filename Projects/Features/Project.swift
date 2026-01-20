@@ -13,7 +13,7 @@ let project = Project.create(
   hasUnitTests: true,
   infoPlist: .default,
   hasResources: true,
-  dependencies: [.domain],
+  dependencies: [.domain, .sharedSupports],
   settings: .settings(
     base: [
       "ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS": "YES" // Generate Swift Asset Symbol Extensions = YES
@@ -23,6 +23,5 @@ let project = Project.create(
       .release(name: "Release"),
     ]
   ),
-  externalPackages: [.composableArchitecture],
-  name: "Presentation"
+  name: "Features"
 )

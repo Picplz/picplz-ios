@@ -27,14 +27,14 @@ enum PretendardWeight {
   case semibold
   case bold
   
-  var tuistPresentationFont: PresentationFontConvertible {
+  var tuistPresentationFont: FeaturesFontConvertible {
     switch self {
     case .regular:
-      return PresentationFontFamily.Pretendard.regular
+      return FeaturesFontFamily.Pretendard.regular
     case .semibold:
-      return PresentationFontFamily.Pretendard.semiBold
+      return FeaturesFontFamily.Pretendard.semiBold
     case .bold:
-      return PresentationFontFamily.Pretendard.bold
+      return FeaturesFontFamily.Pretendard.bold
     }
   }
 }
