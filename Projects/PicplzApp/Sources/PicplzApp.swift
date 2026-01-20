@@ -5,7 +5,7 @@
 //  Created by 임영택 on 12/18/25.
 //
 
-import Presentation
+import Features
 import SwiftUI
 
 @main
