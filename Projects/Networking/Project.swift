@@ -15,5 +15,5 @@ let project = Project.create(
   hasResources: false,
   dependencies: [.domain],
   externalPackages: [.moya],
-  name: "Network"
+  name: "Networking"
 )
