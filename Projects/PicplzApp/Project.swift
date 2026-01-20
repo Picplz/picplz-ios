@@ -20,6 +20,6 @@ let project = Project.create(
     ]
   ),
   hasResources: false,
-  dependencies: [.presentation, .domain, .network, .storage, .sharedSupports],
+  dependencies: [.features, .domain, .network, .storage, .sharedSupports],
   name: "PicplzApp"
 )

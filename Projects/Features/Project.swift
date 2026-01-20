@@ -23,5 +23,5 @@ let project = Project.create(
       .release(name: "Release"),
     ]
   ),
-  name: "Presentation"
+  name: "Features"
 )
