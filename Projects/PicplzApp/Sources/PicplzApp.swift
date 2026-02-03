@@ -7,12 +7,18 @@
 
 import Features
 import SwiftUI
+import ComposableArchitecture
 
 @main
 struct PicplzApp: App {
+  static let store = Store(initialState: AppFeature.State()) {
+    AppFeature()
+      ._printChanges()
+  }
+  
   var body: some Scene {
     WindowGroup {
-      TestView()
+      AppView(store: PicplzApp.store)
     }
   }
 }
