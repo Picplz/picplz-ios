@@ -38,6 +38,8 @@ struct AppFeature {
         return .none
       case .splash:
         return .none
+      case .main:
+        return .none
       }
     }
     .ifCaseLet(\.splash, action: \.splash) {

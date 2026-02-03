@@ -16,7 +16,13 @@ public struct MainView: View {
   }
   
   public var body: some View {
-    Text("Main View")
+    if store.isLogin {
+      Text("Main View")
+    } else {
+      OnboardingView { signInProvider in
+        store.send(.loginComplete)
+      }
+    }
   }
 }
 

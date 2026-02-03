@@ -12,17 +12,24 @@ import ComposableArchitecture
 public struct MainFeature {
   @ObservableState
   public struct State: Equatable {
+    var isLogin: Bool = false
+    
     public init() { }
   }
   
   public enum Action {
+    case loginComplete
   }
   
   public init() { }
   
   public var body: some ReducerOf<MainFeature> {
     Reduce { state, action in
-      return .none
+      switch action {
+      case .loginComplete:
+        state.isLogin = true
+        return .none
+      }
     }
   }
 }

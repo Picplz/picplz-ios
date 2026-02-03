@@ -6,11 +6,12 @@
 //
 
 import SwiftUI
+import Domain
 
 struct LoginButton: View {
   let didTap: () -> Void
 
-  private var provider: Provider = .kakao
+  private var provider: SignInProvider = .kakao
   private let cornerRadius: CGFloat = 5
 
   init(didTap: @escaping () -> Void) {
@@ -44,45 +45,40 @@ struct LoginButton: View {
 }
 
 extension LoginButton {
-  func provider(_ provider: Provider) -> LoginButton {
+  func provider(_ provider: SignInProvider) -> LoginButton {
     var copy = self
     copy.provider = provider
     return copy
   }
 }
 
-extension LoginButton {
-  enum Provider {
-    case kakao
-    case apple
-
-    var backgroundColor: Color {
-      switch self {
-      case .kakao:
-        return Color(red: 0xF7 / 255, green: 0xE4 / 255, blue: 0x36 / 255)
-      case .apple: return .pBlack
-      }
+extension SignInProvider {
+  var backgroundColor: Color {
+    switch self {
+    case .kakao:
+      return Color(red: 0xF7 / 255, green: 0xE4 / 255, blue: 0x36 / 255)
+    case .apple: return .pBlack
     }
+  }
 
-    var image: ImageResource {
-      switch self {
-      case .kakao: return .kakaoSignIn
-      case .apple: return .appleSignIn
-      }
+  var image: ImageResource {
+    switch self {
+    case .kakao: return .kakaoSignIn
+    case .apple: return .appleSignIn
     }
+  }
 
-    var title: String {
-      switch self {
-      case .kakao: return "카카오로 계속하기"
-      case .apple: return "애플로 계속하기"
-      }
+  var title: String {
+    switch self {
+    case .kakao: return "카카오로 계속하기"
+    case .apple: return "애플로 계속하기"
     }
+  }
 
-    var titleColor: Color {
-      switch self {
-      case .kakao: return .pBlack
-      case .apple: return .pWhite
-      }
+  var titleColor: Color {
+    switch self {
+    case .kakao: return .pBlack
+    case .apple: return .pWhite
     }
   }
 }
