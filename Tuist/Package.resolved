@@ -1,5 +1,5 @@
 {
-  "originHash" : "2a6a9b1a8eab31e857d396ca2211fdc95b4a361e261f6de0c0f71efdfabd7df0",
+  "originHash" : "3d9f3a538134a72b19d1a1cda14ce4820ac6e8b67f0c6ba447e0d26cfc025e73",
   "pins" : [
     {
       "identity" : "alamofire",
@@ -17,6 +17,15 @@
       "state" : {
         "revision" : "fd16d76fd8b9a976d88bfb6cacc05ca8d19c91b6",
         "version" : "1.1.0"
+      }
+    },
+    {
+      "identity" : "kakao-ios-sdk",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/kakao/kakao-ios-sdk",
+      "state" : {
+        "revision" : "5978979157a5a0521c9c56fd0156aec794caa21c",
+        "version" : "2.27.2"
       }
     },
     {

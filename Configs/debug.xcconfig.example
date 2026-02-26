@@ -8,3 +8,7 @@
 //     [...,
 //      "Key": "$(Key)"
 //      ...]
+
+// 카카오 네이티브 앱 아이디와 키
+KAKAO_APP_ID=YOUR_APP_ID
+KAKAO_APP_KEY=YOUR_KAKAO_APP_KEY

@@ -14,6 +14,6 @@ let project = Project.create(
   infoPlist: .default,
   hasResources: false,
   dependencies: [],
-  externalPackages: [.composableArchitecture],
+  externalPackages: [.composableArchitecture, .kakaoSDK, .kakaoSDKAuth, .kakaoSDKUser],
   name: "SharedSupports"
 )

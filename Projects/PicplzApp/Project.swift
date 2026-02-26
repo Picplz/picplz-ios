@@ -17,6 +17,14 @@ let project = Project.create(
             "UIColorName": "",
             "UIImageName": "",
         ],
+        "LSApplicationQueriesSchemes": ["kakaokompassauth"],
+        "CFBundleURLTypes": [
+          [
+            "CFBundleURLSchemes": ["kakao${KAKAO_APP_KEY}"]
+          ]
+        ],
+        "KakaoAppId": "$(KAKAO_APP_ID)",
+        "KakaoAppKey": "$(KAKAO_APP_KEY)",
     ]
   ),
   hasResources: false,
