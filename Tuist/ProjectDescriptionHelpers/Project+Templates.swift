@@ -18,7 +18,7 @@ public extension Project {
     infoPlist: InfoPlist,
     hasResources: Bool,
     dependencies: [TargetDependency],
-    settings: Settings? = nil,
+    extraBuildSettings: SettingsDictionary = [:],
     externalPackages: [TargetDependency] = [],
     name: String
   ) -> Self {
@@ -33,6 +33,10 @@ public extension Project {
                                                          : ["Tests/Sources/**"]
       let resources: ResourceFileElements = targetCase == .main ? ["Resources/**"]
                                                                 : ["Tests/Resources/**"]
+      let configurations: [Configuration] = [
+        .release(name: "Release", xcconfig: .relativeToRoot("Configs/release.xcconfig")),
+        .release(name: "Debug", xcconfig: .relativeToRoot("Configs/debug.xcconfig")),
+      ]
       
       return .target(
           name: currentName,
@@ -45,13 +49,29 @@ public extension Project {
           resources: resources,
           dependencies: targetCase == .unitTests ? [.target(name: name)]
                                                  : dependencies + externalPackages,
-          settings: settings
+          settings: .settings(base: extraBuildSettings, configurations: configurations)
         )
     }
     
     return Project(
         name: name,
         targets: targets,
+        schemes: [
+          .scheme(
+            name: "\(name)-Release",
+            buildAction: .buildAction(
+              targets: targets.map({ TargetReference.target($0.name) })
+            ),
+            runAction: .runAction(configuration: .configuration("Release"))
+          ),
+          .scheme(
+            name: "\(name)-Debug",
+            buildAction: .buildAction(
+              targets: targets.map({ TargetReference.target($0.name) })
+            ),
+            runAction: .runAction(configuration: .configuration("Debug"))
+          )
+        ]
     )
   }
 }
