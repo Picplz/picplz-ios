@@ -10,7 +10,7 @@ import KakaoSDKUser
 import SwiftUI
 
 public struct MainView: View {
-  @Bindable var store: StoreOf<MainFeature>
+  let store: StoreOf<MainFeature>
 
   public init(store: StoreOf<MainFeature>) {
     self.store = store
@@ -18,15 +18,25 @@ public struct MainView: View {
 
   public var body: some View {
     Group {
-      if store.isLogin {
-        Text("Main View")
-      } else {
-        OnboardingView { signInProvider in
-          store.send(.loginStart(provider: signInProvider))
+      switch store.state {
+      case .onboarding:
+        if let onboardingStore = store.scope(state: \.onboarding, action: \.onboarding) {
+          OnboardingView(store: onboardingStore)
+        }
+      case .register:
+        if let registerStore = store.scope(state: \.register, action: \.register) {
+          RegisterView(store: registerStore)
+        }
+      case .customer:
+        if let customerStore = store.scope(state: \.customer, action: \.customer) {
+          CustomerView(store: customerStore)
+        }
+      case .photographer:
+        if let photographerStore = store.scope(state: \.photographer, action: \.photographer) {
+          PhotographerView(store: photographerStore)
         }
       }
     }
-    .alert($store.scope(state: \.alert, action: \.alert))
   }
 }
 
