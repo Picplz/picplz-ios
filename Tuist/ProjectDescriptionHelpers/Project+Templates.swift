@@ -35,7 +35,7 @@ public extension Project {
                                                                 : ["Tests/Resources/**"]
       let configurations: [Configuration] = [
         .release(name: "Release", xcconfig: .relativeToRoot("Configs/release.xcconfig")),
-        .release(name: "Debug", xcconfig: .relativeToRoot("Configs/debug.xcconfig")),
+        .debug(name: "Debug", xcconfig: .relativeToRoot("Configs/debug.xcconfig")),
       ]
       
       return .target(
