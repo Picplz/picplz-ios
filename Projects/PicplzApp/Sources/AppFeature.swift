@@ -33,8 +33,13 @@ struct AppFeature {
       case .onAppear:
         state = .splash(SplashFeature.State())
         return .none
-      case .splash(.delegate(.presentMainFeature)):
-        state = .main(MainFeature.State())
+      case let .splash(.delegate(.dataLoaded(data))):
+        if let _ = data.tokens {
+          state = .main(.customer(CustomerFeature.State())) // TODO: 작가, 고객 분기
+        } else {
+          state = .main(MainFeature.State())
+        }
+        
         return .none
       case .splash:
         return .none

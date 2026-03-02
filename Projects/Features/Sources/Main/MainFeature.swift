@@ -31,12 +31,6 @@ public struct MainFeature {
     
     public enum Alert: Hashable {
     }
-    
-    public enum LoginType: Hashable {
-      case notDetermined
-      case customer
-      case photographer
-    }
   }
 
   public enum LoginProvider {
