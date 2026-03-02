@@ -20,15 +20,20 @@ public struct SplashFeature {
   
   public enum Action {
     case onAppear
-    case splashComplete
+    case splashComplete(InitialData)
     case delegate(Delegate)
     
     public enum Delegate {
-      case presentMainFeature
+      case dataLoaded(InitialData)
+    }
+    
+    public struct InitialData {
+      public let tokens: PicplzTokens?
     }
   }
   
   @Dependency(\.continuousClock) var clock
+  @Dependency(\.getTokensUseCase) var getTokensUseCase
   
   enum CancelID { case timer }
   
@@ -39,15 +44,17 @@ public struct SplashFeature {
       switch action {
       case .onAppear:
         return .run { [duration = state.splashDuration] send in
+          let tokens = getTokensUseCase.execute()
+          
           for await _ in self.clock.timer(interval: .seconds(duration)) {
-            await send(.splashComplete)
+            await send(.splashComplete(.init(tokens: tokens)))
           }
         }
         .cancellable(id: CancelID.timer)
-      case .splashComplete:
+      case let .splashComplete(loadedData):
         return .concatenate(
           .cancel(id: CancelID.timer),
-          .send(.delegate(.presentMainFeature))
+          .send(.delegate(.dataLoaded(loadedData)))
         )
       case .delegate:
         return .none
