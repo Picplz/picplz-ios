@@ -15,8 +15,17 @@ public struct SignInUseCase {
 enum SignInUseCaseKey: DependencyKey {
   static var liveValue: SignInUseCase {
     @Dependency(\.authRepository) var authRepository
+    @Dependency(\.tokenStorage) var tokenStorage
+    
     return SignInUseCase { kakaoAccessToken in
-      return try await authRepository.signIn(kakaoAccessToken: kakaoAccessToken)
+      let result = try await authRepository.signIn(kakaoAccessToken: kakaoAccessToken)
+      
+      if let tokens = result.tokens {
+        try tokenStorage.saveAccessToken(tokens.accessToken)
+        try tokenStorage.saveRefreshToken(tokens.refreshToken)
+      }
+
+      return result
     }
   }
 }

@@ -24,7 +24,7 @@ public final class AuthRepository: AuthRepositoryProtocol {
         case let .success(response):
           do {
             let dto = try response.map(BaseResponseDTO<SignInResponseDTO>.self, using: .customDateDecoder)
-            
+
             guard dto.data.registered,
                   let token = dto.data.token else {
               continuation.resume(returning: SignInResult(tokens: nil, isRegistered: false))
