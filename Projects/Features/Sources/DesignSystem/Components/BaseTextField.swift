@@ -1,5 +1,5 @@
 //
-//  PTextField.swift
+//  BaseTextField.swift
 //  Features
 //
 //  Created by 임영택 on 3/2/26.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct PTextFieldModifier: ViewModifier {
+struct BaseTextFieldModifier: ViewModifier {
   let isFocused: Bool
 
   func body(content: Content) -> some View {
@@ -26,7 +26,7 @@ struct PTextFieldModifier: ViewModifier {
 
 extension View {
   func pTextField(isFocused: Bool = false) -> some View {
-    modifier(PTextFieldModifier(isFocused: isFocused))
+    modifier(BaseTextFieldModifier(isFocused: isFocused))
   }
 }
 
