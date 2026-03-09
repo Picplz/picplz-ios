@@ -8,9 +8,9 @@
 import SwiftUI
 
 struct PhotographerEquipment: Hashable {
-  let type: EquipmentType
-  let brand: String
-  let name: String
+  var type: EquipmentType
+  var brand: String
+  var name: String
   
   enum EquipmentType: Hashable {
     case phone
