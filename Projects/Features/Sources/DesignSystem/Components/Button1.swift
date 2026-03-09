@@ -20,9 +20,7 @@ struct Button1: View {
   }
   
   var body: some View {
-    Button {
-      //
-    } label: {
+    Button(action: action) {
       RoundedRectangle(cornerRadius: 5, style: .circular)
         .foregroundStyle(backgroundColor)
         .frame(height: Self.height)
