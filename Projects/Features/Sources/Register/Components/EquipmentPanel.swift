@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Domain
 
 extension InputEquipmentsPage {
   struct EquipmentPanel: View {

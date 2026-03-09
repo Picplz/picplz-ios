@@ -6,24 +6,7 @@
 //
 
 import SwiftUI
-
-struct PhotographerEquipment: Hashable {
-  var type: EquipmentType
-  var brand: String
-  var name: String
-  
-  enum EquipmentType: Hashable {
-    case phone
-    case camera(CameraType)
-    
-    enum CameraType: Hashable, CaseIterable {
-      case dslrCamera
-      case mirrorlessCamera
-      case campactCamera
-      case filmCamera
-    }
-  }
-}
+import Domain
 
 struct InputEquipmentsPage: View {
   @State private var selectedPhones: [PhotographerEquipment] = []
