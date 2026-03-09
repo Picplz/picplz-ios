@@ -16,7 +16,7 @@ struct PhotographerEquipment: Hashable {
     case phone
     case camera(CameraType)
     
-    enum CameraType: Hashable {
+    enum CameraType: Hashable, CaseIterable {
       case dslrCamera
       case mirrorlessCamera
       case campactCamera
