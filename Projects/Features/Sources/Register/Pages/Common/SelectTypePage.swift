@@ -1,14 +1,16 @@
 //
-//  TypeSelectPage.swift
+//  SelectTypePage.swift
 //  Features
 //
 //  Created by 임영택 on 3/2/26.
 //
+
+import ComposableArchitecture
 import Domain
 import SwiftUI
 
-struct TypeSelectPage: View {
-  @State var selectedRole: Role?
+struct SelectTypePage: View {
+  @Bindable var store: StoreOf<SelectTypeFeature>
 
   // MARK: - Spacings
   let titleTopSpacing: CGFloat = 66
@@ -25,21 +27,26 @@ struct TypeSelectPage: View {
       Spacer()
         .frame(height: titleBottomSpacing)
       HStack(alignment: .bottom, spacing: buttonsSpacing) {
-        TypeSelectButton(role: .photographer, selectedRole: $selectedRole)
-        TypeSelectButton(role: .model, selectedRole: $selectedRole)
+        TypeSelectButton(role: .photographer, selectedRole: $store.selectedRole.sending(\.roleChanged))
+        TypeSelectButton(role: .model, selectedRole: $store.selectedRole.sending(\.roleChanged))
       }
       
       Spacer()
       
       Button1(title: "다음") {
-        //
+        store.send(.nextButtonTapped)
       }
-      .disabled(selectedRole == nil)
+      .disabled(store.selectedRole == nil)
     }
     .padding(.horizontal)
+    .navigationTitle("회원 타입 선택")
+    .navigationBarTitleDisplayMode(.inline)
   }
 }
 
 #Preview {
-  TypeSelectPage()
+  SelectTypePage(store: Store(initialState: SelectTypeFeature.State()) {
+    SelectTypeFeature()
+      ._printChanges()
+  })
 }
