@@ -62,6 +62,8 @@ struct AddNewPhonePage: View {
     }
     .padding(.horizontal)
     .padding(.top, topSpacing)
+    .navigationTitle("핸드폰 추가")
+    .navigationBarTitleDisplayMode(.inline)
   }
 }
 

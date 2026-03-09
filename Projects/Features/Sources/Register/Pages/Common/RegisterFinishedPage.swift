@@ -39,6 +39,8 @@ struct RegisterFinishedPage: View {
       }
     }
     .padding(.horizontal)
+    .navigationTitle("프로필 이미지 업로드")
+    .navigationBarTitleDisplayMode(.inline)
   }
 }
 

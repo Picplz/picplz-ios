@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Domain
 
 struct AddNewCameraPage: View {
   @State private var selectedBrand: String?
@@ -83,6 +84,8 @@ struct AddNewCameraPage: View {
     }
     .padding(.horizontal)
     .padding(.top, topSpacing)
+    .navigationTitle("카메라 추가")
+    .navigationBarTitleDisplayMode(.inline)
   }
 }
 

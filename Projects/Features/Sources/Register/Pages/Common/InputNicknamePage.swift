@@ -80,6 +80,8 @@ struct InputNicknamePage: View {
         }
       }
     }
+    .navigationTitle("닉네임 설정")
+    .navigationBarTitleDisplayMode(.inline)
   }
 }
 

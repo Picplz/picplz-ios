@@ -69,6 +69,8 @@ struct InputEquipmentsPage: View {
       }
     }
     .padding(.horizontal)
+    .navigationTitle("촬영 기기 선택")
+    .navigationBarTitleDisplayMode(.inline)
   }
 }
 

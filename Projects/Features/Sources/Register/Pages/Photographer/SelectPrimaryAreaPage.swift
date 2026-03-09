@@ -146,6 +146,8 @@ struct SelectPrimaryAreaPage: View {
     }
     .padding(.horizontal)
     .toast(item: $toastItem)
+    .navigationTitle("주 촬영지 선택")
+    .navigationBarTitleDisplayMode(.inline)
   }
 }
 

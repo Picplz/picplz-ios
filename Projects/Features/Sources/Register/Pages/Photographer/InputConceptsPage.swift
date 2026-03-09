@@ -84,6 +84,8 @@ struct InputConceptsPage: View {
       }
     }
     .padding(.horizontal)
+    .navigationTitle("분위기 키워드 선택")
+    .navigationBarTitleDisplayMode(.inline)
   }
 }
 
