@@ -77,6 +77,10 @@ struct AddNewCameraPage: View {
       }
       .disabled(selectedBrand == nil || selectedType == nil || selectedModel.isEmpty)
     }
+    .background(Color.pWhite)
+    .onTapGesture {
+      focusToModelInput = false
+    }
     .padding(.horizontal)
     .padding(.top, topSpacing)
   }

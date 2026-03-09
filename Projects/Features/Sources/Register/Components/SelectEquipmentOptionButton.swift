@@ -56,6 +56,13 @@ struct SelectEquipmentOptionButton: View {
             .pTextField(isFocused: focusToManualInput)
             .focused($focusToManualInput)
             .onSubmit(onManualOptionSubmit)
+            .toolbar {
+              ToolbarItemGroup(placement: .keyboard) {
+                Button("완료") {
+                  resignKeyboard()
+                }
+              }
+            }
             .padding(.vertical)
           }
 
@@ -119,7 +126,7 @@ extension SelectEquipmentOptionButton {
     }
 
     manualInputText = ""
-    focusToManualInput.toggle()
+    focusToManualInput = false
   }
 }
 
