@@ -4,24 +4,23 @@
 //
 //  Created by 임영택 on 3/7/26.
 //
-
 import SwiftUI
 
 struct SelectEquipmentOptionButton: View {
   @State private var isSheetShowing: Bool = false
   @State private var manualInputText: String = ""
+  @State private var sheetContentHeight: CGFloat = 300
   @FocusState private var focusToManualInput: Bool
-  
+
   let placeholder: String
   let options: [String]
   @Binding var selectedOption: String?
-  
+
   var isAllowManualInput: Bool = false
-  
+
   var buttonTitle: String {
     selectedOption ?? placeholder
   }
-
   let backgroundColor = Color.pWhite
   var labelColor: Color {
     selectedOption == nil ? .pGrey5 : .pBlack
@@ -59,7 +58,7 @@ struct SelectEquipmentOptionButton: View {
             .onSubmit(onManualOptionSubmit)
             .padding(.vertical)
           }
-          
+
           ForEach(options.indices, id: \.self) { index in
             Button {
               selectedOption = options[index]
@@ -70,7 +69,7 @@ struct SelectEquipmentOptionButton: View {
                 .frame(maxWidth: .infinity)
                 .padding(.vertical)
             }
-            
+
             if index != options.count - 1 {
               Rectangle()
                 .fill(.pGrey2)
@@ -79,9 +78,17 @@ struct SelectEquipmentOptionButton: View {
           }
         }
         .padding()
+        .background(
+          GeometryReader { geo in
+            Color.clear.onAppear {
+              sheetContentHeight = geo.size.height
+            }
+          }
+        )
       }
       .background(Color.pWhite.edgesIgnoringSafeArea(.all))
-      .presentationDetents([.fraction(0.3)])
+      .presentationDetents([.height(sheetContentHeight)])
+      .presentationDragIndicator(.visible)
     }
     .onChange(of: selectedOption) { _, newValue in
       isSheetShowing = false
@@ -104,11 +111,13 @@ extension SelectEquipmentOptionButton {
 
 extension SelectEquipmentOptionButton {
   private func onManualOptionSubmit() {
-    let trimmed = manualInputText.trimmingCharacters(in: .whitespacesAndNewlines)
+    let trimmed = manualInputText.trimmingCharacters(
+      in: .whitespacesAndNewlines
+    )
     if !trimmed.isEmpty {
       selectedOption = trimmed
     }
-    
+
     manualInputText = ""
     focusToManualInput.toggle()
   }
@@ -116,10 +125,14 @@ extension SelectEquipmentOptionButton {
 
 #Preview {
   @Previewable @State var selected: String? = nil
-  
-  SelectEquipmentOptionButton(placeholder: "추가하기 +", options: [
-    "안녕", "하세요", "세계"
-  ], selectedOption: $selected)
+
+  SelectEquipmentOptionButton(
+    placeholder: "추가하기 +",
+    options: [
+      "안녕", "하세요", "세계",
+    ],
+    selectedOption: $selected
+  )
   .allowManualInput(true)
   .padding()
 }
