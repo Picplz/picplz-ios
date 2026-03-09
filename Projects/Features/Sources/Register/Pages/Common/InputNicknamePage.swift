@@ -4,15 +4,14 @@
 //
 //  Created by 임영택 on 3/2/26.
 //
+
+import ComposableArchitecture
 import Domain
 import SwiftUI
 import Dependencies
 
 struct InputNicknamePage: View {
-  @State var inputNickname: String = ""
-  @State var isValid: Bool = true
-  @State var errorMessage: String = ""
-  @State var checkNicknameFromServerTask: Task<Void, Never>? = nil
+  @Bindable var store: StoreOf<InputNicknameFeature>
 
   // MARK: - Spacings
   let titleTopSpacing: CGFloat = 144
@@ -21,8 +20,6 @@ struct InputNicknamePage: View {
   var validationRuleTopSpacing: CGFloat = 6
   var errorMessageTopSpacing: CGFloat = 14
   
-  @Dependency(\.validateNicknameUseCase) private var validateNicknameUseCase
-
   var body: some View {
     VStack(spacing: 0) {
       Text("닉네임을 입력해주세요")
@@ -33,14 +30,14 @@ struct InputNicknamePage: View {
       
       TextField(
         "닉네임 입력",
-        text: $inputNickname,
+        text: $store.inputNickname.sending(\.textChanged),
         prompt: Text("닉네임 입력").foregroundStyle(.pGrey3)
       )
       .pTextField()
       .padding(.vertical, textFieldVerticalPadding)
 
-      if !isValid {
-        Text(errorMessage)
+      if !store.isValid {
+        Text(store.errorMessage)
           .typo(.pCaption)
           .padding(.vertical, 4)
           .foregroundStyle(.pRed)
@@ -60,26 +57,11 @@ struct InputNicknamePage: View {
       Spacer()
 
       Button1(title: "다음") {
-        //
+        store.send(.nextButtonTapped)
       }
-      .disabled(inputNickname.isEmpty || !isValid)
+      .disabled(store.inputNickname.isEmpty || !store.isValid)
     }
     .padding(.horizontal)
-    .onChange(of: inputNickname) { _, newValue in
-      checkNicknameFromServerTask?.cancel()
-      checkNicknameFromServerTask = Task {
-        do {
-          try await validateNicknameUseCase.execute(newValue)
-          isValid = true
-          errorMessage = ""
-        } catch {
-          await MainActor.run {
-            isValid = false
-            errorMessage = error.localizedDescription
-          }
-        }
-      }
-    }
     .navigationTitle("닉네임 설정")
     .navigationBarTitleDisplayMode(.inline)
   }
@@ -100,5 +82,13 @@ struct InputNicknamePage: View {
   }
   MembersRepositoryKey.liveValue = PreviewMembersRepository()
   
-  return InputNicknamePage()
+  return InputNicknamePage(
+    store: Store(
+      initialState: InputNicknameFeature.State(),
+      reducer: {
+        InputNicknameFeature()
+          ._printChanges()
+      }
+    )
+  )
 }
