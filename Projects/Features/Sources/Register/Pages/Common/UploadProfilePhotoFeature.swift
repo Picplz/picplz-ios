@@ -54,9 +54,16 @@ public struct UploadProfilePhotoFeature {
           )
         }
       case .nextButtonTapped:
-        if let image = state.selectedProfileImage,
-          let objectKey = state.uploadedProfileImageObjectKey
-        {
+        if let image = state.selectedProfileImage {
+          guard let objectKey = state.uploadedProfileImageObjectKey else {
+            state.alert = AlertState( // FIXME: 로딩 기획 필요
+              title: {
+                TextState("아직 프로필 이미지를 업로드하고 있어요. 잠시만 기다려주세요.")
+              }
+            )
+            return .none
+          }
+
           return .send(
             .delegate(
               .completed(
@@ -65,7 +72,6 @@ public struct UploadProfilePhotoFeature {
             )
           )
         }
-
         return .send(.delegate(.completed(nil)))
       case .uploadResponse(.success(let objectKey)):
         logger.info("이미지 업로드 성공. ObjectKey: \(objectKey)")
@@ -83,7 +89,7 @@ public struct UploadProfilePhotoFeature {
           }
         )
         return .none
-      case let .selectImageFromPhotosFailed(errorMessage):
+      case .selectImageFromPhotosFailed(let errorMessage):
         state.alert = AlertState(
           title: {
             TextState("이미지를 불러오는 도중 발생했어요")
