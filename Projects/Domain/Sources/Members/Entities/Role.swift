@@ -8,6 +8,17 @@
 import Foundation
 
 public enum Role {
-  case model
+  case customer
   case photographer
+  
+  public static func from(rawValue: String) -> Self? {
+    switch rawValue.lowercased() {
+    case "customer":
+      return .customer
+    case "photographer":
+      return .photographer
+    default:
+      return nil
+    }
+  }
 }

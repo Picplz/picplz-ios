@@ -82,6 +82,6 @@ struct TypeSelectButton: View {
 
 #Preview("모델 선택 아이콘") {
   @Previewable @State var selectedRole: Role? = nil
-  TypeSelectButton(role: .model, selectedRole: $selectedRole)
+  TypeSelectButton(role: .customer, selectedRole: $selectedRole)
   TypeSelectButton(role: .photographer, selectedRole: $selectedRole)
 }

@@ -11,21 +11,21 @@ import SwiftUI
 extension Role {
   var displayLabel: String {
     switch self {
-    case .model: return "고객"
+    case .customer: return "고객"
     case .photographer: return "찍사"
     }
   }
   
   var activeIconImage: ImageResource {
     switch self {
-    case .model: return .selectorModel
+    case .customer: return .selectorModel
     case .photographer: return .selectorPhotographer
     }
   }
   
   var inactiveIconImage: ImageResource {
     switch self {
-    case .model: return .selectorModelInactive
+    case .customer: return .selectorModelInactive
     case .photographer: return .selectorPhotographerInactive
     }
   }
