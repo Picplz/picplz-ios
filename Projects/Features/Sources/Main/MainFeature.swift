@@ -49,8 +49,8 @@ public struct MainFeature {
           state = .customer(CustomerFeature.State())
         case .photographer:
           state = .photographer(PhotographerFeature.State())
-        case .notRegistered:
-          state = .register(RegisterFeature.State())
+        case let .notRegistered(socialInfo):
+          state = .register(RegisterFeature.State(socialInfo: socialInfo))
         }
         return .none
       case .onboarding:

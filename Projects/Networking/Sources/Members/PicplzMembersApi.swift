@@ -11,9 +11,10 @@ import Moya
 
 public enum PicplzMembersApi {
   case checkDuplicatedNickname(String)
+  case getMemberInfo(Int)
 }
 
-extension PicplzMembersApi: TargetType {
+extension PicplzMembersApi: TargetType, AccessTokenAuthorizable {
   public var baseURL: URL {
     if let baseURLRaw = BundleInfos.baseURL.value,
        let baseURL = URL(string: baseURLRaw) {
@@ -28,12 +29,16 @@ extension PicplzMembersApi: TargetType {
     switch self {
     case .checkDuplicatedNickname:
       return "/v1/members/nickname"
+    case let .getMemberInfo(memberId):
+      return "/v1/members/\(memberId)/info"
     }
   }
   
   public var method: Moya.Method {
     switch self {
     case .checkDuplicatedNickname:
+      return .get
+    case .getMemberInfo:
       return .get
     }
   }
@@ -42,12 +47,23 @@ extension PicplzMembersApi: TargetType {
     switch self {
     case let .checkDuplicatedNickname(nickname):
       return .requestParameters(parameters: ["nickname": nickname], encoding: URLEncoding.queryString)
+    case .getMemberInfo:
+      return .requestPlain
     }
   }
   
   public var headers: [String : String]? {
     let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
     return ["Client": "picplz-ios-v\(version ?? "unknown")"]
+  }
+  
+  public var authorizationType: AuthorizationType? {
+    switch self {
+    case .checkDuplicatedNickname:
+      return .none
+    case .getMemberInfo:
+      return .bearer
+    }
   }
   
   static var logger: PicLogger {

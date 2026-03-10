@@ -7,6 +7,7 @@
 
 import ComposableArchitecture
 import SwiftUI
+import Domain
 
 struct RegisterView: View {
   @Bindable var store: StoreOf<RegisterFeature>
@@ -31,7 +32,9 @@ struct RegisterView: View {
 
 #Preview {
   RegisterView(
-    store: Store(initialState: RegisterFeature.State()) {
+    store: Store(initialState: RegisterFeature.State(
+      socialInfo: SocialInfo(socialEmail: "abc@def.com", socialProvider: .kakao, socialCode: "")
+    )) {
       RegisterFeature()
         ._printChanges()
     }

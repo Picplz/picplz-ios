@@ -79,6 +79,10 @@ struct InputNicknamePage: View {
       }
       return true
     }
+    
+    func getInfo(memberId: Int) async throws -> Domain.MemberInfo? {
+      return nil
+    }
   }
   MembersRepositoryKey.liveValue = PreviewMembersRepository()
   

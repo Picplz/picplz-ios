@@ -56,9 +56,9 @@ struct PicplzApp: App {
 
 extension PicplzApp {
   private func injectDependencies(dependencies: inout DependencyValues) {
-    dependencies.membersRepository = MembersRepository()
+    dependencies.tokenStorage = KeychainStorage()
+    dependencies.membersRepository = MembersRepository(tokenStorage: dependencies.tokenStorage)
     dependencies.authRepository = AuthRepository()
     dependencies.s3Repository = S3Repository()
-    dependencies.tokenStorage = KeychainStorage()
   }
 }

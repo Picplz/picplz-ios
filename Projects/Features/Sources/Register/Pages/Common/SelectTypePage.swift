@@ -28,7 +28,7 @@ struct SelectTypePage: View {
         .frame(height: titleBottomSpacing)
       HStack(alignment: .bottom, spacing: buttonsSpacing) {
         TypeSelectButton(role: .photographer, selectedRole: $store.selectedRole.sending(\.roleChanged))
-        TypeSelectButton(role: .model, selectedRole: $store.selectedRole.sending(\.roleChanged))
+        TypeSelectButton(role: .customer, selectedRole: $store.selectedRole.sending(\.roleChanged))
       }
       
       Spacer()

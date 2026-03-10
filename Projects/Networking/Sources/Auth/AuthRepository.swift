@@ -23,21 +23,31 @@ public final class AuthRepository: AuthRepositoryProtocol {
         switch result {
         case let .success(response):
           do {
+            do {
+              try HTTPError.checkError(response: response)
+            } catch {
+              continuation.resume(throwing: error)
+            }
+            
             let dto = try response.map(BaseResponseDTO<SignInResponseDTO>.self, using: .customDateDecoder)
 
-            guard dto.data.registered,
-                  let token = dto.data.token else {
-              continuation.resume(returning: SignInResult(tokens: nil, isRegistered: false))
-              return
+            var tokens: PicplzTokens? = nil
+            if let rawTokenInfo = dto.data.token {
+              tokens = PicplzTokens(
+                accessToken: rawTokenInfo.accessToken,
+                refreshToken: rawTokenInfo.refreshToken
+              )
             }
             
             continuation.resume(
               returning: SignInResult(
-                tokens: PicplzTokens(
-                  accessToken: token.accessToken,
-                  refreshToken: token.refreshToken
-                ),
-                isRegistered: true
+                tokens: tokens,
+                isRegistered: dto.data.registered,
+                socialInfo: SocialInfo(
+                  socialEmail: dto.data.socialEmail ?? "",
+                  socialProvider: .from(rawValue: dto.data.socialProvider) ?? .kakao,
+                  socialCode: dto.data.socialCode
+                )
               )
             )
           } catch {

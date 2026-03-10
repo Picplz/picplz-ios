@@ -34,12 +34,15 @@ struct AppFeature {
         state = .splash(SplashFeature.State())
         return .none
       case let .splash(.delegate(.dataLoaded(data))):
-        if let _ = data.tokens {
-          state = .main(.customer(CustomerFeature.State())) // TODO: 작가, 고객 분기
+        if let memberInfo = data.memberInfo, !memberInfo.nickname.isEmpty { // FIXME: 가입 여부 판단 개선
+          if memberInfo.role == .customer {
+            state = .main(.customer(CustomerFeature.State())) // TODO: 작가, 고객 분기 고도화 (스위칭 기획 대응)
+          } else if memberInfo.role == .photographer {
+            state = .main(.photographer(PhotographerFeature.State()))
+          }
         } else {
-          state = .main(MainFeature.State())
+          state = .main(MainFeature.State()) // 온보딩 및 로그인
         }
-        
         return .none
       case .splash:
         return .none
