@@ -5,27 +5,26 @@
 //  Created by 임영택 on 3/2/26.
 //
 
+import ComposableArchitecture
 import Common
 import Domain
 import PhotosUI
 import SwiftUI
 
 struct UploadProfilePhotoPage: View {
-  let userNickname: String
-
+  @Bindable var store: StoreOf<UploadProfilePhotoFeature>
+  
   // MARK: - Spacings
   let titleTopSpacing: CGFloat = 66
   let titleBottomSpacing: CGFloat = 30
-
-  @State private var selectedImage: UIImage? = nil
-  @State private var errorMessage: String? = nil
+  
   private var nextButtonTitle: String {
-    selectedImage == nil ? "다음에 설정하기" : "다음"
+    store.selectedProfileImage == nil ? "다음에 설정하기" : "다음"
   }
 
   var body: some View {
     VStack(spacing: 0) {
-      Text("안녕하세요 \(userNickname)님!")
+      Text("안녕하세요 \(store.userNickname)님!")
         .typo(.pTitle)
         .frame(maxWidth: .infinity, alignment: .center)
         .padding(.top, titleTopSpacing)
@@ -33,13 +32,10 @@ struct UploadProfilePhotoPage: View {
 
       ProfilePhotosPicker(
         didImageSelected: { image in
-          selectedImage = image
+          store.send(.profileImageSelected(image))
         },
         didErrorOccured: { error in
-          errorMessage = "이미지를 불러오던 중 오류가 발생했습니다. 다시 시도해주세요."
-          PicLogger(category: "UploadProfilePhotoPage").error(
-            "error during getting image: \(error)"
-          )
+          store.send(.selectImageFromPhotosFailed(error.localizedDescription))
         }
       )
       .padding(.bottom, 70)
@@ -52,22 +48,10 @@ struct UploadProfilePhotoPage: View {
       Spacer()
 
       Button1(title: nextButtonTitle) {
-        //
+        store.send(.nextButtonTapped)
       }
     }
-    .alert(
-      errorMessage ?? "",
-      isPresented: Binding(
-        get: {
-          errorMessage != nil
-        },
-        set: { present in
-          if !present {
-            errorMessage = nil
-          }
-        }
-      )
-    ) {}
+    .alert($store.scope(state: \.alert, action: \.alert))
     .padding(.horizontal)
     .navigationTitle("프로필 이미지 업로드")
     .navigationBarTitleDisplayMode(.inline)
@@ -75,5 +59,19 @@ struct UploadProfilePhotoPage: View {
 }
 
 #Preview {
-  UploadProfilePhotoPage(userNickname: "유가영")
+  struct PreviewS3Repository: S3RepositoryProtocol {
+    func getPresignedUploadURL(filename: String, fileType: Domain.S3FileType) async throws -> (Domain.S3PresignedURL, Domain.S3ObjectKey) {
+      throw NSError(domain: "프리뷰 환경 오류", code: -1)
+    }
+    
+    func uploadJPEGFile(jpegData: Data, to presignedURL: URL) async throws {
+      throw NSError(domain: "프리뷰 환경 오류", code: -1)
+    }
+  }
+  S3RepositoryKey.liveValue = PreviewS3Repository()
+  
+  return UploadProfilePhotoPage(store: Store(initialState: UploadProfilePhotoFeature.State(userNickname: "유가영")) {
+    UploadProfilePhotoFeature()
+      ._printChanges()
+  })
 }
