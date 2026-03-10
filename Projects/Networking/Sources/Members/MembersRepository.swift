@@ -16,16 +16,31 @@ public final class MembersRepository: MembersRepositoryProtocol {
     self.provider = provider
   }
 
-  public func checkAllowable(nickname: String) async throws -> IsAllowableNickname {
+  public func checkAllowable(nickname: String) async throws
+    -> IsAllowableNickname
+  {
     return try await withCheckedThrowingContinuation { continuation in
       provider.request(.checkDuplicatedNickname(nickname)) { result in
         switch result {
-        case .success:
-          continuation.resume(returning: true)
-        case let .failure(error):
-          if error.response?.statusCode == 400 {
+        case .success(let response):
+          if response.statusCode == 400 {
             continuation.resume(returning: false)
+            return
           }
+          
+          do {
+            try HTTPError.checkError(response: response)
+          } catch {
+            continuation.resume(throwing: error)
+          }
+          
+          continuation.resume(returning: true)
+        case .failure(let error):
+          continuation.resume(throwing: error)
+        }
+      }
+    }
+  }
           continuation.resume(throwing: error)
         }
       }
