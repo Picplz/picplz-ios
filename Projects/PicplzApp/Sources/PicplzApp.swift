@@ -58,6 +58,7 @@ extension PicplzApp {
   private func injectDependencies(dependencies: inout DependencyValues) {
     dependencies.membersRepository = MembersRepository()
     dependencies.authRepository = AuthRepository()
+    dependencies.s3Repository = S3Repository()
     dependencies.tokenStorage = KeychainStorage()
   }
 }

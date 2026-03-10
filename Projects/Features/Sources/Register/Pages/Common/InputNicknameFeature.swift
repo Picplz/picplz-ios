@@ -26,7 +26,7 @@ public struct InputNicknameFeature {
     case delegate(Delegate)
     
     public enum Delegate: Hashable {
-      case nicknameSubmitted(String)
+      case completed(String)
     }
   }
   
@@ -56,7 +56,7 @@ public struct InputNicknameFeature {
         state.errorMessage = errorMessage
         return .none
       case .nextButtonTapped:
-        return .send(.delegate(.nicknameSubmitted(state.inputNickname)))
+        return .send(.delegate(.completed(state.inputNickname)))
       case .delegate:
         return .none
       }
