@@ -41,7 +41,7 @@ extension PicplzMembersApi: TargetType {
   public var task: Moya.Task {
     switch self {
     case let .checkDuplicatedNickname(nickname):
-      return .requestParameters(parameters: [nickname: nickname], encoding: URLEncoding.queryString)
+      return .requestParameters(parameters: ["nickname": nickname], encoding: URLEncoding.queryString)
     }
   }
   
