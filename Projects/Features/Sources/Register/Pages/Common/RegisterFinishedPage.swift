@@ -5,12 +5,13 @@
 //  Created by 임영택 on 3/2/26.
 //
 
+import ComposableArchitecture
 import Domain
 import PhotosUI
 import SwiftUI
 
 struct RegisterFinishedPage: View {
-  let userNickname: String
+  let store: StoreOf<RegisterFinishedFeature>
 
   // MARK: - Spacings
   let titleTopSpacing: CGFloat = 66
@@ -18,14 +19,14 @@ struct RegisterFinishedPage: View {
 
   var body: some View {
     VStack(spacing: 0) {
-      Text("안녕하세요 \(userNickname)님!")
+      Text("안녕하세요 \(store.userNickname)님!")
         .typo(.pTitle)
         .frame(maxWidth: .infinity, alignment: .center)
         .padding(.top, titleTopSpacing)
         .padding(.bottom, titleBottomSpacing)
 
       Image(.registrationCompleted)
-      .padding(.bottom, 70)
+        .padding(.bottom, 70)
 
       Text("가입을 축하드려요.\n함께 사진 촬영하러 가볼까요?")
         .typo(.pTitle)
@@ -35,15 +36,20 @@ struct RegisterFinishedPage: View {
       Spacer()
 
       Button1(title: "시작하기") {
-        //
+        store.send(.nextButtonTapped)
       }
     }
     .padding(.horizontal)
-    .navigationTitle("프로필 이미지 업로드")
-    .navigationBarTitleDisplayMode(.inline)
   }
 }
 
 #Preview {
-  RegisterFinishedPage(userNickname: "유가영")
+  RegisterFinishedPage(
+    store: Store(
+      initialState: RegisterFinishedFeature.State(userNickname: "유가영"),
+      reducer: {
+        RegisterFinishedFeature()
+      }
+    )
+  )
 }

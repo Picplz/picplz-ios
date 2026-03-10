@@ -6,12 +6,14 @@
 //
 
 import Common
+import Domain
 import Foundation
 import Moya
 
 public enum PicplzMembersApi {
   case checkDuplicatedNickname(String)
   case getMemberInfo(Int)
+  case createCustomer(CreateCustomerRequestDTO)
 }
 
 extension PicplzMembersApi: TargetType, AccessTokenAuthorizable {
@@ -31,6 +33,8 @@ extension PicplzMembersApi: TargetType, AccessTokenAuthorizable {
       return "/v1/members/nickname"
     case let .getMemberInfo(memberId):
       return "/v1/members/\(memberId)/info"
+    case let .createCustomer(registerRequest):
+      return "/v1/customers"
     }
   }
   
@@ -40,6 +44,8 @@ extension PicplzMembersApi: TargetType, AccessTokenAuthorizable {
       return .get
     case .getMemberInfo:
       return .get
+    case .createCustomer:
+      return .post
     }
   }
   
@@ -49,6 +55,8 @@ extension PicplzMembersApi: TargetType, AccessTokenAuthorizable {
       return .requestParameters(parameters: ["nickname": nickname], encoding: URLEncoding.queryString)
     case .getMemberInfo:
       return .requestPlain
+    case let .createCustomer(dto):
+      return .requestJSONEncodable(dto)
     }
   }
   
@@ -61,7 +69,7 @@ extension PicplzMembersApi: TargetType, AccessTokenAuthorizable {
     switch self {
     case .checkDuplicatedNickname:
       return .none
-    case .getMemberInfo:
+    default:
       return .bearer
     }
   }

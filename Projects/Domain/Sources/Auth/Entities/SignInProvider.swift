@@ -7,9 +7,9 @@
 
 import Foundation
 
-public enum SignInProvider: CaseIterable {
-  case kakao
-  case apple
+public enum SignInProvider: String, CaseIterable, Encodable {
+  case kakao = "KAKAO"
+  case apple = "APPLE"
   
   public static func from(rawValue: String) -> Self? {
     switch rawValue.lowercased() {

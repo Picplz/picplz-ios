@@ -17,7 +17,10 @@ public struct RegisterFeature {
     var photographerRegisterRequest: PhotographerRegisterRequestExtra?
 
     var selectType = SelectTypeFeature.State()
+    var registerFinished: RegisterFinishedFeature.State?
     var path = StackState<Path.State>()
+    
+    var toastItem: ToastItem?
 
     public init(
       socialInfo: SocialInfo
@@ -32,7 +35,10 @@ public struct RegisterFeature {
 
   public enum Action: Hashable {
     case selectType(SelectTypeFeature.Action)
+    case registerFinished(RegisterFinishedFeature.Action)
     case path(StackAction<Path.State, Path.Action>)
+    case registerResponse(TaskResult<Bool>)
+    case toastItemChanged(ToastItem?)
     case delegate(Delegate)
     
     public enum Delegate: Hashable {
@@ -41,6 +47,8 @@ public struct RegisterFeature {
   }
 
   public init() {}
+  
+  @Dependency(\.createCustomerUseCase) var createCustomerUseCase
 
   public var body: some ReducerOf<RegisterFeature> {
     Scope(state: \.selectType, action: \.selectType) {
@@ -61,6 +69,8 @@ public struct RegisterFeature {
             activeAreas: [],
             cameras: []
           )
+        } else {
+          state.photographerRegisterRequest = nil
         }
         
         state.path.append(.inputNickname(InputNicknameFeature.State()))
@@ -80,15 +90,32 @@ public struct RegisterFeature {
         // 프로필 이미지 선택 완료
         state.registerRequest.profileImage = uploadResult?.objectKey
         
-        if state.photographerRegisterRequest != nil { // 고객 정보 입력 완료
-          // TODO: 고객 회원 가입 요청 전송
-          return .send(.delegate(.registerCompleted))
+        if state.photographerRegisterRequest == nil { // 고객 정보 입력 완료
+          return .run { [registerRequest = state.registerRequest] send in
+            await send(.registerResponse(TaskResult {
+              return try await createCustomerUseCase.execute(registerRequest)
+            }))
+          }
         }
         
         // 작가 정보 입력 추가 진행
         
         return .none
       case .path:
+        return .none
+      case .registerFinished:
+        return .none
+      case .registerResponse(.success):
+        state.registerFinished = RegisterFinishedFeature.State(
+          userNickname: state.registerRequest.nickname
+        )
+        state.path = StackState<Path.State>()
+        return .none
+      case let .registerResponse(.failure(error)):
+        state.toastItem = ToastItem(message: "회원가입 도중 에러가 발생했습니다. 에러가 반복되면 문의해주세요. \(error.localizedDescription)")
+        return .none
+      case let .toastItemChanged(toastItem):
+        state.toastItem = toastItem
         return .none
       case .delegate:
         return .none

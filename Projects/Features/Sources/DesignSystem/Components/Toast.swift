@@ -51,9 +51,13 @@ extension View {
   }
 }
 
-struct ToastItem: Equatable {
-  let id = UUID()
-  let message: String
+public struct ToastItem: Equatable, Hashable {
+  public let id = UUID()
+  public let message: String
+  
+  public init(message: String) {
+    self.message = message
+  }
 }
 
 #Preview {

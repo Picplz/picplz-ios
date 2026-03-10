@@ -93,4 +93,32 @@ public final class MembersRepository: MembersRepositoryProtocol {
       }
     }
   }
+  
+  public func createCustomer(request: Domain.RegisterRequest) async throws {
+    let dto = CreateCustomerRequestDTO(
+      nickname: request.nickname,
+      socialEmail: request.socialInfo.socialEmail,
+      socialProvider: request.socialInfo.socialProvider.rawValue,
+      socialCode: request.socialInfo.socialCode,
+      profileImage: request.profileImage ?? ""
+    )
+    
+    return try await withCheckedThrowingContinuation { continuation in
+      provider.request(.createCustomer(dto)) { result in
+        switch result {
+        case .success(let response):
+          do {
+            try HTTPError.checkError(response: response)
+          } catch {
+            continuation.resume(throwing: error)
+            return
+          }
+          
+          continuation.resume()
+        case .failure(let error):
+          continuation.resume(throwing: error)
+        }
+      }
+    }
+  }
 }

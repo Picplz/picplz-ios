@@ -12,6 +12,7 @@ public typealias IsAllowableNickname = Bool
 public protocol MembersRepositoryProtocol {
   func checkAllowable(nickname: String) async throws -> IsAllowableNickname
   func getInfo(memberId: Int) async throws -> MemberInfo?
+  func createCustomer(request: RegisterRequest) async throws
 }
 
 struct UnimplementedMembersRepository: MembersRepositoryProtocol {
@@ -20,6 +21,10 @@ struct UnimplementedMembersRepository: MembersRepositoryProtocol {
   }
   
   func getInfo(memberId: Int) async throws -> MemberInfo? {
+    fatalError("구현되지 않은 메서드를 호출했습니다")
+  }
+  
+  func createCustomer(request: RegisterRequest) async throws {
     fatalError("구현되지 않은 메서드를 호출했습니다")
   }
 }

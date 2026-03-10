@@ -6,35 +6,57 @@
 //
 
 import ComposableArchitecture
-import SwiftUI
 import Domain
+import SwiftUI
 
 struct RegisterView: View {
   @Bindable var store: StoreOf<RegisterFeature>
-  
+
   var body: some View {
     NavigationStack(path: $store.scope(state: \.path, action: \.path)) {
-      SelectTypePage(store: store.scope(state: \.selectType, action: \.selectType))
+      if store.registerFinished == nil {
+        SelectTypePage(
+          store: store.scope(state: \.selectType, action: \.selectType)
+        )
+      } else if let store = store.scope(
+        state: \.registerFinished,
+        action: \.registerFinished
+      ) {
+        RegisterFinishedPage(store: store)
+      }
     } destination: { store in
       switch store.state {
       case .inputNickname:
-        if let store = store.scope(state: \.inputNickname, action: \.inputNickname) {
+        if let store = store.scope(
+          state: \.inputNickname,
+          action: \.inputNickname
+        ) {
           InputNicknamePage(store: store)
         }
       case .uploadProfileImage:
-        if let store = store.scope(state: \.uploadProfileImage, action: \.uploadProfileImage) {
+        if let store = store.scope(
+          state: \.uploadProfileImage,
+          action: \.uploadProfileImage
+        ) {
           UploadProfilePhotoPage(store: store)
         }
       }
     }
+    .toast(item: $store.toastItem.sending(\.toastItemChanged))
   }
 }
 
 #Preview {
   RegisterView(
-    store: Store(initialState: RegisterFeature.State(
-      socialInfo: SocialInfo(socialEmail: "abc@def.com", socialProvider: .kakao, socialCode: "")
-    )) {
+    store: Store(
+      initialState: RegisterFeature.State(
+        socialInfo: SocialInfo(
+          socialEmail: "abc@def.com",
+          socialProvider: .kakao,
+          socialCode: ""
+        )
+      )
+    ) {
       RegisterFeature()
         ._printChanges()
     }
