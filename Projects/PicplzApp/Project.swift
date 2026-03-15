@@ -29,9 +29,12 @@ let project = Project.create(
         "KakaoAppId": "$(KAKAO_APP_ID)",
         "KakaoAppKey": "$(KAKAO_APP_KEY)",
         "BaseURL": "$(BASE_URL)",
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "위치 기반 기능을 위해 기기 위치 정보를 활용합니다. 현재 위치를 토대로 근처 작가 또는 고객과의 매칭 서비스를 제공합니다.",
+        "NSLocationWhenInUseUsageDescription": "위치 기반 기능을 위해 기기 위치 정보를 활용합니다. 현재 위치를 토대로 근처 작가 또는 고객과의 매칭 서비스를 제공합니다.",
+        "NSLocationAlwaysUsageDescription": "위치 기반 기능을 위해 기기 위치 정보를 활용합니다. 현재 위치를 토대로 근처 작가 또는 고객과의 매칭 서비스를 제공합니다.",
     ]
   ),
   hasResources: false,
-  dependencies: [.common, .features, .domain, .networking, .storage],
+  dependencies: [.common, .features, .domain, .networking, .storage, .platform],
   name: "PicplzApp"
 )

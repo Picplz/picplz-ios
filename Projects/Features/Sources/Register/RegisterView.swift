@@ -40,6 +40,13 @@ struct RegisterView: View {
         ) {
           UploadProfilePhotoPage(store: store)
         }
+      case .requestLocationPermission:
+        if let store = store.scope(
+          state: \.requestLocationPermission,
+          action: \.requestLocationPermission
+        ) {
+          RequestLocationPermissionPage(store: store)
+        }
       }
     }
     .toast(item: $store.toastItem.sending(\.toastItemChanged))

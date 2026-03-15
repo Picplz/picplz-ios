@@ -99,7 +99,12 @@ public struct RegisterFeature {
         }
         
         // 작가 정보 입력 추가 진행
-        
+        state.path.append(.requestLocationPermission(RequestLocationPermissionFeature.State()))
+        return .none
+
+      case .path(.element(id: _, action: .requestLocationPermission(.delegate(.completed)))):
+        // 위치 권한 요청 완료
+        // TODO: 다음 단계로 이동 (주 활동 지역 선택 등)
         return .none
       case .path:
         return .none
@@ -133,9 +138,9 @@ public struct RegisterFeature {
       // MARK: - 공통 페이지
       case inputNickname(InputNicknameFeature.State)
       case uploadProfileImage(UploadProfilePhotoFeature.State)
-      //
-      //    // MARK: - 작가 가입용 페이지
-      //    case requestLocationPermission
+
+      // MARK: - 작가 가입용 페이지
+      case requestLocationPermission(RequestLocationPermissionFeature.State)
       //    case selectPrimaryArea
       //    case InputEquipments
       //    case addNewPhone
@@ -146,6 +151,7 @@ public struct RegisterFeature {
     public enum Action: Hashable {
       case inputNickname(InputNicknameFeature.Action)
       case uploadProfileImage(UploadProfilePhotoFeature.Action)
+      case requestLocationPermission(RequestLocationPermissionFeature.Action)
     }
 
     public init() {}
@@ -156,6 +162,9 @@ public struct RegisterFeature {
       }
       Scope(state: \.uploadProfileImage, action: \.uploadProfileImage) {
         UploadProfilePhotoFeature()
+      }
+      Scope(state: \.requestLocationPermission, action: \.requestLocationPermission) {
+        RequestLocationPermissionFeature()
       }
     }
   }

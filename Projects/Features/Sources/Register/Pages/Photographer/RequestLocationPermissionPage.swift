@@ -5,12 +5,15 @@
 //  Created by 임영택 on 3/3/26.
 //
 
+import ComposableArchitecture
 import Domain
 import PhotosUI
 import SwiftUI
 import CoreLocation
 
 struct RequestLocationPermissionPage: View {
+  @Bindable var store: StoreOf<RequestLocationPermissionFeature>
+
   // MARK: - Spacings
   let topMargin: CGFloat = 108
   let titleSpacing: CGFloat = 32
@@ -46,7 +49,7 @@ struct RequestLocationPermissionPage: View {
       Spacer()
       
       Button1(title: "다음") {
-        // 위치 정보 확인
+        store.send(.nextButtonTapped)
       }
     }
     .padding(.horizontal)
@@ -54,5 +57,12 @@ struct RequestLocationPermissionPage: View {
 }
 
 #Preview {
-  RequestLocationPermissionPage()
+  RequestLocationPermissionPage(
+    store: Store(
+      initialState: RequestLocationPermissionFeature.State(),
+      reducer: {
+        RequestLocationPermissionFeature()
+      }
+    )
+  )
 }
