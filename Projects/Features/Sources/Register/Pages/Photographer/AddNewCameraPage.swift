@@ -7,17 +7,23 @@
 
 import SwiftUI
 import Domain
+import ComposableArchitecture
 
 struct AddNewCameraPage: View {
-  @State private var selectedBrand: String?
-  @State private var selectedType: String?
-  @State private var selectedModel: String = ""
+  @Bindable var store: StoreOf<AddNewCameraFeature>
   @FocusState private var focusToModelInput: Bool
 
   // MARK: - Spacings
   let topSpacing: CGFloat = 16
   let subtitleBottomSpacing: CGFloat = 10
   let sectionSpacing: CGFloat = 30
+  
+  var cameraBrands: [String] {
+    Array(Set(store.defaultEquipments.compactMap { equipment -> String? in
+      if case .camera = equipment.type { return equipment.brand }
+      return nil
+    })).sorted()
+  }
 
   var body: some View {
     VStack(spacing: 0) {
@@ -26,19 +32,10 @@ struct AddNewCameraPage: View {
         .frame(maxWidth: .infinity, alignment: .topLeading)
         .padding(.bottom, subtitleBottomSpacing)
 
-      // TODO: 옵션 리스트
       SelectEquipmentOptionButton(
         placeholder: "선택",
-        options: [
-          "소니",
-          "캐논",
-          "니콘",
-          "후지필름",
-          "파나소닉",
-          "라이카",
-          "올림푸스",
-        ],
-        selectedOption: $selectedBrand
+        options: cameraBrands,
+        selectedOption: $store.selectedBrand.sending(\.brandSelected)
       )
       .allowManualInput()
       .padding(.bottom, sectionSpacing)
@@ -48,13 +45,12 @@ struct AddNewCameraPage: View {
         .frame(maxWidth: .infinity, alignment: .topLeading)
         .padding(.bottom, subtitleBottomSpacing)
 
-      // TODO: 옵션 리스트
       SelectEquipmentOptionButton(
         placeholder: "선택",
-        options: PhotographerEquipment.EquipmentType.CameraType.allCases.map({ $0.displayName }),
-        selectedOption: $selectedType
+        options: PhotographerEquipment.EquipmentType.CameraType.allCases.filter { $0 != .unknown }.map({ $0.displayName }),
+        selectedOption: $store.selectedTypeDisplayName.sending(\.typeSelected)
       )
-      .disabled(selectedBrand == nil)
+      .disabled(store.selectedBrand == nil)
       .padding(.bottom, 30)
       
       Text("모델명")
@@ -62,10 +58,9 @@ struct AddNewCameraPage: View {
         .frame(maxWidth: .infinity, alignment: .topLeading)
         .padding(.bottom, subtitleBottomSpacing)
 
-      // TODO: 옵션 리스트
       TextField(
         "상세 모델명을 입력해주세요 (ex, A0000)",
-        text: $selectedModel,
+        text: $store.selectedModel.sending(\.modelChanged),
         prompt: Text("상세 모델명을 입력해주세요 (ex, A0000)").foregroundStyle(.pGrey3)
       )
       .pTextField(isFocused: focusToModelInput)
@@ -74,9 +69,9 @@ struct AddNewCameraPage: View {
       Spacer()
 
       Button1(title: "추가하기") {
-
+        store.send(.addButtonTapped)
       }
-      .disabled(selectedBrand == nil || selectedType == nil || selectedModel.isEmpty)
+      .disabled(store.selectedBrand == nil || store.selectedTypeDisplayName == nil || store.selectedModel.isEmpty)
     }
     .background(Color.pWhite)
     .onTapGesture {
@@ -86,24 +81,16 @@ struct AddNewCameraPage: View {
     .padding(.top, topSpacing)
     .navigationTitle("카메라 추가")
     .navigationBarTitleDisplayMode(.inline)
-  }
-}
-
-extension PhotographerEquipment.EquipmentType.CameraType {
-  var displayName: String {
-    switch self {
-    case .campactCamera:
-      "디지털 카메라"
-    case .mirrorlessCamera:
-      "미러리스 카메라"
-    case .dslrCamera:
-      "DSLR 카메라"
-    case .filmCamera:
-      "필름 카메라"
+    .onAppear {
+      store.send(.onAppear)
     }
   }
 }
 
 #Preview {
-  AddNewCameraPage()
+  AddNewCameraPage(
+    store: Store(initialState: AddNewCameraFeature.State()) {
+      AddNewCameraFeature()
+    }
+  )
 }

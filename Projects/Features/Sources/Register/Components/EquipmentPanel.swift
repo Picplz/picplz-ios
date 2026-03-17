@@ -28,7 +28,7 @@ extension InputEquipmentsPage {
             Text(equipment.brand)
               .typo(.pParagraph)
               .foregroundStyle(.pGrey4)
-            Text(equipment.name)
+            Text(equipment.name ?? "알 수 없음")
               .typo(.pBoldParagraph)
               .foregroundStyle(.pGrey5)
             Spacer()

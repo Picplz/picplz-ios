@@ -54,6 +54,27 @@ struct RegisterView: View {
         ) {
           SelectPrimaryAreaPage(store: store)
         }
+      case .inputEquipments:
+        if let store = store.scope(
+          state: \.inputEquipments,
+          action: \.inputEquipments
+        ) {
+          InputEquipmentsPage(store: store)
+        }
+      case .addNewPhone:
+        if let store = store.scope(
+          state: \.addNewPhone,
+          action: \.addNewPhone
+        ) {
+          AddNewPhonePage(store: store)
+        }
+      case .addNewCamera:
+        if let store = store.scope(
+          state: \.addNewCamera,
+          action: \.addNewCamera
+        ) {
+          AddNewCameraPage(store: store)
+        }
       }
     }
     .toast(item: $store.toastItem.sending(\.toastItemChanged))

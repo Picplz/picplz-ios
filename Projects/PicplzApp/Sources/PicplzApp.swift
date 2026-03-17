@@ -62,5 +62,6 @@ extension PicplzApp {
     dependencies.s3Repository = S3Repository()
     dependencies.areasRepository = AreasRepository(tokenStorage: dependencies.tokenStorage)
     dependencies.locationManagerService = LocationManagerService()
+    dependencies.equipmentRepository = EquipmentRepository(tokenStorage: dependencies.tokenStorage)
   }
 }

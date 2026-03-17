@@ -6,15 +6,23 @@
 //
 
 import SwiftUI
+import ComposableArchitecture
 
 struct AddNewPhonePage: View {
-  @State private var selectedBrand: String?
-  @State private var selectedModel: String?
+  @Bindable var store: StoreOf<AddNewPhoneFeature>
 
   // MARK: - Spacings
   let topSpacing: CGFloat = 16
   let subtitleBottomSpacing: CGFloat = 10
   let sectionSpacing: CGFloat = 30
+  
+  var phoneBrands: [String] {
+    Array(Set(store.defaultEquipments.filter { $0.type == .phone }.map { $0.brand })).sorted()
+  }
+  
+  var phoneModels: [String] {
+    Array(Set(store.defaultEquipments.filter { $0.type == .phone && $0.brand == store.selectedBrand }.compactMap { $0.name })).sorted()
+  }
 
   var body: some View {
     VStack(spacing: 0) {
@@ -23,14 +31,10 @@ struct AddNewPhonePage: View {
         .frame(maxWidth: .infinity, alignment: .topLeading)
         .padding(.bottom, subtitleBottomSpacing)
 
-      // TODO: 옵션 리스트
       SelectEquipmentOptionButton(
         placeholder: "선택",
-        options: [
-          "애플",
-          "삼성",
-        ],
-        selectedOption: $selectedBrand
+        options: phoneBrands,
+        selectedOption: $store.selectedBrand.sending(\.brandSelected)
       )
       .padding(.bottom, sectionSpacing)
 
@@ -39,34 +43,36 @@ struct AddNewPhonePage: View {
         .frame(maxWidth: .infinity, alignment: .topLeading)
         .padding(.bottom, subtitleBottomSpacing)
 
-      // TODO: 옵션 리스트
       SelectEquipmentOptionButton(
         placeholder: "선택",
-        options: [
-          "아이폰 17 Pro Max",
-          "아이폰 17 Pro",
-          "아이폰 17",
-        ],
-        selectedOption: $selectedModel
+        options: phoneModels,
+        selectedOption: $store.selectedModel.sending(\.modelSelected)
       )
       .allowManualInput()
-      .disabled(selectedBrand == nil)
+      .disabled(store.selectedBrand == nil)
       .padding(.bottom, 30)
 
       Spacer()
 
       Button1(title: "추가하기") {
-
+        store.send(.addButtonTapped)
       }
-      .disabled(selectedBrand == nil || selectedModel == nil)
+      .disabled(store.selectedBrand == nil || store.selectedModel == nil)
     }
     .padding(.horizontal)
     .padding(.top, topSpacing)
     .navigationTitle("핸드폰 추가")
     .navigationBarTitleDisplayMode(.inline)
+    .onAppear {
+      store.send(.onAppear)
+    }
   }
 }
 
 #Preview {
-  AddNewPhonePage()
+  AddNewPhonePage(
+    store: Store(initialState: AddNewPhoneFeature.State()) {
+      AddNewPhoneFeature()
+    }
+  )
 }

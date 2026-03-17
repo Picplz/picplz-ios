@@ -108,9 +108,60 @@ public struct RegisterFeature {
         return .none
       case let .path(.element(id: _, action: .selectPrimaryArea(.delegate(.completed(areas))))):
         // 주 활동 지역 선택 완료
-         state.photographerRegisterRequest?.activeAreas = areas
-        // TODO: 다음 단계로 이동 (보유 장비 입력 등)
+        state.photographerRegisterRequest?.activeAreas = areas
+        
+        let cameras = state.photographerRegisterRequest?.cameras ?? []
+        let phones = cameras.filter { $0.type == .phone }
+        let realCameras = cameras.filter {
+          if case .camera = $0.type { return true }
+          return false
+        }
+        
+        state.path.append(.inputEquipments(InputEquipmentsFeature.State(
+          selectedPhones: phones,
+          selectedCameras: realCameras
+        )))
         return .none
+
+      case .path(.element(id: _, action: .inputEquipments(.delegate(.addPhone)))):
+        state.path.append(.addNewPhone(AddNewPhoneFeature.State()))
+        return .none
+
+      case .path(.element(id: _, action: .inputEquipments(.delegate(.addCamera)))):
+        state.path.append(.addNewCamera(AddNewCameraFeature.State()))
+        return .none
+
+      case let .path(.element(id: _, action: .inputEquipments(.delegate(.completed(equipments))))):
+        state.photographerRegisterRequest?.cameras = equipments
+        // TODO: 다음 단계로 이동 (컨셉 선택 등)
+        return .none
+
+      case let .path(.element(id: _, action: .addNewPhone(.delegate(.addEquipment(equipment))))):
+        state.photographerRegisterRequest?.cameras.append(equipment)
+        
+        // InputEquipments 상태 동기화
+        for id in state.path.ids {
+          if case .inputEquipments = state.path[id: id] {
+            state.path[id: id, case: \.inputEquipments]?.selectedPhones.append(equipment)
+          }
+        }
+        
+        _ = state.path.popLast()
+        return .none
+
+      case let .path(.element(id: _, action: .addNewCamera(.delegate(.addEquipment(equipment))))):
+        state.photographerRegisterRequest?.cameras.append(equipment)
+        
+        // InputEquipments 상태 동기화
+        for id in state.path.ids {
+          if case .inputEquipments = state.path[id: id] {
+            state.path[id: id, case: \.inputEquipments]?.selectedCameras.append(equipment)
+          }
+        }
+
+        _ = state.path.popLast()
+        return .none
+
       case .path:
         return .none
       case .registerFinished:
@@ -147,9 +198,9 @@ public struct RegisterFeature {
       // MARK: - 작가 가입용 페이지
       case requestLocationPermission(RequestLocationPermissionFeature.State)
       case selectPrimaryArea(SelectPrimaryAreaFeature.State)
-      //    case InputEquipments
-      //    case addNewPhone
-      //    case addNewCamera
+      case inputEquipments(InputEquipmentsFeature.State)
+      case addNewPhone(AddNewPhoneFeature.State)
+      case addNewCamera(AddNewCameraFeature.State)
       //    case inputConcepts
     }
 
@@ -158,6 +209,9 @@ public struct RegisterFeature {
       case uploadProfileImage(UploadProfilePhotoFeature.Action)
       case requestLocationPermission(RequestLocationPermissionFeature.Action)
       case selectPrimaryArea(SelectPrimaryAreaFeature.Action)
+      case inputEquipments(InputEquipmentsFeature.Action)
+      case addNewPhone(AddNewPhoneFeature.Action)
+      case addNewCamera(AddNewCameraFeature.Action)
     }
 
     public init() {}
@@ -174,6 +228,15 @@ public struct RegisterFeature {
       }
       Scope(state: \.selectPrimaryArea, action: \.selectPrimaryArea) {
         SelectPrimaryAreaFeature()
+      }
+      Scope(state: \.inputEquipments, action: \.inputEquipments) {
+        InputEquipmentsFeature()
+      }
+      Scope(state: \.addNewPhone, action: \.addNewPhone) {
+        AddNewPhoneFeature()
+      }
+      Scope(state: \.addNewCamera, action: \.addNewCamera) {
+        AddNewCameraFeature()
       }
     }
   }

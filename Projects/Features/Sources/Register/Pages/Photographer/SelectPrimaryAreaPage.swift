@@ -175,9 +175,10 @@ extension SelectPrimaryAreaPage {
       withDependencies: {
         $0.getNearDongsUseCase = GetNearDongsUseCase(execute: {
           [
-            Area(id: 1, name: "서울 서대문구 신촌동", dong: "신촌동", ri: ""),
-            Area(id: 2, name: "서울 마포구 서교동", dong: "서교동", ri: ""),
-            Area(id: 3, name: "서울 강남구 역삼동", dong: "역삼동", ri: "")
+            Area(id: 1, name: "서울 서대문구 신촌동", dong: "신촌동", ri: nil),
+            Area(id: 2, name: "서울 마포구 서교동", dong: "서교동", ri: nil),
+            Area(id: 3, name: "서울 강남구 역삼동", dong: "역삼동", ri: nil),
+            Area(id: 4, name: "강원특별자치도 홍천군 북방면 북방리", dong: "북방면", ri: "북방리"),
           ]
         })
       }

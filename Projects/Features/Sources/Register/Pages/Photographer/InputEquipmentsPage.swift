@@ -7,10 +7,10 @@
 
 import SwiftUI
 import Domain
+import ComposableArchitecture
 
 struct InputEquipmentsPage: View {
-  @State private var selectedPhones: [PhotographerEquipment] = []
-  @State private var selectedCameras: [PhotographerEquipment] = []
+  let store: StoreOf<InputEquipmentsFeature>
   
   // MARK: - Spacings
   let titletTopSpacing: CGFloat = 16
@@ -31,14 +31,14 @@ struct InputEquipmentsPage: View {
               .frame(maxWidth: .infinity, alignment: .topLeading)
               .padding(.top, titletTopSpacing)
 
-            ForEach(selectedPhones, id: \.self) { phone in
+            ForEach(store.selectedPhones, id: \.self) { phone in
               EquipmentPanel(equipment: phone) {
-                // TODO: delete current phone
+                store.send(.deletePhoneTapped(phone))
               }
             }
             
             NewEquipmentButton(placeholder: "추가하기 +") {
-              // TODO: navigate to `add phone page`
+              store.send(.addPhoneButtonTapped)
             }
           }
           
@@ -48,14 +48,14 @@ struct InputEquipmentsPage: View {
               .frame(maxWidth: .infinity, alignment: .topLeading)
               .padding(.top, titletTopSpacing)
             
-            ForEach(selectedCameras, id: \.self) { camera in
+            ForEach(store.selectedCameras, id: \.self) { camera in
               EquipmentPanel(equipment: camera) {
-                // TODO: delete current camera
+                store.send(.deleteCameraTapped(camera))
               }
             }
 
             NewEquipmentButton(placeholder: "추가하기 +") {
-              // TODO: navigate to `add camera page`
+              store.send(.addCameraButtonTapped)
             }
           }
         }
@@ -65,8 +65,9 @@ struct InputEquipmentsPage: View {
       Spacer()
 
       Button1(title: "다음") {
-        
+        store.send(.nextButtonTapped)
       }
+      .disabled(store.nextButtonIsDisabled)
     }
     .padding(.horizontal)
     .navigationTitle("촬영 기기 선택")
@@ -74,8 +75,10 @@ struct InputEquipmentsPage: View {
   }
 }
 
-
-
 #Preview {
-  InputEquipmentsPage()
+  InputEquipmentsPage(
+    store: Store(initialState: InputEquipmentsFeature.State()) {
+      InputEquipmentsFeature()
+    }
+  )
 }
