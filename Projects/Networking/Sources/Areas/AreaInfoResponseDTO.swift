@@ -10,6 +10,6 @@ import Foundation
 public struct AreaInfoResponseDTO: Decodable {
   public let id: Int64
   public let name: String
-  public let dong: String
-  public let ri: String
+  public let dong: String?
+  public let ri: String?
 }
