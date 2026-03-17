@@ -75,6 +75,13 @@ struct RegisterView: View {
         ) {
           AddNewCameraPage(store: store)
         }
+      case .inputConcepts:
+        if let store = store.scope(
+          state: \.inputConcepts,
+          action: \.inputConcepts
+        ) {
+          InputConceptsPage(store: store)
+        }
       }
     }
     .toast(item: $store.toastItem.sending(\.toastItemChanged))

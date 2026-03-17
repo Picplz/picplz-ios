@@ -132,8 +132,17 @@ public struct RegisterFeature {
         return .none
 
       case let .path(.element(id: _, action: .inputEquipments(.delegate(.completed(equipments))))):
+        // 장비 선택 완료
         state.photographerRegisterRequest?.cameras = equipments
-        // TODO: 다음 단계로 이동 (컨셉 선택 등)
+        state.path.append(.inputConcepts(InputConceptsFeature.State()))
+        return .none
+
+      case let .path(.element(id: _, action: .inputConcepts(.delegate(.completed(moods))))):
+        // 분위기 선택 완료
+        state.photographerRegisterRequest?.photoMoods = moods
+        
+        // TODO: 회원 가입 완료 요청 (Photographer용)
+        // 일단 고객 가입 로직을 참고하여 구현 (실제 API 확인 필요)
         return .none
 
       case let .path(.element(id: _, action: .addNewPhone(.delegate(.addEquipment(equipment))))):
@@ -201,7 +210,7 @@ public struct RegisterFeature {
       case inputEquipments(InputEquipmentsFeature.State)
       case addNewPhone(AddNewPhoneFeature.State)
       case addNewCamera(AddNewCameraFeature.State)
-      //    case inputConcepts
+      case inputConcepts(InputConceptsFeature.State)
     }
 
     public enum Action: Hashable {
@@ -212,6 +221,7 @@ public struct RegisterFeature {
       case inputEquipments(InputEquipmentsFeature.Action)
       case addNewPhone(AddNewPhoneFeature.Action)
       case addNewCamera(AddNewCameraFeature.Action)
+      case inputConcepts(InputConceptsFeature.Action)
     }
 
     public init() {}
@@ -237,6 +247,9 @@ public struct RegisterFeature {
       }
       Scope(state: \.addNewCamera, action: \.addNewCamera) {
         AddNewCameraFeature()
+      }
+      Scope(state: \.inputConcepts, action: \.inputConcepts) {
+        InputConceptsFeature()
       }
     }
   }
