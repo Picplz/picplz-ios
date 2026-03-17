@@ -104,7 +104,12 @@ public struct RegisterFeature {
 
       case .path(.element(id: _, action: .requestLocationPermission(.delegate(.completed)))):
         // 위치 권한 요청 완료
-        // TODO: 다음 단계로 이동 (주 활동 지역 선택 등)
+        state.path.append(.selectPrimaryArea(SelectPrimaryAreaFeature.State()))
+        return .none
+      case let .path(.element(id: _, action: .selectPrimaryArea(.delegate(.completed(areas))))):
+        // 주 활동 지역 선택 완료
+         state.photographerRegisterRequest?.activeAreas = areas
+        // TODO: 다음 단계로 이동 (보유 장비 입력 등)
         return .none
       case .path:
         return .none
@@ -141,7 +146,7 @@ public struct RegisterFeature {
 
       // MARK: - 작가 가입용 페이지
       case requestLocationPermission(RequestLocationPermissionFeature.State)
-      //    case selectPrimaryArea
+      case selectPrimaryArea(SelectPrimaryAreaFeature.State)
       //    case InputEquipments
       //    case addNewPhone
       //    case addNewCamera
@@ -152,6 +157,7 @@ public struct RegisterFeature {
       case inputNickname(InputNicknameFeature.Action)
       case uploadProfileImage(UploadProfilePhotoFeature.Action)
       case requestLocationPermission(RequestLocationPermissionFeature.Action)
+      case selectPrimaryArea(SelectPrimaryAreaFeature.Action)
     }
 
     public init() {}
@@ -165,6 +171,9 @@ public struct RegisterFeature {
       }
       Scope(state: \.requestLocationPermission, action: \.requestLocationPermission) {
         RequestLocationPermissionFeature()
+      }
+      Scope(state: \.selectPrimaryArea, action: \.selectPrimaryArea) {
+        SelectPrimaryAreaFeature()
       }
     }
   }

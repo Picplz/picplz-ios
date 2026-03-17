@@ -8,7 +8,22 @@
 import CoreLocation
 import Domain
 
+extension LocationAuthStatus {
+  static func from(_ status: CLAuthorizationStatus) -> LocationAuthStatus {
+    switch status {
+    case .authorizedAlways:
+      return .always
+    case .authorizedWhenInUse:
+      return .whenInUse
+    default:
+      return .restricted
+    }
+  }
+}
+
 public final class LocationManagerService: NSObject, LocationManagerServiceProtocol {
+  public var authStatus: LocationAuthStatus
+  
   // MARK: - Private Properties
 
   private let manager: CLLocationManager
@@ -17,6 +32,7 @@ public final class LocationManagerService: NSObject, LocationManagerServiceProto
 
   public override init() {
     manager = CLLocationManager()
+    authStatus = .from(manager.authorizationStatus)
     super.init()
     manager.delegate = self
   }

@@ -9,19 +9,14 @@ import Foundation
 
 public struct PhotographerRegisterRequestExtra: Equatable {
   // MARK: 작가 전용
-  var photoMoods: [PhotographerPhotoMood]
-  var activeAreas: [PhotographerActiveArea]
-  var cameras: [PhotographerEquipment]
+  public var photoMoods: [PhotographerPhotoMood]
+  public var activeAreas: [Area]
+  public var cameras: [PhotographerEquipment]
   
-  public init(photoMoods: [PhotographerPhotoMood], activeAreas: [PhotographerActiveArea], cameras: [PhotographerEquipment]) {
+  public init(photoMoods: [PhotographerPhotoMood], activeAreas: [Area], cameras: [PhotographerEquipment]) {
     self.photoMoods = photoMoods
     self.activeAreas = activeAreas
     self.cameras = cameras
-  }
-  
-  public struct PhotographerActiveArea: Equatable {
-    let code: Int
-    let priority: Int
   }
 }
 

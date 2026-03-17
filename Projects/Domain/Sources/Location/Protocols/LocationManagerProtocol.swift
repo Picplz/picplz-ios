@@ -9,13 +9,22 @@ import CoreLocation
 import Dependencies
 
 public protocol LocationManagerServiceProtocol {
+  var authStatus: LocationAuthStatus { get }
   func requestAuthorization()
   func requestCurrentLocation() async throws -> CLLocation
   func startUpdatingLocation() -> AsyncStream<CLLocation>
   func stopUpdatingLocation()
 }
 
+public enum LocationAuthStatus {
+  case always
+  case whenInUse
+  case restricted
+}
+
 struct UnimplementedLocationManagerService: LocationManagerServiceProtocol {
+  var authStatus = LocationAuthStatus.restricted
+  
   func requestAuthorization() {
     fatalError("구현되지 않은 메서드를 호출했습니다")
   }

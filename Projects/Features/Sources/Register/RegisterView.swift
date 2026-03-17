@@ -47,6 +47,13 @@ struct RegisterView: View {
         ) {
           RequestLocationPermissionPage(store: store)
         }
+      case .selectPrimaryArea:
+        if let store = store.scope(
+          state: \.selectPrimaryArea,
+          action: \.selectPrimaryArea
+        ) {
+          SelectPrimaryAreaPage(store: store)
+        }
       }
     }
     .toast(item: $store.toastItem.sending(\.toastItemChanged))

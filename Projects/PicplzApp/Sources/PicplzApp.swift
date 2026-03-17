@@ -60,6 +60,7 @@ extension PicplzApp {
     dependencies.membersRepository = MembersRepository(tokenStorage: dependencies.tokenStorage)
     dependencies.authRepository = AuthRepository()
     dependencies.s3Repository = S3Repository()
+    dependencies.areasRepository = AreasRepository(tokenStorage: dependencies.tokenStorage)
     dependencies.locationManagerService = LocationManagerService()
   }
 }
