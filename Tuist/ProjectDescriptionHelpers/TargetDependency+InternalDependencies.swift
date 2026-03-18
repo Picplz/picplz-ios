@@ -15,7 +15,6 @@ public extension TargetDependency {
   static let networking: Self = .project(target: "Networking", path: .networkingPath)
   static let platform: Self = .project(target: "Platform", path: .platformPath)
   static let common: Self = .project(target: "Common", path: .commonPath)
-  static let sharedSupports: Self = .project(target: "SharedSupports", path: .sharedSupportsPath)
   static let dependencyInjection: Self = .project(target: "DependencyInjection", path: .dependencyInjectionPath)
 }
 
@@ -27,6 +26,5 @@ public extension Path {
   static let networkingPath: Self = .relativeToRoot("Projects/Networking")
   static let platformPath: Self = .relativeToRoot("Projects/Platform")
   static let commonPath: Self = .relativeToRoot("Projects/Common")
-  static let sharedSupportsPath: Self = .relativeToRoot("Projects/SharedSupports")
   static let dependencyInjectionPath: Self = .relativeToRoot("Projects/DependencyInjection")
 }

@@ -13,8 +13,7 @@ let project = Project.create(
   hasUnitTests: true,
   infoPlist: .default,
   hasResources: false,
-  dependencies: [
-    .sharedSupports // 의존성 등록을 위해 필요
-  ],
+  dependencies: [],
+  externalPackages: [.composableArchitecture],
   name: "Domain"
 )

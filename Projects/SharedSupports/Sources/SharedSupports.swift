@@ -1,4 +1,0 @@
-//
-// SharedSupports.swift
-//
-
