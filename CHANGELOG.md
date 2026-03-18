@@ -13,4 +13,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - 키체인을 통한 토큰 관리
 - 고객 및 작가 회원가입
 
+### Changed
+
+- DI 방식 개선
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+
 [unreleased]: https://github.com/Picplz/picplz-ios/commits/develop/
