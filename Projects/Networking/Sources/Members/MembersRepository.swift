@@ -29,69 +29,31 @@ public final class MembersRepository: MembersRepositoryProtocol {
   public func checkAllowable(nickname: String) async throws
     -> IsAllowableNickname
   {
-    return try await withCheckedThrowingContinuation { continuation in
-      provider.request(.checkDuplicatedNickname(nickname)) { result in
-        switch result {
-        case .success(let response):
-          if response.statusCode == 400 {
-            continuation.resume(returning: false)
-            return
-          }
-          
-          do {
-            try HTTPError.checkError(response: response)
-          } catch {
-            continuation.resume(throwing: error)
-          }
-          
-          continuation.resume(returning: true)
-        case .failure(let error):
-          continuation.resume(throwing: error)
-        }
+    do {
+      _ = try await provider.requestAsync(.checkDuplicatedNickname(nickname))
+      return true
+    } catch {
+      if let httpError = error as? HTTPError, case .BadRequest = httpError {
+        return false
       }
+      throw error
     }
   }
 
   public func getInfo(memberId: Int) async throws -> MemberInfo? {
-    return try await withCheckedThrowingContinuation { continuation in
-      provider.request(.getMemberInfo(memberId)) { result in
-        switch result {
-        case .success(let response):
-          do {
-            try HTTPError.checkError(response: response)
-          } catch {
-            continuation.resume(throwing: error)
-          }
-          
-          let dto: BaseResponseDTO<MemberInfoResponseDTO>
-          do {
-            dto = try response.map(
-              BaseResponseDTO<MemberInfoResponseDTO>.self,
-              using: .customDateDecoder
-            )
-          } catch {
-            continuation.resume(throwing: error)
-            return
-          }
+    let dto: MemberInfoResponseDTO = try await provider.requestWithDTO(.getMemberInfo(memberId))
 
-          continuation.resume(
-            returning: MemberInfo(
-              id: dto.data.id,
-              role: .from(rawValue: dto.data.role) ?? .customer,
-              nickname: dto.data.nickname,
-              socialInfo: SocialInfo(
-                socialEmail: dto.data.socialEmail,
-                socialProvider: .from(rawValue: dto.data.socialCode) ?? .kakao,
-                socialCode: dto.data.socialCode
-              ),
-              profileImage: dto.data.profileImage
-            )
-          )
-        case .failure(let error):
-          continuation.resume(throwing: error)
-        }
-      }
-    }
+    return MemberInfo(
+      id: dto.id,
+      role: .from(rawValue: dto.role) ?? .customer,
+      nickname: dto.nickname,
+      socialInfo: SocialInfo(
+        socialEmail: dto.socialEmail,
+        socialProvider: .from(rawValue: dto.socialCode) ?? .kakao,
+        socialCode: dto.socialCode
+      ),
+      profileImage: dto.profileImage
+    )
   }
   
   public func createCustomer(request: Domain.RegisterRequest) async throws {
@@ -103,23 +65,7 @@ public final class MembersRepository: MembersRepositoryProtocol {
       profileImage: request.profileImage ?? ""
     )
     
-    return try await withCheckedThrowingContinuation { continuation in
-      provider.request(.createCustomer(dto)) { result in
-        switch result {
-        case .success(let response):
-          do {
-            try HTTPError.checkError(response: response)
-          } catch {
-            continuation.resume(throwing: error)
-            return
-          }
-          
-          continuation.resume()
-        case .failure(let error):
-          continuation.resume(throwing: error)
-        }
-      }
-    }
+    _ = try await provider.requestAsync(.createCustomer(dto))
   }
 
   public func createPhotographer(request: Domain.RegisterRequest, extra: Domain.PhotographerRegisterRequestExtra) async throws {
@@ -168,22 +114,6 @@ public final class MembersRepository: MembersRepositoryProtocol {
       cameras: cameras
     )
     
-    return try await withCheckedThrowingContinuation { continuation in
-      provider.request(.createPhotographer(dto)) { result in
-        switch result {
-        case .success(let response):
-          do {
-            try HTTPError.checkError(response: response)
-          } catch {
-            continuation.resume(throwing: error)
-            return
-          }
-          
-          continuation.resume()
-        case .failure(let error):
-          continuation.resume(throwing: error)
-        }
-      }
-    }
+    _ = try await provider.requestAsync(.createPhotographer(dto))
   }
 }

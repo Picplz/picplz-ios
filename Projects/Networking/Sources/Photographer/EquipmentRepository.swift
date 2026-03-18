@@ -27,25 +27,9 @@ public final class EquipmentRepository: EquipmentRepositoryProtocol {
   }
 
   public func getDefaultEquipments() async throws -> [PhotographerEquipment] {
-    return try await withCheckedThrowingContinuation { continuation in
-      provider.request(.getDefaultEquipments) { result in
-        switch result {
-        case .success(let response):
-          do {
-            try HTTPError.checkError(response: response)
-            let dto = try response.map(BaseResponseDTO<[DefaultEquipmentResponseDTO]>.self, using: .customDateDecoder)
-            
-            let domainEntities = dto.data.map { dtoItem in
-              dtoItem.toDomain()
-            }
-            continuation.resume(returning: domainEntities)
-          } catch {
-            continuation.resume(throwing: error)
-          }
-        case .failure(let error):
-          continuation.resume(throwing: error)
-        }
-      }
+    let dtos: [DefaultEquipmentResponseDTO] = try await provider.requestWithDTO(.getDefaultEquipments)
+    return dtos.map { dtoItem in
+      dtoItem.toDomain()
     }
   }
 }

@@ -21,34 +21,14 @@ public final class S3Repository: S3RepositoryProtocol {
   public func getPresignedUploadURL(filename: String, fileType: S3FileType)
     async throws -> (S3PresignedURL, S3ObjectKey)
   {
-    return try await withCheckedThrowingContinuation { continuation in
-      provider.request(
-        .getPresignedUploadURL(
-          fileType: fileType.serverCode,
-          fileName: filename
-        )
-      ) { result in
-        switch result {
-        case .success(let response):
-          let dto: BaseResponseDTO<GetPresignedUploadURLResponsedDTO>
-          do {
-            dto = try response.map(
-              BaseResponseDTO<GetPresignedUploadURLResponsedDTO>.self,
-              using: .customDateDecoder
-            )
-          } catch {
-            continuation.resume(throwing: error)
-            return
-          }
+    let dto: GetPresignedUploadURLResponsedDTO = try await provider.requestWithDTO(
+      .getPresignedUploadURL(
+        fileType: fileType.serverCode,
+        fileName: filename
+      )
+    )
 
-          continuation.resume(
-            returning: (dto.data.uploadUrl, dto.data.objectKey)
-          )
-        case .failure(let error):
-          continuation.resume(throwing: error)
-        }
-      }
-    }
+    return (dto.uploadUrl, dto.objectKey)
   }
 
   public func uploadJPEGFile(jpegData: Data, to presignedURL: URL) async throws {
