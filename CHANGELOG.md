@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - DI 방식 개선
+- 모듈 의존 관계 개선
 
 ### Deprecated
 
