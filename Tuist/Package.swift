@@ -7,9 +7,7 @@ import PackageDescription
     let packageSettings = PackageSettings(
         // Customize the product types for specific package product
         // Default is .staticFramework
-        // productTypes: ["Alamofire": .framework,]
         productTypes: [
-            "ComposableArchitecture": .framework
             "ComposableArchitecture": .framework, // 여러 모듈에서 참조하는 모듈은 Dynamic Framework로
             "Alamofire": .framework,
             "KakaoSDKCommon": .framework,

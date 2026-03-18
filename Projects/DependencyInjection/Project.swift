@@ -13,6 +13,7 @@ let project = Project.create(
   hasUnitTests: false,
   infoPlist: .default,
   hasResources: false,
-  dependencies: [.domain, .networking, .platform, .sharedSupports],
+  dependencies: [.domain, .networking, .platform],
+  externalPackages: [.composableArchitecture],
   name: "DependencyInjection"
 )

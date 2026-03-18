@@ -13,9 +13,10 @@ let project = Project.create(
   hasUnitTests: true,
   infoPlist: .default,
   hasResources: true,
-  dependencies: [.domain, .sharedSupports, .common],
+  dependencies: [.domain, .common],
   extraBuildSettings: [
     "ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS": "YES", // Generate Swift Asset Symbol Extensions = YES
   ],
+  externalPackages: [.composableArchitecture, .kakaoSDKCommon, .kakaoSDKAuth, .kakaoSDKUser],
   name: "Features"
 )
