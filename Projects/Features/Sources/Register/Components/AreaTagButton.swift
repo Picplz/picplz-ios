@@ -17,7 +17,10 @@ struct AreaTagButton: View {
       Text(areaName)
         .typo(.pBoldParagraph)
         .foregroundStyle(.pBlack)
-      Image(.xButton)
+      
+      Button(action: didDeleteTap) {
+        Image(.xButton)
+      }
     }
     .padding(.horizontal, 12)
     .padding(.vertical, 4)
@@ -28,13 +31,14 @@ struct AreaTagButton: View {
         .inset(by: 0.5)
         .stroke(.pBlack)
     )
+    .onTapGesture(perform: didSelectTap)
   }
 }
 
 #Preview {
   AreaTagButton(areaName: "서울 서대문구") {
-    //
+    print("Select")
   } didDeleteTap: {
-    //
+    print("Delete")
   }
 }
