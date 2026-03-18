@@ -14,6 +14,7 @@ import KakaoSDKAuth
 import KakaoSDKCommon
 import KakaoSDKUser
 import Networking
+import Platform
 import Storage
 import SwiftUI
 
@@ -56,7 +57,12 @@ struct PicplzApp: App {
 
 extension PicplzApp {
   private func injectDependencies(dependencies: inout DependencyValues) {
-    dependencies.authRepository = AuthRepository()
     dependencies.tokenStorage = KeychainStorage()
+    dependencies.membersRepository = MembersRepository(tokenStorage: dependencies.tokenStorage)
+    dependencies.authRepository = AuthRepository()
+    dependencies.s3Repository = S3Repository()
+    dependencies.areasRepository = AreasRepository(tokenStorage: dependencies.tokenStorage)
+    dependencies.locationManagerService = LocationManagerService()
+    dependencies.equipmentRepository = EquipmentRepository(tokenStorage: dependencies.tokenStorage)
   }
 }

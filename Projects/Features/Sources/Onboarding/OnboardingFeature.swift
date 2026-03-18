@@ -35,7 +35,7 @@ public struct OnboardingFeature {
     }
 
     public enum LoginType: Hashable {
-      case notRegistered
+      case notRegistered(SocialInfo)
       case customer
       case photographer
     }
@@ -81,9 +81,9 @@ extension OnboardingFeature {
           let kakaoAccessToken = try await startKakaoLogin()
           let signInResult = try await signInUseCase.execute(kakaoAccessToken)
           if signInResult.isRegistered {
-            await send(.delegate(.loginCompleted(.customer)))
+             await send(.delegate(.loginCompleted(.customer))) // 역할 분기
           } else {
-            await send(.delegate(.loginCompleted(.notRegistered)))
+            await send(.delegate(.loginCompleted(.notRegistered(signInResult.socialInfo))))
           }
         } catch let kakaoError as KakaoSDKCommon.SdkError {
           switch kakaoError {

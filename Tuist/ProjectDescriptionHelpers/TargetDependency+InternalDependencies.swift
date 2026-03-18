@@ -13,6 +13,7 @@ public extension TargetDependency {
   static let features: Self = .project(target: "Features", path: .featuresPath)
   static let storage: Self = .project(target: "Storage", path: .storagePath)
   static let networking: Self = .project(target: "Networking", path: .networkingPath)
+  static let platform: Self = .project(target: "Platform", path: .platformPath)
   static let common: Self = .project(target: "Common", path: .commonPath)
   static let sharedSupports: Self = .project(target: "SharedSupports", path: .sharedSupportsPath)
 }
@@ -23,6 +24,7 @@ public extension Path {
   static let featuresPath: Self = .relativeToRoot("Projects/Features")
   static let storagePath: Self = .relativeToRoot("Projects/Storage")
   static let networkingPath: Self = .relativeToRoot("Projects/Networking")
+  static let platformPath: Self = .relativeToRoot("Projects/Platform")
   static let commonPath: Self = .relativeToRoot("Projects/Common")
   static let sharedSupportsPath: Self = .relativeToRoot("Projects/SharedSupports")
 }

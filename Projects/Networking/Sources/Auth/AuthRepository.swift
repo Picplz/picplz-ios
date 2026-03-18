@@ -18,35 +18,24 @@ public final class AuthRepository: AuthRepositoryProtocol {
 
   public func signIn(kakaoAccessToken: KakaoAccessToken) async throws -> SignInResult {
     let dto = SignInDTO(accessToken: kakaoAccessToken)
-    return try await withCheckedThrowingContinuation { continuation in
-      provider.request(.signInKakao(dto)) { result in
-        switch result {
-        case let .success(response):
-          do {
-            let dto = try response.map(BaseResponseDTO<SignInResponseDTO>.self, using: .customDateDecoder)
-
-            guard dto.data.registered,
-                  let token = dto.data.token else {
-              continuation.resume(returning: SignInResult(tokens: nil, isRegistered: false))
-              return
-            }
-            
-            continuation.resume(
-              returning: SignInResult(
-                tokens: PicplzTokens(
-                  accessToken: token.accessToken,
-                  refreshToken: token.refreshToken
-                ),
-                isRegistered: true
-              )
-            )
-          } catch {
-            continuation.resume(throwing: error)
-          }
-        case let .failure(error):
-          continuation.resume(throwing: error)
-        }
-      }
+    let responseDTO: SignInResponseDTO = try await provider.requestWithDTO(.signInKakao(dto))
+    
+    var tokens: PicplzTokens? = nil
+    if let rawTokenInfo = responseDTO.token {
+      tokens = PicplzTokens(
+        accessToken: rawTokenInfo.accessToken,
+        refreshToken: rawTokenInfo.refreshToken
+      )
     }
+    
+    return SignInResult(
+      tokens: tokens,
+      isRegistered: responseDTO.registered,
+      socialInfo: SocialInfo(
+        socialEmail: responseDTO.socialEmail ?? "",
+        socialProvider: .from(rawValue: responseDTO.socialProvider) ?? .kakao,
+        socialCode: responseDTO.socialCode
+      )
+    )
   }
 }

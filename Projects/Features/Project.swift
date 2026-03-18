@@ -13,7 +13,7 @@ let project = Project.create(
   hasUnitTests: true,
   infoPlist: .default,
   hasResources: true,
-  dependencies: [.domain, .sharedSupports],
+  dependencies: [.domain, .sharedSupports, .common],
   extraBuildSettings: [
     "ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS": "YES", // Generate Swift Asset Symbol Extensions = YES
   ],
