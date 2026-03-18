@@ -7,15 +7,10 @@
 
 import Common
 import ComposableArchitecture
-import Dependencies
-import Domain
-import Features
+import DependencyInjection
 import KakaoSDKAuth
 import KakaoSDKCommon
 import KakaoSDKUser
-import Networking
-import Platform
-import Storage
 import SwiftUI
 
 @main
@@ -30,10 +25,6 @@ struct PicplzApp: App {
   private let logger = PicLogger(category: "PicplzApp")
 
   init() {
-    prepareDependencies {
-      injectDependencies(dependencies: &$0)
-    }
-
     if let kakaoAppKey = BundleInfos.kakaoAppKey.value {
       KakaoSDK.initSDK(appKey: kakaoAppKey)
       logger.info("Kakao SDK 초기화 완료")
@@ -52,17 +43,5 @@ struct PicplzApp: App {
           }
         })
     }
-  }
-}
-
-extension PicplzApp {
-  private func injectDependencies(dependencies: inout DependencyValues) {
-    dependencies.tokenStorage = KeychainStorage()
-    dependencies.membersRepository = MembersRepository(tokenStorage: dependencies.tokenStorage)
-    dependencies.authRepository = AuthRepository()
-    dependencies.s3Repository = S3Repository()
-    dependencies.areasRepository = AreasRepository(tokenStorage: dependencies.tokenStorage)
-    dependencies.locationManagerService = LocationManagerService()
-    dependencies.equipmentRepository = EquipmentRepository(tokenStorage: dependencies.tokenStorage)
   }
 }
