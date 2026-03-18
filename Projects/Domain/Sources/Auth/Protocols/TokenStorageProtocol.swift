@@ -16,8 +16,8 @@ public protocol TokenStorageProtocol {
   func deleteTokens() throws
 }
 
-public enum TokenStorageKey: DependencyKey {
-  public static var liveValue: TokenStorageProtocol = UnimplementedTokenStorage()
+public enum TokenStorageKey: TestDependencyKey {
+  public static var testValue: TokenStorageProtocol = UnimplementedTokenStorage()
 }
 
 public extension DependencyValues {

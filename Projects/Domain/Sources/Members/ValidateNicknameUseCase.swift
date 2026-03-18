@@ -11,31 +11,8 @@ import Foundation
 public struct ValidateNicknameUseCase {
   public var execute: (_ nickname: String) async throws -> Void
 
-}
-
-public enum ValidateNicknameError: LocalizedError {
-  case notAllowedCharaters
-  case notAllowedRange
-  case duplicatedNickname
-  case notAllowedWhiteSpaces
-  case serverError
-
-  public var errorDescription: String? {
-    switch self {
-    case .notAllowedCharaters: "한글,영문,숫자만 입력해 주세요. (2~15자)"
-    case .notAllowedRange: "한글,영문,숫자만 입력해 주세요. (2~15자)"
-    case .duplicatedNickname: "중복된 닉네임입니다."
-    case .notAllowedWhiteSpaces: "닉네임에 공백 사용은 불가능합니다."
-    case .serverError: "서버 오류가 발생했습니다. 다시 시도해주세요."
-    }
-  }
-}
-
-public enum ValidateNicknameUseCaseKey: DependencyKey {
-  public static var liveValue: ValidateNicknameUseCase {
-    @Dependency(\.membersRepository) var membersRepository
-
-    return ValidateNicknameUseCase { nickname in
+  public static func live(membersRepository: any MembersRepositoryProtocol) -> Self {
+    Self { nickname in
       if nickname.contains(" ") {
         throw ValidateNicknameError.notAllowedWhiteSpaces
       }
@@ -65,6 +42,32 @@ public enum ValidateNicknameUseCaseKey: DependencyKey {
       }
     }
   }
+
+  public static var test: Self {
+    Self { _ in }
+  }
+}
+
+public enum ValidateNicknameError: LocalizedError {
+  case notAllowedCharaters
+  case notAllowedRange
+  case duplicatedNickname
+  case notAllowedWhiteSpaces
+  case serverError
+
+  public var errorDescription: String? {
+    switch self {
+    case .notAllowedCharaters: "한글,영문,숫자만 입력해 주세요. (2~15자)"
+    case .notAllowedRange: "한글,영문,숫자만 입력해 주세요. (2~15자)"
+    case .duplicatedNickname: "중복된 닉네임입니다."
+    case .notAllowedWhiteSpaces: "닉네임에 공백 사용은 불가능합니다."
+    case .serverError: "서버 오류가 발생했습니다. 다시 시도해주세요."
+    }
+  }
+}
+
+public enum ValidateNicknameUseCaseKey: TestDependencyKey {
+  public static var testValue: ValidateNicknameUseCase = .test
 }
 
 extension DependencyValues {

@@ -11,16 +11,20 @@ import SwiftUI
 
 public struct GetMemberInfoUseCase {
   public var execute: (_ memberId: Int) async throws -> MemberInfo?
-}
 
-public enum GetMemberInfoUseCaseKey: DependencyKey {
-  public static var liveValue: GetMemberInfoUseCase {
-    @Dependency(\.membersRepository) var membersRepository
-
-    return GetMemberInfoUseCase { memberId in
+  public static func live(membersRepository: any MembersRepositoryProtocol) -> Self {
+    Self { memberId in
       return try await membersRepository.getInfo(memberId: memberId)
     }
   }
+
+  public static var test: Self {
+    Self { _ in nil }
+  }
+}
+
+public enum GetMemberInfoUseCaseKey: TestDependencyKey {
+  public static var testValue: GetMemberInfoUseCase = .test
 }
 
 extension DependencyValues {

@@ -8,7 +8,7 @@
 import CoreLocation
 import Dependencies
 
-public protocol LocationManagerServiceProtocol {
+public protocol LocationManagerProtocol {
   var authStatus: LocationAuthStatus { get }
   func requestAuthorization()
   func requestCurrentLocation() async throws -> CLLocation
@@ -22,7 +22,7 @@ public enum LocationAuthStatus {
   case restricted
 }
 
-struct UnimplementedLocationManagerService: LocationManagerServiceProtocol {
+struct UnimplementedLocationManager: LocationManagerProtocol {
   var authStatus = LocationAuthStatus.restricted
   
   func requestAuthorization() {
@@ -42,13 +42,13 @@ struct UnimplementedLocationManagerService: LocationManagerServiceProtocol {
   }
 }
 
-public enum LocationManagerServiceKey: DependencyKey {
-  public static var liveValue: LocationManagerServiceProtocol = UnimplementedLocationManagerService()
+public enum LocationManagerKey: TestDependencyKey {
+  public static var testValue: LocationManagerProtocol = UnimplementedLocationManager()
 }
 
 public extension DependencyValues {
-  var locationManagerService: LocationManagerServiceProtocol {
-    get { self[LocationManagerServiceKey.self] }
-    set { self[LocationManagerServiceKey.self] = newValue }
+  var locationManagerService: LocationManagerProtocol {
+    get { self[LocationManagerKey.self] }
+    set { self[LocationManagerKey.self] = newValue }
   }
 }

@@ -11,17 +11,21 @@ import SwiftUI
 
 public struct CreateCustomerUseCase {
   public var execute: (_ request: RegisterRequest) async throws -> Bool
-}
 
-public enum CreateCustomerUseCaseKey: DependencyKey {
-  public static var liveValue: CreateCustomerUseCase {
-    @Dependency(\.membersRepository) var membersRepository
-
-    return CreateCustomerUseCase { request in
+  public static func live(membersRepository: any MembersRepositoryProtocol) -> Self {
+    Self { request in
       try await membersRepository.createCustomer(request: request)
       return true
     }
   }
+
+  public static var test: Self {
+    Self { _ in true }
+  }
+}
+
+public enum CreateCustomerUseCaseKey: TestDependencyKey {
+  public static var testValue: CreateCustomerUseCase = .test
 }
 
 extension DependencyValues {

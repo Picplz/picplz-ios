@@ -90,7 +90,7 @@ struct InputNicknamePage: View {
     func createPhotographer(request: RegisterRequest, extra: PhotographerRegisterRequestExtra) async throws {
     }
   }
-  MembersRepositoryKey.liveValue = PreviewMembersRepository()
+  MembersRepositoryKey.testValue = PreviewMembersRepository()
   
   return InputNicknamePage(
     store: Store(

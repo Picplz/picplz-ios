@@ -59,17 +59,6 @@ struct UploadProfilePhotoPage: View {
 }
 
 #Preview {
-  struct PreviewS3Repository: S3RepositoryProtocol {
-    func getPresignedUploadURL(filename: String, fileType: Domain.S3FileType) async throws -> (Domain.S3PresignedURL, Domain.S3ObjectKey) {
-      throw NSError(domain: "프리뷰 환경 오류", code: -1)
-    }
-    
-    func uploadJPEGFile(jpegData: Data, to presignedURL: URL) async throws {
-      throw NSError(domain: "프리뷰 환경 오류", code: -1)
-    }
-  }
-  S3RepositoryKey.liveValue = PreviewS3Repository()
-  
   return UploadProfilePhotoPage(store: Store(initialState: UploadProfilePhotoFeature.State(userNickname: "유가영")) {
     UploadProfilePhotoFeature()
       ._printChanges()

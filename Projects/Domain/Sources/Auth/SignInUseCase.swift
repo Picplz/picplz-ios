@@ -10,14 +10,12 @@ import Dependencies
 
 public struct SignInUseCase {
   public var execute: (_ kakaoAccessToken: KakaoAccessToken) async throws -> SignInResult
-}
 
-enum SignInUseCaseKey: DependencyKey {
-  static var liveValue: SignInUseCase {
-    @Dependency(\.authRepository) var authRepository
-    @Dependency(\.tokenStorage) var tokenStorage
-    
-    return SignInUseCase { kakaoAccessToken in
+  public static func live(
+    authRepository: any AuthRepositoryProtocol,
+    tokenStorage: any TokenStorageProtocol
+  ) -> Self {
+    Self { kakaoAccessToken in
       let result = try await authRepository.signIn(kakaoAccessToken: kakaoAccessToken)
       
       if let tokens = result.tokens {
@@ -28,6 +26,14 @@ enum SignInUseCaseKey: DependencyKey {
       return result
     }
   }
+
+  public static var test: Self {
+    Self { _ in fatalError("SignInUseCase.test is not implemented") }
+  }
+}
+
+public enum SignInUseCaseKey: TestDependencyKey {
+  public static var testValue: SignInUseCase = .test
 }
 
 public extension DependencyValues {

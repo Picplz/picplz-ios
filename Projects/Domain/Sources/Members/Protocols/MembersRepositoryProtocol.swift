@@ -34,8 +34,8 @@ struct UnimplementedMembersRepository: MembersRepositoryProtocol {
   }
 }
 
-public enum MembersRepositoryKey: DependencyKey {
-  public static var liveValue: MembersRepositoryProtocol = UnimplementedMembersRepository()
+public enum MembersRepositoryKey: TestDependencyKey {
+  public static var testValue: MembersRepositoryProtocol = UnimplementedMembersRepository()
 }
 
 public extension DependencyValues {

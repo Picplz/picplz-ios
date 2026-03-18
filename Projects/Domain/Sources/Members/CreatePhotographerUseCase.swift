@@ -10,17 +10,21 @@ import Foundation
 
 public struct CreatePhotographerUseCase {
   public var execute: (_ request: RegisterRequest, _ extra: PhotographerRegisterRequestExtra) async throws -> Bool
-}
 
-public enum CreatePhotographerUseCaseKey: DependencyKey {
-  public static var liveValue: CreatePhotographerUseCase {
-    @Dependency(\.membersRepository) var membersRepository
-
-    return CreatePhotographerUseCase { request, extra in
+  public static func live(membersRepository: any MembersRepositoryProtocol) -> Self {
+    Self { request, extra in
       try await membersRepository.createPhotographer(request: request, extra: extra)
       return true
     }
   }
+
+  public static var test: Self {
+    Self { _, _ in true }
+  }
+}
+
+public enum CreatePhotographerUseCaseKey: TestDependencyKey {
+  public static var testValue: CreatePhotographerUseCase = .test
 }
 
 extension DependencyValues {

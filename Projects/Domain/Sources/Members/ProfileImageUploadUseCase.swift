@@ -29,14 +29,11 @@ public enum ProfileImageUploadUseCaseError: LocalizedError {
 
 public struct ProfileImageUploadUseCase {
   public var execute: (_ image: UIImage) async throws -> S3ObjectKey
-}
 
-public enum ProfileImageUploadUseCaseKey: DependencyKey {
-  public static var liveValue: ProfileImageUploadUseCase {
-    @Dependency(\.s3Repository) var s3Repository
+  public static func live(s3Repository: any S3RepositoryProtocol) -> Self {
     let compressionQuality = CGFloat(0.8) // JPEG 압축률
 
-    return ProfileImageUploadUseCase { image in
+    return Self { image in
       // Presigned URL 발급
       let (uploadURLString, objectKey): (S3PresignedURL, S3ObjectKey)
       do {
@@ -64,6 +61,14 @@ public enum ProfileImageUploadUseCaseKey: DependencyKey {
       return objectKey
     }
   }
+
+  public static var test: Self {
+    Self { _ in "" }
+  }
+}
+
+public enum ProfileImageUploadUseCaseKey: TestDependencyKey {
+  public static var testValue: ProfileImageUploadUseCase = .test
 }
 
 extension DependencyValues {
