@@ -35,6 +35,6 @@ let project = Project.create(
     ]
   ),
   hasResources: false,
-  dependencies: [.common, .features, .domain, .networking, .storage, .platform],
+  dependencies: [.common, .features, .domain, .networking, .storage, .platform, .dependencyInjection],
   name: "PicplzApp"
 )

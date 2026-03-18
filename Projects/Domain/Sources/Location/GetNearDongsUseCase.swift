@@ -14,16 +14,14 @@ public struct GetNearDongsUseCase {
   public init(execute: @escaping () async throws -> [Area]) {
     self.execute = execute
   }
-}
 
-public enum GetNearDongsUseCaseKey: DependencyKey {
-  private static let defaultRadius = 1000
+  public static func live(
+    locationManagerService: any LocationManagerProtocol,
+    areasRepository: any AreasRepositoryProtocol
+  ) -> Self {
+    let defaultRadius = 1000
 
-  public static var liveValue: GetNearDongsUseCase {
-    @Dependency(\.locationManagerService) var locationManagerService
-    @Dependency(\.areasRepository) var areasRepository
-
-    return GetNearDongsUseCase {
+    return Self {
       guard locationManagerService.authStatus != .restricted else {
         return []
       }
@@ -36,6 +34,14 @@ public enum GetNearDongsUseCaseKey: DependencyKey {
       )
     }
   }
+
+  public static var test: Self {
+    Self { [] }
+  }
+}
+
+public enum GetNearDongsUseCaseKey: TestDependencyKey {
+  public static var testValue: GetNearDongsUseCase = .test
 }
 
 extension DependencyValues {

@@ -23,8 +23,8 @@ struct UnimplementedAreasRepository: AreasRepositoryProtocol {
   }
 }
 
-public enum AreasRepositoryKey: DependencyKey {
-  public static var liveValue: AreasRepositoryProtocol = UnimplementedAreasRepository()
+public enum AreasRepositoryKey: TestDependencyKey {
+  public static var testValue: AreasRepositoryProtocol = UnimplementedAreasRepository()
 }
 
 public extension DependencyValues {

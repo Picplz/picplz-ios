@@ -38,8 +38,8 @@ struct UnimplementedS3Repository: S3RepositoryProtocol {
   }
 }
 
-public enum S3RepositoryKey: DependencyKey {
-  public static var liveValue: S3RepositoryProtocol = UnimplementedS3Repository()
+public enum S3RepositoryKey: TestDependencyKey {
+  public static var testValue: S3RepositoryProtocol = UnimplementedS3Repository()
 }
 
 public extension DependencyValues {

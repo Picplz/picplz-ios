@@ -21,7 +21,7 @@ extension LocationAuthStatus {
   }
 }
 
-public final class LocationManagerService: NSObject, LocationManagerServiceProtocol {
+public final class LocationManagerService: NSObject, LocationManagerProtocol {
   public var authStatus: LocationAuthStatus
   
   // MARK: - Private Properties

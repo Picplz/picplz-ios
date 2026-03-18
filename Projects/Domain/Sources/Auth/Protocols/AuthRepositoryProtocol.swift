@@ -17,8 +17,8 @@ struct UnimplementedAuthRepository: AuthRepositoryProtocol {
   }
 }
 
-public enum AuthRepositoryKey: DependencyKey {
-  public static var liveValue: AuthRepositoryProtocol = UnimplementedAuthRepository()
+public enum AuthRepositoryKey: TestDependencyKey {
+  public static var testValue: AuthRepositoryProtocol = UnimplementedAuthRepository()
 }
 
 public extension DependencyValues {

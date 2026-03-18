@@ -18,8 +18,8 @@ struct UnimplementedEquipmentRepository: EquipmentRepositoryProtocol {
   }
 }
 
-public enum EquipmentRepositoryKey: DependencyKey {
-  public static var liveValue: EquipmentRepositoryProtocol = UnimplementedEquipmentRepository()
+public enum EquipmentRepositoryKey: TestDependencyKey {
+  public static var testValue: EquipmentRepositoryProtocol = UnimplementedEquipmentRepository()
 }
 
 public extension DependencyValues {

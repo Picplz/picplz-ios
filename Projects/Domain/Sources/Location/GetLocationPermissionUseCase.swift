@@ -9,16 +9,20 @@ import Dependencies
 
 public struct GetLocationPermissionUseCase {
   public var execute: () -> Void
-}
 
-public enum GetLocationPermissionUseCaseKey: DependencyKey {
-  public static var liveValue: GetLocationPermissionUseCase {
-    @Dependency(\.locationManagerService) var locationManagerService
-
-    return GetLocationPermissionUseCase {
+  public static func live(locationManagerService: any LocationManagerProtocol) -> Self {
+    Self {
       locationManagerService.requestAuthorization()
     }
   }
+
+  public static var test: Self {
+    Self { }
+  }
+}
+
+public enum GetLocationPermissionUseCaseKey: TestDependencyKey {
+  public static var testValue: GetLocationPermissionUseCase = .test
 }
 
 extension DependencyValues {

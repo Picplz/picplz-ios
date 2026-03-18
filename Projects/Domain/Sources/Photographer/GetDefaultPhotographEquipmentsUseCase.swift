@@ -8,26 +8,26 @@
 import Dependencies
 import Foundation
 
-public protocol GetDefaultPhotographEquipmentsUseCaseProtocol {
-  func execute() async throws -> [PhotographerEquipment]
-}
+public struct GetDefaultPhotographEquipmentsUseCase {
+  public var execute: () async throws -> [PhotographerEquipment]
 
-public struct GetDefaultPhotographEquipmentsUseCase: GetDefaultPhotographEquipmentsUseCaseProtocol {
-  @Dependency(\.equipmentRepository) var equipmentRepository
-  
-  public init() {}
-  
-  public func execute() async throws -> [PhotographerEquipment] {
-    return try await equipmentRepository.getDefaultEquipments()
+  public static func live(equipmentRepository: any EquipmentRepositoryProtocol) -> Self {
+    Self {
+      try await equipmentRepository.getDefaultEquipments()
+    }
+  }
+
+  public static var test: Self {
+    Self { [] }
   }
 }
 
-public enum GetDefaultPhotographEquipmentsUseCaseKey: DependencyKey {
-  public static var liveValue: GetDefaultPhotographEquipmentsUseCaseProtocol = GetDefaultPhotographEquipmentsUseCase()
+public enum GetDefaultPhotographEquipmentsUseCaseKey: TestDependencyKey {
+  public static var testValue: GetDefaultPhotographEquipmentsUseCase = .test
 }
 
 public extension DependencyValues {
-  var getDefaultPhotographEquipmentsUseCase: GetDefaultPhotographEquipmentsUseCaseProtocol {
+  var getDefaultPhotographEquipmentsUseCase: GetDefaultPhotographEquipmentsUseCase {
     get { self[GetDefaultPhotographEquipmentsUseCaseKey.self] }
     set { self[GetDefaultPhotographEquipmentsUseCaseKey.self] = newValue }
   }
