@@ -121,4 +121,69 @@ public final class MembersRepository: MembersRepositoryProtocol {
       }
     }
   }
+
+  public func createPhotographer(request: Domain.RegisterRequest, extra: Domain.PhotographerRegisterRequestExtra) async throws {
+    let activeAreas = extra.activeAreas.enumerated().map { index, area in
+      ActiveAreaDTO(code: area.id, priority: index)
+    }
+    
+    let cameras = extra.cameras.map { equipment in
+      let type: String
+      let cameraType: String
+      
+      switch equipment.type {
+      case .phone:
+        type = "핸드폰"
+        cameraType = ""
+      case .camera(let cType):
+        type = "카메라"
+        switch cType {
+        case .dslrCamera: cameraType = "DSLR 카메라"
+        case .mirrorlessCamera: cameraType = "미러리스 카메라"
+        case .campactCamera: cameraType = "디지털 카메라"
+        case .filmCamera: cameraType = "필름 카메라"
+        case .unknown: cameraType = "UNKNOWN"
+        }
+      case .unknown:
+        type = "기타"
+        cameraType = ""
+      }
+      
+      return CameraDTO(
+        type: type,
+        brand: equipment.brand,
+        name: equipment.name ?? "",
+        cameraType: cameraType
+      )
+    }
+    
+    let dto = CreatePhotographerRequestDTO(
+      nickname: request.nickname,
+      socialEmail: request.socialInfo.socialEmail,
+      socialProvider: request.socialInfo.socialProvider.rawValue,
+      socialCode: request.socialInfo.socialCode,
+      profileImage: request.profileImage ?? "",
+      photoMoods: extra.photoMoods,
+      activeAreas: activeAreas,
+      cameras: cameras
+    )
+    
+    return try await withCheckedThrowingContinuation { continuation in
+      provider.request(.createPhotographer(dto)) { result in
+        switch result {
+        case .success(let response):
+          do {
+            try HTTPError.checkError(response: response)
+          } catch {
+            continuation.resume(throwing: error)
+            return
+          }
+          
+          continuation.resume()
+        case .failure(let error):
+          continuation.resume(throwing: error)
+        }
+      }
+    }
+  }
 }

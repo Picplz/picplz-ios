@@ -15,6 +15,7 @@ public struct RegisterFeature {
   public struct State: Equatable {
     var registerRequest: RegisterRequest
     var photographerRegisterRequest: PhotographerRegisterRequestExtra?
+    var selectedRole: Role?
 
     var selectType = SelectTypeFeature.State()
     var registerFinished: RegisterFinishedFeature.State?
@@ -42,17 +43,21 @@ public struct RegisterFeature {
     case delegate(Delegate)
     
     public enum Delegate: Hashable {
-      case registerCompleted
+      case registerCompleted(Role)
     }
   }
 
   public init() {}
   
   @Dependency(\.createCustomerUseCase) var createCustomerUseCase
+  @Dependency(\.createPhotographerUseCase) var createPhotographerUseCase
 
   public var body: some ReducerOf<RegisterFeature> {
     Scope(state: \.selectType, action: \.selectType) {
       SelectTypeFeature()
+    }
+    .ifLet(\.registerFinished, action: \.registerFinished) {
+      RegisterFinishedFeature()
     }
 
     Reduce {
@@ -63,6 +68,7 @@ public struct RegisterFeature {
         // 역할 선택 완료
         guard role != nil else { return .none }
         
+        state.selectedRole = role
         if role == .photographer {
           state.photographerRegisterRequest = PhotographerRegisterRequestExtra(
             photoMoods: [],
@@ -90,7 +96,7 @@ public struct RegisterFeature {
         // 프로필 이미지 선택 완료
         state.registerRequest.profileImage = uploadResult?.objectKey
         
-        if state.photographerRegisterRequest == nil { // 고객 정보 입력 완료
+        if state.selectedRole == .customer { // 고객 정보 입력 완료
           return .run { [registerRequest = state.registerRequest] send in
             await send(.registerResponse(TaskResult {
               return try await createCustomerUseCase.execute(registerRequest)
@@ -98,8 +104,11 @@ public struct RegisterFeature {
           }
         }
         
-        // 작가 정보 입력 추가 진행
-        state.path.append(.requestLocationPermission(RequestLocationPermissionFeature.State()))
+        if state.selectedRole == .photographer {
+          // 작가 정보 입력 추가 진행
+          state.path.append(.requestLocationPermission(RequestLocationPermissionFeature.State()))
+        }
+        
         return .none
 
       case .path(.element(id: _, action: .requestLocationPermission(.delegate(.completed)))):
@@ -141,9 +150,14 @@ public struct RegisterFeature {
         // 분위기 선택 완료
         state.photographerRegisterRequest?.photoMoods = moods
         
-        // TODO: 회원 가입 완료 요청 (Photographer용)
-        // 일단 고객 가입 로직을 참고하여 구현 (실제 API 확인 필요)
-        return .none
+        guard let photographerRegisterRequest = state.photographerRegisterRequest else { return .none }
+        
+        // 작가 회원 가입
+        return .run { [registerRequest = state.registerRequest, photographerRegisterRequest] send in
+          await send(.registerResponse(TaskResult {
+            return try await createPhotographerUseCase.execute(registerRequest, photographerRegisterRequest)
+          }))
+        }
 
       case let .path(.element(id: _, action: .addNewPhone(.delegate(.addEquipment(equipment))))):
         state.photographerRegisterRequest?.cameras.append(equipment)
@@ -173,8 +187,6 @@ public struct RegisterFeature {
 
       case .path:
         return .none
-      case .registerFinished:
-        return .none
       case .registerResponse(.success):
         state.registerFinished = RegisterFinishedFeature.State(
           userNickname: state.registerRequest.nickname
@@ -186,6 +198,11 @@ public struct RegisterFeature {
         return .none
       case let .toastItemChanged(toastItem):
         state.toastItem = toastItem
+        return .none
+      case .registerFinished(.delegate(.completed)):
+        guard let selectedRole = state.selectedRole else { return .none }
+        return .send(.delegate(.registerCompleted(selectedRole)))
+      case .registerFinished:
         return .none
       case .delegate:
         return .none

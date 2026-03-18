@@ -55,6 +55,14 @@ public struct MainFeature {
         return .none
       case .onboarding:
         return .none
+      case let .register(.delegate(.registerCompleted(role))):
+        switch role {
+        case .customer:
+          state = .customer(CustomerFeature.State())
+        case .photographer:
+          state = .photographer(PhotographerFeature.State())
+        }
+        return .none
       case .register:
         return .none
       case .customer:

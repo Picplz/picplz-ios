@@ -86,6 +86,9 @@ struct InputNicknamePage: View {
     
     func createCustomer(request: Domain.RegisterRequest) async throws {
     }
+    
+    func createPhotographer(request: RegisterRequest, extra: PhotographerRegisterRequestExtra) async throws {
+    }
   }
   MembersRepositoryKey.liveValue = PreviewMembersRepository()
   

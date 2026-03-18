@@ -14,6 +14,7 @@ public enum PicplzMembersApi {
   case checkDuplicatedNickname(String)
   case getMemberInfo(Int)
   case createCustomer(CreateCustomerRequestDTO)
+  case createPhotographer(CreatePhotographerRequestDTO)
 }
 
 extension PicplzMembersApi: TargetType, AccessTokenAuthorizable {
@@ -35,6 +36,8 @@ extension PicplzMembersApi: TargetType, AccessTokenAuthorizable {
       return "/v1/members/\(memberId)/info"
     case let .createCustomer(registerRequest):
       return "/v1/customers"
+    case .createPhotographer:
+      return "/v1/photographers"
     }
   }
   
@@ -46,6 +49,8 @@ extension PicplzMembersApi: TargetType, AccessTokenAuthorizable {
       return .get
     case .createCustomer:
       return .post
+    case .createPhotographer:
+      return .post
     }
   }
   
@@ -56,6 +61,8 @@ extension PicplzMembersApi: TargetType, AccessTokenAuthorizable {
     case .getMemberInfo:
       return .requestPlain
     case let .createCustomer(dto):
+      return .requestJSONEncodable(dto)
+    case let .createPhotographer(dto):
       return .requestJSONEncodable(dto)
     }
   }

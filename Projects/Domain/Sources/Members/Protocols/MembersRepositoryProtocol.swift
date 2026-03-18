@@ -13,6 +13,7 @@ public protocol MembersRepositoryProtocol {
   func checkAllowable(nickname: String) async throws -> IsAllowableNickname
   func getInfo(memberId: Int) async throws -> MemberInfo?
   func createCustomer(request: RegisterRequest) async throws
+  func createPhotographer(request: RegisterRequest, extra: PhotographerRegisterRequestExtra) async throws
 }
 
 struct UnimplementedMembersRepository: MembersRepositoryProtocol {
@@ -25,6 +26,10 @@ struct UnimplementedMembersRepository: MembersRepositoryProtocol {
   }
   
   func createCustomer(request: RegisterRequest) async throws {
+    fatalError("구현되지 않은 메서드를 호출했습니다")
+  }
+
+  func createPhotographer(request: RegisterRequest, extra: PhotographerRegisterRequestExtra) async throws {
     fatalError("구현되지 않은 메서드를 호출했습니다")
   }
 }
