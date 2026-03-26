@@ -9,7 +9,7 @@ import SwiftUI
 import ComposableArchitecture
 
 struct MyPageView: View {
-    let store: StoreOf<MyPageFeature>
+    @Bindable var store: StoreOf<MyPageFeature>
     
     var body: some View {
         VStack {
@@ -24,17 +24,48 @@ struct MyPageView: View {
                     Image(.settings)
                 }
             }
+            .padding(.horizontal, 16)
+            
+            // 작가 변경 바
+            Group {
+                  if store.hasPhotographerInfo {
+                      HStack {
+                          Text("작가로 전환")
+                              .typo(.pBoldParagraph)
+                              .foregroundStyle(Color(.white))
+                          Spacer()
+                          Toggle("", isOn: $store.isPhotographerMode.sending(\.togglePhotographerMode))
+                              .labelsHidden()
+                              .toggleStyle(PicToggleStyle())
+                      }
+                      .padding(.horizontal, 16)
+                  } else {
+                      HStack {
+                          Text("작가로도 활동하기")
+                              .typo(.pBoldParagraph)
+                              .foregroundStyle(Color(.white))
+                          Spacer()
+                          Button {
+                              store.send(.navigateToPhotographerRegister)
+                          } label: {
+                              Image(.goPhotographer)
+                          }
+                      }
+                      .padding(.horizontal, 16)
+                  }
+              }
+              .frame(height: 50)
+              .background(Color(.pGreen120))
         }
         // 기존 네비바 숨김
         .navigationBarHidden(true)
-        .padding(.horizontal, 16)
     }
 }
 
 #Preview {
     MyPageView(
         store: Store(
-            initialState: MyPageFeature.State()
+            initialState: MyPageFeature.State(hasPhotographerInfo: true)
         ) {
             MyPageFeature()
         }
