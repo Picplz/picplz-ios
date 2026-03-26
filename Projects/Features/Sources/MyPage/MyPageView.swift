@@ -56,6 +56,36 @@ struct MyPageView: View {
               }
               .frame(height: 50)
               .background(Color(.pGreen120))
+
+            // 프로필 섹션
+            HStack(spacing: 8) {
+                Image(.profileImagePlaceholder)
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: 36, height: 36)
+                    .clipShape(Circle())
+
+                Text(store.nickname)
+                    .typo(.pBigParagraph)
+
+                Spacer()
+
+                Button {
+                    store.send(.profileEditTapped)
+                } label: {
+                    Text("프로필 수정")
+                        .typo(.pCaption)
+                        .foregroundStyle(Color(.pGrey4))
+                        .padding(.horizontal, 10)
+                        .padding(.vertical, 8)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 5)
+                                .stroke(Color(.pGrey3), lineWidth: 1)
+                        )
+                }
+            }
+            .padding(.horizontal, 16)
+            .padding(.vertical, 20)
         }
         // 기존 네비바 숨김
         .navigationBarHidden(true)
@@ -65,7 +95,10 @@ struct MyPageView: View {
 #Preview {
     MyPageView(
         store: Store(
-            initialState: MyPageFeature.State(hasPhotographerInfo: true)
+            initialState: MyPageFeature.State(
+                hasPhotographerInfo: true,
+                nickname: "양원식"
+            )
         ) {
             MyPageFeature()
         }
