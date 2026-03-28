@@ -42,7 +42,7 @@ struct HomePostCard: View {
         VStack(alignment: .leading, spacing: 0) {
           Text(authorName)
             .typo(.pBigParagraph2)
-            .foregroundStyle(Color(red: 0x2F/255, green: 0x31/255, blue: 0x39/255))
+            .foregroundStyle(.pGrey5)
           
           Text(authorLocation)
             .typo(.pCaption)
@@ -103,7 +103,7 @@ struct HomePostCard: View {
               .foregroundStyle(.pGrey2)
               .padding(.horizontal, 7)
               .padding(.vertical, 2)
-              .background(Color.black.opacity(0.6))
+              .background(.pBlack.opacity(0.6))
               .cornerRadius(5)
           }
           Spacer()

@@ -55,9 +55,15 @@ public struct CustomerHomeView: View {
           }
         }
       }
-      // TODO: Lazy loading
     }
     .background(.pWhite)
+    .sheet(
+      item: $store.scope(state: \.locationSelect, action: \.locationSelect)
+    ) { locationSelectStore in
+      LocationSelectView(store: locationSelectStore)
+        .presentationDetents([.height(600)])
+        .presentationDragIndicator(.visible)
+    }
   }
 }
 
