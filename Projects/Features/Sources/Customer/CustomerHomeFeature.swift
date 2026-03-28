@@ -18,9 +18,10 @@ public struct CustomerHomeFeature {
     public var posts: [Post] = []
     
     @Presents var locationSelect: LocationSelectFeature.State?
+    public var path = StackState<Path.State>()
     
     public init() {
-      // FIXME: Remove Mock data and fetch from the server
+      // Mock data
       self.posts = [
         Post(
           id: UUID(),
@@ -61,13 +62,14 @@ public struct CustomerHomeFeature {
   
   public enum Action: BindableAction {
     case binding(BindingAction<State>)
-    case searchButtonTapped
+    case searchBarTapped
     case locationTapped
     case notificationTapped
     case profileTapped
     case reportTapped(id: UUID)
     
     case locationSelect(PresentationAction<LocationSelectFeature.Action>)
+    case path(StackAction<Path.State, Path.Action>)
   }
   
   public init() {}
@@ -78,11 +80,15 @@ public struct CustomerHomeFeature {
       switch action {
       case .binding:
         return .none
-      case .searchButtonTapped:
+        
+      case .searchBarTapped:
+        state.path.append(.searchPhotographers(SearchPhotographersFeature.State()))
         return .none
+        
       case .locationTapped:
         state.locationSelect = LocationSelectFeature.State()
         return .none
+        
       case .notificationTapped:
         return .none
       case .profileTapped:
@@ -99,10 +105,25 @@ public struct CustomerHomeFeature {
         
       case .locationSelect:
         return .none
+        
+      case .path(.element(id: _, action: .searchPhotographers(.backButtonTapped))):
+        state.path.removeLast()
+        return .none
+        
+      case .path:
+        return .none
       }
     }
     .ifLet(\.$locationSelect, action: \.locationSelect) {
       LocationSelectFeature()
     }
+    .forEach(\.path, action: \.path)
+  }
+}
+
+extension CustomerHomeFeature {
+  @Reducer(state: .equatable)
+  public enum Path {
+    case searchPhotographers(SearchPhotographersFeature)
   }
 }

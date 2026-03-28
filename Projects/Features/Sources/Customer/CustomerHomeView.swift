@@ -16,53 +16,64 @@ public struct CustomerHomeView: View {
   }
   
   public var body: some View {
-    VStack(spacing: 0) {
-      // Header Section
+    NavigationStack(path: $store.scope(state: \.path, action: \.path)) {
       VStack(spacing: 0) {
-        HomeLocationHeader(
-          location: store.location,
-          onLocationTapped: { store.send(.locationTapped) },
-          onNotificationTapped: { store.send(.notificationTapped) },
-          onProfileTapped: { store.send(.profileTapped) }
-        )
-        
-        TextField(
-          "촬영을 하고 싶은 작가를 검색해보세요",
-          text: $store.searchQuery,
-          prompt: Text("촬영을 하고 싶은 작가를 검색해보세요").foregroundStyle(.pGrey3)
-        )
-        .pSearchTextField {
-          store.send(.searchButtonTapped)
-        }
-        .padding(.horizontal, 16)
-        .padding(.bottom, 20)
-      }
-      .background(.pWhite)
-      
-      // Feed Section
-      ScrollView {
-        LazyVStack(spacing: 0) {
-          ForEach(store.posts) { post in
-            HomePostCard(
-              authorName: post.authorName,
-              authorLocation: post.authorLocation,
-              postImagesData: post.postImagesData,
-              postLocation: post.postLocation,
-              postDate: post.postDate,
-              onReportTapped: { store.send(.reportTapped(id: post.id)) }
+        // Header Section
+        VStack(spacing: 0) {
+          HomeLocationHeader(
+            location: store.location,
+            onLocationTapped: { store.send(.locationTapped) },
+            onNotificationTapped: { store.send(.notificationTapped) },
+            onProfileTapped: { store.send(.profileTapped) }
+          )
+          
+          // Search Bar (기본 pSearchTextField 인터페이스 유지)
+          Button(action: { store.send(.searchBarTapped) }) {
+            TextField(
+              "촬영을 하고 싶은 작가를 검색해보세요",
+              text: .constant(""),
+              prompt: Text("촬영을 하고 싶은 작가를 검색해보세요").foregroundStyle(.pGrey3)
             )
-            .padding(.horizontal, 16)
+            .pSearchTextField {
+              store.send(.searchBarTapped)
+            }
+            .disabled(true)
+          }
+          .padding(.horizontal, 16)
+          .padding(.bottom, 20)
+        }
+        .background(.pWhite)
+        
+        // Feed Section
+        ScrollView {
+          LazyVStack(spacing: 0) {
+            ForEach(store.posts) { post in
+              HomePostCard(
+                authorName: post.authorName,
+                authorLocation: post.authorLocation,
+                postImagesData: post.postImagesData,
+                postLocation: post.postLocation,
+                postDate: post.postDate,
+                onReportTapped: { store.send(.reportTapped(id: post.id)) }
+              )
+              .padding(.horizontal, 16)
+            }
           }
         }
       }
-    }
-    .background(.pWhite)
-    .sheet(
-      item: $store.scope(state: \.locationSelect, action: \.locationSelect)
-    ) { locationSelectStore in
-      LocationSelectView(store: locationSelectStore)
-        .presentationDetents([.height(600)])
-        .presentationDragIndicator(.visible)
+      .background(.pWhite)
+      .sheet(
+        item: $store.scope(state: \.locationSelect, action: \.locationSelect)
+      ) { locationSelectStore in
+        LocationSelectView(store: locationSelectStore)
+          .presentationDetents([.height(600)])
+          .presentationDragIndicator(.visible)
+      }
+    } destination: { store in
+      switch store.case {
+      case let .searchPhotographers(searchStore):
+        SearchPhotographersView(store: searchStore)
+      }
     }
   }
 }
