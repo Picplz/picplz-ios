@@ -156,6 +156,34 @@ struct MyPageView: View {
                 ) {
                     ProfileEditView(store: store)
                 }
+            case .pastShootings:
+                if let store = store.scope(
+                    state: \.pastShootings,
+                    action: \.pastShootings
+                ) {
+                    PastShootingsView(store: store)
+                }
+            case .settings:
+                if let store = store.scope(
+                    state: \.settings,
+                    action: \.settings
+                ) {
+                    SettingsView(store: store)
+                }
+            case .followedArtists:
+                if let store = store.scope(
+                    state: \.followedArtists,
+                    action: \.followedArtists
+                ) {
+                    FollowedArtistsView(store: store)
+                }
+            case .myReviews:
+                if let store = store.scope(
+                    state: \.myReviews,
+                    action: \.myReviews
+                ) {
+                    MyReviewsView(store: store)
+                }
             }
         }
     }

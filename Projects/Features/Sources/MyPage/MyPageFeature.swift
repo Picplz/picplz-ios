@@ -78,21 +78,25 @@ public struct MyPageFeature {
                 // TODO: 예약 정보 화면 네비게이션 연결
                 return .none
             case .followedArtistsTapped:
-                // TODO: 팔로우 작가 목록 화면 네비게이션 연결
+                state.path.append(.followedArtists(FollowedArtistsFeature.State()))
                 return .none
             case .myReviewsTapped:
-                // TODO: 내 리뷰 목록 화면 네비게이션 연결
+                state.path.append(.myReviews(MyReviewsFeature.State()))
                 return .none
             case .termsOfServiceTapped:
                 // TODO: 이용 약관 화면 네비게이션 연결
                 return .none
             case .settingsTapped:
-                // TODO: 설정 화면 네비게이션 연결
+                state.path.append(.settings(SettingsFeature.State()))
                 return .none
             case .pastShootingsTapped:
-                // TODO: 지난 촬영 내역 화면 네비게이션 연결
+                state.path.append(.pastShootings(PastShootingsFeature.State()))
                 return .none
-            case .path(.element(id: _, action: .profileEdit(.backButtonTapped))):
+            case .path(.element(id: _, action: .profileEdit(.backButtonTapped))),
+             .path(.element(id: _, action: .pastShootings(.backButtonTapped))),
+             .path(.element(id: _, action: .settings(.backButtonTapped))),
+             .path(.element(id: _, action: .followedArtists(.backButtonTapped))),
+             .path(.element(id: _, action: .myReviews(.backButtonTapped))):
                 _ = state.path.popLast()
                 return .none
             case .path:
@@ -109,10 +113,18 @@ public struct MyPageFeature {
         @ObservableState
         public enum State: Equatable, Hashable {
             case profileEdit(ProfileEditFeature.State)
+            case pastShootings(PastShootingsFeature.State)
+            case settings(SettingsFeature.State)
+            case followedArtists(FollowedArtistsFeature.State)
+            case myReviews(MyReviewsFeature.State)
         }
 
         public enum Action {
             case profileEdit(ProfileEditFeature.Action)
+            case pastShootings(PastShootingsFeature.Action)
+            case settings(SettingsFeature.Action)
+            case followedArtists(FollowedArtistsFeature.Action)
+            case myReviews(MyReviewsFeature.Action)
         }
 
         public init() {}
@@ -120,6 +132,18 @@ public struct MyPageFeature {
         public var body: some ReducerOf<Path> {
             Scope(state: \.profileEdit, action: \.profileEdit) {
                 ProfileEditFeature()
+            }
+            Scope(state: \.pastShootings, action: \.pastShootings) {
+                PastShootingsFeature()
+            }
+            Scope(state: \.settings, action: \.settings) {
+                SettingsFeature()
+            }
+            Scope(state: \.followedArtists, action: \.followedArtists) {
+                FollowedArtistsFeature()
+            }
+            Scope(state: \.myReviews, action: \.myReviews) {
+                MyReviewsFeature()
             }
         }
     }

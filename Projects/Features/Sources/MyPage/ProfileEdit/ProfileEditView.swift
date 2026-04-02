@@ -13,18 +13,8 @@ struct ProfileEditView: View {
 
     var body: some View {
         VStack {
-            // MARK: 상단 네비게이션 바
-            HStack {
-                Button {
-                    store.send(.backButtonTapped)
-                } label: {
-                    Image(.leftGoBlack)
-                }
-                Spacer()
-            }
-            .overlay {
-                Text("프로필 수정")
-                    .typo(.pParagraph)
+            SubNavigationBar(title: "프로필 수정") {
+                store.send(.backButtonTapped)
             }
             
             // MARK: 프로필 이미지
