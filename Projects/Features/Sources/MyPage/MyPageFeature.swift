@@ -29,6 +29,7 @@ public struct MyPageFeature {
         var nickname: String = ""
         var profileImageURL: String? = nil
         var activeShootings: [ActiveShooting] = [] // 진행중인 촬영 목록
+        var path = StackState<Path.State>()
 
         public init(
             hasPhotographerInfo: Bool = false,
@@ -41,7 +42,7 @@ public struct MyPageFeature {
         }
     }
 
-    public enum Action: Hashable {
+    public enum Action {
         case togglePhotographerMode(Bool)       // 작가 모드 토글 변경
         case navigateToPhotographerRegister     // 작가 등록 화면으로 이동
         case profileEditTapped                  // 프로필 수정 화면으로 이동
@@ -52,6 +53,7 @@ public struct MyPageFeature {
         case termsOfServiceTapped               // 이용 약관 화면으로 이동
         case settingsTapped                     // 설정 화면으로 이동
         case pastShootingsTapped                // 지난 촬영 내역으로 이동
+        case path(StackAction<Path.State, Path.Action>)
     }
 
     public init() { }
@@ -63,25 +65,61 @@ public struct MyPageFeature {
                 state.isPhotographerMode = isOn
                 return .none
 
-            // TODO: 각 화면 네비게이션 연결 (탭 구조 구현 후)
             case .navigateToPhotographerRegister:
+                // TODO: 작가 등록 화면 네비게이션 연결
                 return .none
             case .profileEditTapped:
+                state.path.append(.profileEdit(ProfileEditFeature.State()))
                 return .none
             case .navigateToSearch:
+                // TODO: 촬영지 검색 화면 네비게이션 연결
                 return .none
             case .shootingCardTapped:
+                // TODO: 예약 정보 화면 네비게이션 연결
                 return .none
             case .followedArtistsTapped:
+                // TODO: 팔로우 작가 목록 화면 네비게이션 연결
                 return .none
             case .myReviewsTapped:
+                // TODO: 내 리뷰 목록 화면 네비게이션 연결
                 return .none
             case .termsOfServiceTapped:
+                // TODO: 이용 약관 화면 네비게이션 연결
                 return .none
             case .settingsTapped:
+                // TODO: 설정 화면 네비게이션 연결
                 return .none
             case .pastShootingsTapped:
+                // TODO: 지난 촬영 내역 화면 네비게이션 연결
                 return .none
+            case .path(.element(id: _, action: .profileEdit(.backButtonTapped))):
+                _ = state.path.popLast()
+                return .none
+            case .path:
+                return .none
+            }
+        }
+        .forEach(\.path, action: \.path) {
+            Path()
+        }
+    }
+
+    @Reducer
+    public struct Path {
+        @ObservableState
+        public enum State: Equatable, Hashable {
+            case profileEdit(ProfileEditFeature.State)
+        }
+
+        public enum Action {
+            case profileEdit(ProfileEditFeature.Action)
+        }
+
+        public init() {}
+
+        public var body: some ReducerOf<Path> {
+            Scope(state: \.profileEdit, action: \.profileEdit) {
+                ProfileEditFeature()
             }
         }
     }

@@ -12,140 +12,152 @@ struct MyPageView: View {
     @Bindable var store: StoreOf<MyPageFeature>
 
     var body: some View {
-        VStack {
-            // 네비게이션 바
-            HStack {
-                Text("마이 페이지")
-                    .typo(.pBoldParagraph)
-                Spacer()
-                Button {
-                    store.send(.settingsTapped)
-                } label: {
-                    Image(.settings)
-                }
-            }
-            .padding(.horizontal, 16)
-
-            ScrollView {
-                // 작가 변경 바
-                Group {
-                    if store.hasPhotographerInfo {
-                        HStack {
-                            Text("작가로 전환")
-                                .typo(.pBoldParagraph)
-                                .foregroundStyle(.white)
-                            Spacer()
-                            Toggle("", isOn: $store.isPhotographerMode.sending(\.togglePhotographerMode))
-                                .labelsHidden()
-                                .toggleStyle(PicToggleStyle())
-                        }
-                        .padding(.horizontal, 16)
-                    } else {
-                        HStack {
-                            Text("작가로도 활동하기")
-                                .typo(.pBoldParagraph)
-                                .foregroundStyle(.white)
-                            Spacer()
-                            Button {
-                                store.send(.navigateToPhotographerRegister)
-                            } label: {
-                                Image(.rightGoWhite)
-                            }
-                        }
-                        .padding(.horizontal, 16)
-                    }
-                }
-                .frame(height: 50)
-                .background(Color(.pGreen120))
-
-                // MARK: 프로필 섹션
-                // TODO: 프로필 이미지 실제 URL 로딩 적용
-                HStack(spacing: 8) {
-                    Image(.profileImagePlaceholder)
-                        .resizable()
-                        .scaledToFill()
-                        .frame(width: 36, height: 36)
-                        .clipShape(Circle())
-
-                    Text(store.nickname)
-                        .typo(.pBigParagraph)
-
+        NavigationStack(path: $store.scope(state: \.path, action: \.path)) {
+            VStack {
+                // 네비게이션 바
+                HStack {
+                    Text("마이 페이지")
+                        .typo(.pBoldParagraph)
                     Spacer()
-
                     Button {
-                        store.send(.profileEditTapped)
+                        store.send(.settingsTapped)
                     } label: {
-                        Text("프로필 수정")
-                            .typo(.pBoldParagraph)
-                            .foregroundStyle(.pGrey4)
-                            .padding(.horizontal, 10)
-                            .padding(.vertical, 8)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 5)
-                                    .stroke(Color(.pGrey3), lineWidth: 1)
-                            )
+                        Image(.settings)
                     }
                 }
                 .padding(.horizontal, 16)
-                .padding(.vertical, 20)
 
-                Rectangle()
-                    .fill(Color(.pGrey2))
-                    .frame(height: 1)
+                ScrollView {
+                    // 작가 변경 바
+                    Group {
+                        if store.hasPhotographerInfo {
+                            HStack {
+                                Text("작가로 전환")
+                                    .typo(.pBoldParagraph)
+                                    .foregroundStyle(.white)
+                                Spacer()
+                                Toggle("", isOn: $store.isPhotographerMode.sending(\.togglePhotographerMode))
+                                    .labelsHidden()
+                                    .toggleStyle(PicToggleStyle())
+                            }
+                            .padding(.horizontal, 16)
+                        } else {
+                            HStack {
+                                Text("작가로도 활동하기")
+                                    .typo(.pBoldParagraph)
+                                    .foregroundStyle(.white)
+                                Spacer()
+                                Button {
+                                    store.send(.navigateToPhotographerRegister)
+                                } label: {
+                                    Image(.rightGoWhite)
+                                }
+                            }
+                            .padding(.horizontal, 16)
+                        }
+                    }
+                    .frame(height: 50)
+                    .background(Color(.pGreen120))
+
+                    // MARK: 프로필 섹션
+                    // TODO: 프로필 이미지 실제 URL 로딩 적용
+                    HStack(spacing: 8) {
+                        Image(.profileImagePlaceholder)
+                            .resizable()
+                            .scaledToFill()
+                            .frame(width: 36, height: 36)
+                            .clipShape(Circle())
+
+                        Text(store.nickname)
+                            .typo(.pBigParagraph)
+
+                        Spacer()
+
+                        Button {
+                            store.send(.profileEditTapped)
+                        } label: {
+                            Text("프로필 수정")
+                                .typo(.pBoldParagraph)
+                                .foregroundStyle(.pGrey4)
+                                .padding(.horizontal, 10)
+                                .padding(.vertical, 8)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 5)
+                                        .stroke(Color(.pGrey3), lineWidth: 1)
+                                )
+                        }
+                    }
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 20)
+
+                    Rectangle()
+                        .fill(Color(.pGrey2))
+                        .frame(height: 1)
+                        .padding(.horizontal, 16)
+
+                    // MARK: 진행중인 촬영 섹션
+                    HStack {
+                        if store.activeShootings.isEmpty {
+                            Text("진행중인 촬영")
+                                .typo(.pSmallTitle)
+                                .foregroundStyle(.pBlack)
+                        } else {
+                            Text("진행중인 촬영 (\(store.activeShootings.count))")
+                                .typo(.pSmallTitle)
+                                .foregroundStyle(.pBlack)
+                        }
+                        Spacer()
+                        Button {
+                            store.send(.pastShootingsTapped)
+                        } label: {
+                            Text("지난 촬영 내역")
+                                .typo(.pCaption)
+                                .foregroundStyle(.pGrey3)
+                            Image(systemName: "chevron.right")
+                                .typo(.pCaption)
+                                .foregroundStyle(.pGrey3)
+                        }
+                    }
+                    .padding(.top, 24)
                     .padding(.horizontal, 16)
 
-                // MARK: 진행중인 촬영 섹션
-                HStack {
                     if store.activeShootings.isEmpty {
-                        Text("진행중인 촬영")
-                            .typo(.pSmallTitle)
-                            .foregroundStyle(.pBlack)
+                        emptyShootingView
                     } else {
-                        Text("진행중인 촬영 (\(store.activeShootings.count))")
-                            .typo(.pSmallTitle)
-                            .foregroundStyle(.pBlack)
+                        activeShootingsView
                     }
-                    Spacer()
-                    Button {
-                        store.send(.pastShootingsTapped)
-                    } label: {
-                        Text("지난 촬영 내역")
-                            .typo(.pCaption)
-                            .foregroundStyle(.pGrey3)
-                        Image(systemName: "chevron.right")
-                            .typo(.pCaption)
-                            .foregroundStyle(.pGrey3)
+
+                    Rectangle()
+                        .fill(Color(.pGrey1))
+                        .frame(height: 10)
+
+                    // MARK: 메뉴 리스트
+                    // TODO: 각 메뉴 화면 네비게이션 연결
+                    VStack(spacing: 0) {
+                        menuRow("팔로우 작가") {
+                            store.send(.followedArtistsTapped)
+                        }
+                        menuRow("내 리뷰") {
+                            store.send(.myReviewsTapped)
+                        }
+                        menuRow("이용 약관") {
+                            store.send(.termsOfServiceTapped)
+                        }
                     }
                 }
-                .padding(.top, 24)
-                .padding(.horizontal, 16)
-
-                if store.activeShootings.isEmpty {
-                    emptyShootingView
-                } else {
-                    activeShootingsView
-                }
-
-                Rectangle()
-                    .fill(Color(.pGrey1))
-                    .frame(height: 10)
-
-                // MARK: 메뉴 리스트
-                // TODO: 각 메뉴 화면 네비게이션 연결
-                VStack(spacing: 0) {
-                    menuRow("팔로우 작가") {
-                        store.send(.followedArtistsTapped)
-                    }
-                    menuRow("내 리뷰") {
-                        store.send(.myReviewsTapped)
-                    }
-                    menuRow("이용 약관") {
-                        store.send(.termsOfServiceTapped)
-                    }
+            }
+            .navigationBarHidden(true)
+        } destination: { store in
+            switch store.state {
+            case .profileEdit:
+                if let store = store.scope(
+                    state: \.profileEdit,
+                    action: \.profileEdit
+                ) {
+                    ProfileEditView(store: store)
                 }
             }
         }
-        .navigationBarHidden(true)
     }
 
     // MARK: - 진행중인 촬영이 없을때
