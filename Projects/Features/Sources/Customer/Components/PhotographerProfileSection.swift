@@ -23,7 +23,7 @@ struct PhotographerProfileSection: View {
       HStack(alignment: .center, spacing: 8) {
         // Profile Image
         Circle()
-          .fill(.pGrey2)
+          .stroke(.pGrey2)
           .frame(width: 74, height: 74)
           .overlay(
             Image(systemName: "person.fill")

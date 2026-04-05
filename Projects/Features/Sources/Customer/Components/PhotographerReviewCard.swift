@@ -23,6 +23,7 @@ struct PhotographerReviewCard: View {
       HStack(spacing: 8) {
         Circle()
           .fill(.pGrey2)
+          .stroke(.pBlack)
           .frame(width: 36, height: 36)
         
         VStack(alignment: .leading, spacing: 2) {
@@ -30,7 +31,7 @@ struct PhotographerReviewCard: View {
             .typo(.pBoldParagraph)
             .foregroundStyle(.pBlack)
           
-          RatingView(rating: rating, starSize: 12)
+          RatingView(rating: rating, starSize: 15, theme: .green)
         }
         
         Spacer()

@@ -76,7 +76,7 @@ public struct PhotographerDetailView: View {
           VStack(spacing: 20) {
             PhotographerReviewCard(
               authorName: "합정동 불주먹",
-              rating: 4.5,
+              rating: 5.0,
               date: "2024.12.03",
               content: "하나하나 신경써서 해주시고 잘 알려주세요 사진 처음찍거나 잘 못찍으시는 분들 하시면 후회 안하십니다!",
               option: "남친생기는 프사",

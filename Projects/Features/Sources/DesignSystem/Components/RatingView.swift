@@ -8,10 +8,24 @@
 import SwiftUI
 
 struct RatingView: View {
+  enum StarTheme {
+    case black
+    case green
+    
+    var fullImageName: ImageResource {
+      self == .black ? .starFullBlack : .starFullGreen
+    }
+    
+    var emptyImageName: ImageResource {
+      self == .black ? .starEmptyBlack : .starEmptyGreen
+    }
+  }
+
   let rating: Double
   let maxRating: Int = 5
   var starSize: CGFloat = 20
   var spacing: CGFloat = 1
+  var theme: StarTheme = .black // Default theme
   
   var body: some View {
     HStack(spacing: spacing) {
@@ -24,21 +38,18 @@ struct RatingView: View {
   }
   
   private func starImage(for index: Int) -> Image {
-    let threshold = Double(index) + 0.5
     if rating >= Double(index + 1) {
-      return Image(systemName: "star.fill")
-    } else if rating >= threshold {
-      return Image(systemName: "star.leadinghalf.filled")
+      return Image(theme.fullImageName)
     } else {
-      return Image(systemName: "star")
+      return Image(theme.emptyImageName)
     }
   }
 }
 
 #Preview {
   VStack {
-    RatingView(rating: 4.5)
-    RatingView(rating: 3.0, starSize: 15)
+    RatingView(rating: 5.0)
+    RatingView(rating: 3.0, starSize: 15, theme: .green)
     RatingView(rating: 0.0)
   }
 }
