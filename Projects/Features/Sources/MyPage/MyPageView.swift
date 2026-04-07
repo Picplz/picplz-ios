@@ -184,6 +184,13 @@ struct MyPageView: View {
                 ) {
                     MyReviewsView(store: store)
                 }
+            case .reviewDetail:
+                if let store = store.scope(
+                    state: \.reviewDetail,
+                    action: \.reviewDetail
+                ) {
+                    ReviewDetailView(store: store)
+                }
             }
         }
     }

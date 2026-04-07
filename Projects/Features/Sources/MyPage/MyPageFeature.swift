@@ -92,11 +92,18 @@ public struct MyPageFeature {
             case .pastShootingsTapped:
                 state.path.append(.pastShootings(PastShootingsFeature.State()))
                 return .none
+            case .path(.element(id: _, action: .myReviews(.reviewTapped(let review)))):
+                state.path.append(.reviewDetail(ReviewDetailFeature.State(review: review)))
+                return .none
+            case .path(.element(id: _, action: .reviewDetail(.confirmDelete))):
+                _ = state.path.popLast()
+                return .none
             case .path(.element(id: _, action: .profileEdit(.backButtonTapped))),
              .path(.element(id: _, action: .pastShootings(.backButtonTapped))),
              .path(.element(id: _, action: .settings(.backButtonTapped))),
              .path(.element(id: _, action: .followedArtists(.backButtonTapped))),
-             .path(.element(id: _, action: .myReviews(.backButtonTapped))):
+             .path(.element(id: _, action: .myReviews(.backButtonTapped))),
+             .path(.element(id: _, action: .reviewDetail(.backButtonTapped))):
                 _ = state.path.popLast()
                 return .none
             case .path:
@@ -117,6 +124,7 @@ public struct MyPageFeature {
             case settings(SettingsFeature.State)
             case followedArtists(FollowedArtistsFeature.State)
             case myReviews(MyReviewsFeature.State)
+            case reviewDetail(ReviewDetailFeature.State)
         }
 
         public enum Action {
@@ -125,6 +133,7 @@ public struct MyPageFeature {
             case settings(SettingsFeature.Action)
             case followedArtists(FollowedArtistsFeature.Action)
             case myReviews(MyReviewsFeature.Action)
+            case reviewDetail(ReviewDetailFeature.Action)
         }
 
         public init() {}
@@ -144,6 +153,9 @@ public struct MyPageFeature {
             }
             Scope(state: \.myReviews, action: \.myReviews) {
                 MyReviewsFeature()
+            }
+            Scope(state: \.reviewDetail, action: \.reviewDetail) {
+                ReviewDetailFeature()
             }
         }
     }
