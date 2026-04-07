@@ -13,7 +13,7 @@ struct MyReviewsView: View {
 
     var body: some View {
         VStack {
-            SubNavigationBar(title: "내 리뷰") {
+            SubNavigationBar(title: "리뷰") {
                 store.send(.backButtonTapped)
             }
 

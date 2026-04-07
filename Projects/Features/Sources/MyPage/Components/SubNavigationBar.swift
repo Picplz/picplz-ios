@@ -24,5 +24,6 @@ struct SubNavigationBar: View {
             Text(title)
                 .typo(.pParagraph)
         }
+        .padding(.vertical, 11)
     }
 }
