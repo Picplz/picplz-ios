@@ -32,7 +32,7 @@ struct MyPageView: View {
                     Group {
                         if store.hasPhotographerInfo {
                             HStack {
-                                Text("작가로 전환")
+                                Text(store.isPhotographerMode ? "고객으로 전환" : "작가로 전환")
                                     .typo(.pBoldParagraph)
                                     .foregroundStyle(.white)
                                 Spacer()
@@ -59,6 +59,9 @@ struct MyPageView: View {
                     .frame(height: 50)
                     .background(Color(.pGreen120))
 
+                    if store.isPhotographerMode {
+                        PhotographerMyPageView(store: store)
+                    } else {
                     // MARK: 프로필 섹션
                     // TODO: 프로필 이미지 실제 URL 로딩 적용
                     HStack(spacing: 8) {
@@ -143,6 +146,7 @@ struct MyPageView: View {
                         menuRow("이용 약관") {
                             store.send(.termsOfServiceTapped)
                         }
+                    }
                     }
                 }
             }
@@ -301,6 +305,35 @@ struct MyPageView: View {
                         location: "성동구 서울숲길 17"
                     ),
                 ]
+            )
+        ) {
+            MyPageFeature()
+        }
+    )
+}
+
+#Preview("작가 모드") {
+    MyPageView(
+        store: Store(
+            initialState: MyPageFeature.State(
+                hasPhotographerInfo: true,
+                isPhotographerMode: true,
+                nickname: "가영포토",
+                instagramUsername: nil,
+                photographerBio: "안녕하세요, 유가영 작가입니다.",
+                followerCount: 0,
+                activeRegions: [
+                    "서울 마포구", "서울 용산구", "서울 강남구", "서울 서초구",
+                    "서울 성동구", "서울 송파구", "서울 종로구", "서울 중구",
+                    "서울 영등포구", "서울 강서구", "서울 양천구", "서울 구로구",
+                    "서울 금천구", "서울 관악구", "서울 동작구", "서울 은평구",
+                    "경기 성남", "경기 수원"
+                ],
+                keywords: ["#개구장", "#디짐", "#맥주감성", "#감성스냅", "#우정샷", "#커플샷"],
+                equipments: ["아이폰 16 PRO", "아이폰 X", "캐논 5D", "소니 A7", "라이카 M11"],
+                hasPackages: false,
+                hasPortfolios: false,
+                satisfactionRating: 0.0
             )
         ) {
             MyPageFeature()

@@ -11,6 +11,8 @@ import Foundation
 
 @Reducer
 public struct MyPageFeature {
+    @Dependency(\.openURL) var openURL
+
     // MARK: - Placeholder Model (추후 Domain 모델로 교체)
     public struct ActiveShooting: Equatable, Identifiable, Hashable {
         public let id: String
@@ -29,16 +31,48 @@ public struct MyPageFeature {
         var nickname: String = ""
         var profileImageURL: String? = nil
         var activeShootings: [ActiveShooting] = [] // 진행중인 촬영 목록
+
+        // MARK: - 작가 모드 전용 필드
+        var instagramUsername: String? = nil       // 인스타그램 아이디 (nil/빈 값 = 미등록)
+        var photographerBio: String = ""           // 작가 소개 한 줄
+        var followerCount: Int = 0                 // 팔로워 수
+        var activeRegions: [String] = []           // 주 촬영지 목록
+        var keywords: [String] = []                // 키워드 목록 (# 포함 저장)
+        var equipments: [String] = []              // 장비 목록
+        var hasPackages: Bool = false              // 등록된 촬영 패키지 존재 여부
+        var hasPortfolios: Bool = false            // 등록된 포트폴리오 존재 여부
+        var satisfactionRating: Double = 0.0       // 촬영 만족도 (0.0 ~ 5.0)
+
         var path = StackState<Path.State>()
 
         public init(
             hasPhotographerInfo: Bool = false,
+            isPhotographerMode: Bool = false,
             nickname: String = "",
-            activeShootings: [ActiveShooting] = []
+            activeShootings: [ActiveShooting] = [],
+            instagramUsername: String? = nil,
+            photographerBio: String = "",
+            followerCount: Int = 0,
+            activeRegions: [String] = [],
+            keywords: [String] = [],
+            equipments: [String] = [],
+            hasPackages: Bool = false,
+            hasPortfolios: Bool = false,
+            satisfactionRating: Double = 0.0
         ) {
             self.hasPhotographerInfo = hasPhotographerInfo
+            self.isPhotographerMode = isPhotographerMode
             self.nickname = nickname
             self.activeShootings = activeShootings
+            self.instagramUsername = instagramUsername
+            self.photographerBio = photographerBio
+            self.followerCount = followerCount
+            self.activeRegions = activeRegions
+            self.keywords = keywords
+            self.equipments = equipments
+            self.hasPackages = hasPackages
+            self.hasPortfolios = hasPortfolios
+            self.satisfactionRating = satisfactionRating
         }
     }
 
@@ -53,6 +87,17 @@ public struct MyPageFeature {
         case termsOfServiceTapped               // 이용 약관 화면으로 이동
         case settingsTapped                     // 설정 화면으로 이동
         case pastShootingsTapped                // 지난 촬영 내역으로 이동
+
+        // MARK: - 작가 모드 전용 액션
+        case profilePreviewTapped               // 프로필 미리보기
+        case instagramLinkTapped                // 인스타그램 프로필 열기
+        case activeRegionsEditTapped            // 주 촬영지 편집
+        case keywordsEditTapped                 // 키워드 편집
+        case equipmentsEditTapped               // 장비 편집
+        case settlementTapped                   // 정산 내역 화면으로 이동
+        case packagesEditTapped                 // 촬영 패키지 편집
+        case portfolioEditTapped                // 포트폴리오 편집
+
         case path(StackAction<Path.State, Path.Action>)
     }
 
@@ -91,6 +136,37 @@ public struct MyPageFeature {
                 return .none
             case .pastShootingsTapped:
                 state.path.append(.pastShootings(PastShootingsFeature.State()))
+                return .none
+
+            case .profilePreviewTapped:
+                // TODO: 작가 프로필 미리보기 화면 네비게이션 연결
+                return .none
+            case .instagramLinkTapped:
+                guard let username = state.instagramUsername?.trimmingCharacters(in: .whitespaces),
+                      !username.isEmpty,
+                      let url = URL(string: "https://instagram.com/\(username)") else {
+                    return .none
+                }
+                return .run { _ in
+                    await openURL(url)
+                }
+            case .activeRegionsEditTapped:
+                // TODO: 주 촬영지 편집 화면 네비게이션 연결
+                return .none
+            case .keywordsEditTapped:
+                // TODO: 키워드 편집 화면 네비게이션 연결
+                return .none
+            case .equipmentsEditTapped:
+                // TODO: 장비 편집 화면 네비게이션 연결
+                return .none
+            case .settlementTapped:
+                // TODO: 정산 내역 화면 네비게이션 연결
+                return .none
+            case .packagesEditTapped:
+                // TODO: 촬영 패키지 편집 화면 네비게이션 연결
+                return .none
+            case .portfolioEditTapped:
+                // TODO: 포트폴리오 편집 화면 네비게이션 연결
                 return .none
             case .path(.element(id: _, action: .myReviews(.reviewTapped(let review)))):
                 state.path.append(.reviewDetail(ReviewDetailFeature.State(review: review)))
