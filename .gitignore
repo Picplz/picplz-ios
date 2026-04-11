@@ -72,3 +72,7 @@ Tuist/.build
 ### Configurations ###
 Configs/debug.xcconfig
 Configs/release.xcconfig
+
+### Claude Code (local harness) ###
+.claude/
+CLAUDE.md
