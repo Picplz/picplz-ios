@@ -31,7 +31,10 @@ public struct PastShootingsFeature {
     @ObservableState
     public struct State: Equatable, Hashable {
         var pastShootings: [PastShooting] = []
-        public init() {}
+
+        public init(pastShootings: [PastShooting] = []) {
+            self.pastShootings = pastShootings
+        }
     }
 
     public enum Action: Hashable {

@@ -31,6 +31,7 @@ public struct MyPageFeature {
         var nickname: String = ""
         var profileImageURL: String? = nil
         var activeShootings: [ActiveShooting] = [] // 진행중인 촬영 목록
+        var pastShootings: [PastShootingsFeature.PastShooting] = [] // 지난 촬영 내역
 
         // MARK: - 작가 모드 전용 필드
         var instagramUsername: String? = nil       // 인스타그램 아이디 (nil/빈 값 = 미등록)
@@ -50,6 +51,7 @@ public struct MyPageFeature {
             isPhotographerMode: Bool = false,
             nickname: String = "",
             activeShootings: [ActiveShooting] = [],
+            pastShootings: [PastShootingsFeature.PastShooting] = [],
             instagramUsername: String? = nil,
             photographerBio: String = "",
             followerCount: Int = 0,
@@ -64,6 +66,7 @@ public struct MyPageFeature {
             self.isPhotographerMode = isPhotographerMode
             self.nickname = nickname
             self.activeShootings = activeShootings
+            self.pastShootings = pastShootings
             self.instagramUsername = instagramUsername
             self.photographerBio = photographerBio
             self.followerCount = followerCount
@@ -142,7 +145,9 @@ public struct MyPageFeature {
                 state.path.append(.settings(SettingsFeature.State()))
                 return .none
             case .pastShootingsTapped:
-                state.path.append(.pastShootings(PastShootingsFeature.State()))
+                state.path.append(.pastShootings(
+                    PastShootingsFeature.State(pastShootings: state.pastShootings)
+                ))
                 return .none
 
             case .profilePreviewTapped:

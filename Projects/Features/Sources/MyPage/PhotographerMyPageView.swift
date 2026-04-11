@@ -367,7 +367,7 @@ struct PhotographerMyPageView: View {
     }
 }
 
-#Preview {
+#Preview("비어있음") {
     ScrollView {
         PhotographerMyPageView(
             store: Store(
@@ -390,6 +390,31 @@ struct PhotographerMyPageView: View {
                     hasPackages: false,
                     hasPortfolios: false,
                     satisfactionRating: 4.0
+                )
+            ) {
+                MyPageFeature()
+            }
+        )
+    }
+}
+
+#Preview("데이터 있음") {
+    ScrollView {
+        PhotographerMyPageView(
+            store: Store(
+                initialState: MyPageFeature.State(
+                    hasPhotographerInfo: true,
+                    isPhotographerMode: true,
+                    nickname: "가영포토",
+                    instagramUsername: "gayoung.photo",
+                    photographerBio: "안녕하세요, 유가영 작가입니다.",
+                    followerCount: 1234,
+                    activeRegions: ["서울 마포구", "서울 용산구", "서울 강남구"],
+                    keywords: ["#감성스냅", "#우정샷", "#커플샷"],
+                    equipments: ["캐논 5D", "소니 A7"],
+                    hasPackages: true,
+                    hasPortfolios: true,
+                    satisfactionRating: 4.8
                 )
             ) {
                 MyPageFeature()

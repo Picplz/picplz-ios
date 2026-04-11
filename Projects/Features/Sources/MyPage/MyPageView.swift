@@ -319,6 +319,30 @@ struct MyPageView: View {
                 hasPhotographerInfo: true,
                 isPhotographerMode: true,
                 nickname: "가영포토",
+                pastShootings: [
+                    .init(
+                        id: "1",
+                        photographerName: "합정동작가",
+                        photographerImageURL: nil,
+                        title: "남친생기는 프사",
+                        price: 12000,
+                        status: .cancelled,
+                        dateTime: "25.03.24 | 오후2:30",
+                        location: "종로구 효자로 33",
+                        paymentDate: "2025.03.01"
+                    ),
+                    .init(
+                        id: "2",
+                        photographerName: "유가영사진",
+                        photographerImageURL: nil,
+                        title: "인스타 피드꾸미기",
+                        price: 12000,
+                        status: .completed,
+                        dateTime: "25.03.24 | 오후2:30",
+                        location: "종로구 효자로 33",
+                        paymentDate: "2025.03.01"
+                    ),
+                ],
                 instagramUsername: nil,
                 photographerBio: "안녕하세요, 유가영 작가입니다.",
                 followerCount: 0,
