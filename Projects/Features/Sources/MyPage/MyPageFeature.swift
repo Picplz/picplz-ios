@@ -114,7 +114,14 @@ public struct MyPageFeature {
                 // TODO: 작가 등록 화면 네비게이션 연결
                 return .none
             case .profileEditTapped:
-                state.path.append(.profileEdit(ProfileEditFeature.State()))
+                state.path.append(.profileEdit(
+                    ProfileEditFeature.State(
+                        nickname: state.nickname,
+                        isPhotographer: state.isPhotographerMode,
+                        instagramUsername: state.instagramUsername ?? "",
+                        bio: state.photographerBio
+                    )
+                ))
                 return .none
             case .navigateToSearch:
                 // TODO: 촬영지 검색 화면 네비게이션 연결

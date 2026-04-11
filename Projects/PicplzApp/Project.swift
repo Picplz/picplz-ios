@@ -32,6 +32,7 @@ let project = Project.create(
         "NSLocationAlwaysAndWhenInUseUsageDescription": "위치 기반 기능을 위해 기기 위치 정보를 활용합니다. 현재 위치를 토대로 근처 작가 또는 고객과의 매칭 서비스를 제공합니다.",
         "NSLocationWhenInUseUsageDescription": "위치 기반 기능을 위해 기기 위치 정보를 활용합니다. 현재 위치를 토대로 근처 작가 또는 고객과의 매칭 서비스를 제공합니다.",
         "NSLocationAlwaysUsageDescription": "위치 기반 기능을 위해 기기 위치 정보를 활용합니다. 현재 위치를 토대로 근처 작가 또는 고객과의 매칭 서비스를 제공합니다.",
+        "NSPhotoLibraryUsageDescription": "프로필, 포트폴리오, 리뷰 등 서비스 이용에 필요한 사진을 갤러리에서 불러오기 위해 사진 접근 권한이 필요합니다.",
     ]
   ),
   hasResources: false,
