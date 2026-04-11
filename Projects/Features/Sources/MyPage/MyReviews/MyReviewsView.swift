@@ -18,26 +18,33 @@ struct MyReviewsView: View {
             }
             .padding(.horizontal, 16)
 
-            ScrollView {
-                LazyVStack(spacing: 0) {
-                    ForEach(store.reviews) { review in
-                        MyReviewCardView(
-                            review: review,
-                            onDeleteTapped: {
-                                store.send(.deleteTapped(review))
-                            },
-                            onLikeTapped: {
-                                store.send(.likeTapped(review))
-                            },
-                            onTap: {
-                                store.send(.reviewTapped(review))
-                            }
-                        )
-                        .padding(.horizontal, 16)
+            if store.reviews.isEmpty {
+                EmptyStateView(
+                    title: "아직 작성한 리뷰가 없어요",
+                    description: "촬영을 진행하고\n리뷰를 작성해 보세요"
+                )
+            } else {
+                ScrollView {
+                    LazyVStack(spacing: 0) {
+                        ForEach(store.reviews) { review in
+                            MyReviewCardView(
+                                review: review,
+                                onDeleteTapped: {
+                                    store.send(.deleteTapped(review))
+                                },
+                                onLikeTapped: {
+                                    store.send(.likeTapped(review))
+                                },
+                                onTap: {
+                                    store.send(.reviewTapped(review))
+                                }
+                            )
+                            .padding(.horizontal, 16)
 
-                        Rectangle()
-                            .fill(Color(.pGrey2))
-                            .frame(height: 1)
+                            Rectangle()
+                                .fill(Color(.pGrey2))
+                                .frame(height: 1)
+                        }
                     }
                 }
             }
@@ -57,7 +64,7 @@ struct MyReviewsView: View {
     }
 }
 
-#Preview {
+#Preview("List") {
     MyReviewsView(
         store: Store(
             initialState: MyReviewsFeature.State(
@@ -103,6 +110,16 @@ struct MyReviewsView: View {
                     ),
                 ]
             )
+        ) {
+            MyReviewsFeature()
+        }
+    )
+}
+
+#Preview("Empty") {
+    MyReviewsView(
+        store: Store(
+            initialState: MyReviewsFeature.State(reviews: [])
         ) {
             MyReviewsFeature()
         }

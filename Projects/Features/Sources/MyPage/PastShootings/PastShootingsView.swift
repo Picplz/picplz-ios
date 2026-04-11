@@ -17,24 +17,31 @@ struct PastShootingsView: View {
                 store.send(.backButtonTapped)
             }
 
-            ScrollView {
-                LazyVStack(spacing: 8) {
-                    ForEach(store.pastShootings) { shooting in
-                        PastShootingCardView(
-                            shooting: shooting,
-                            onChatTapped: {
-                                store.send(.chatButtonTapped(shooting.id))
-                            },
-                            onReviewTapped: {
-                                store.send(.reviewButtonTapped(shooting.id))
-                            },
-                            onOrderDetailTapped: {
-                                store.send(.orderDetailTapped(shooting.id))
-                            }
-                        )
+            if store.pastShootings.isEmpty {
+                EmptyStateView(
+                    title: "아직 촬영 내역이 없어요",
+                    description: "촬영을 진행해 보세요"
+                )
+            } else {
+                ScrollView {
+                    LazyVStack(spacing: 8) {
+                        ForEach(store.pastShootings) { shooting in
+                            PastShootingCardView(
+                                shooting: shooting,
+                                onChatTapped: {
+                                    store.send(.chatButtonTapped(shooting.id))
+                                },
+                                onReviewTapped: {
+                                    store.send(.reviewButtonTapped(shooting.id))
+                                },
+                                onOrderDetailTapped: {
+                                    store.send(.orderDetailTapped(shooting.id))
+                                }
+                            )
+                        }
                     }
+                    .padding(.top, 16)
                 }
-                .padding(.top, 16)
             }
         }
         .padding(.horizontal, 16)
@@ -42,7 +49,7 @@ struct PastShootingsView: View {
     }
 }
 
-#Preview {
+#Preview("List") {
     PastShootingsView(
         store: Store(
             initialState: {
@@ -73,6 +80,16 @@ struct PastShootingsView: View {
                 ]
                 return state
             }()
+        ) {
+            PastShootingsFeature()
+        }
+    )
+}
+
+#Preview("Empty") {
+    PastShootingsView(
+        store: Store(
+            initialState: PastShootingsFeature.State()
         ) {
             PastShootingsFeature()
         }
