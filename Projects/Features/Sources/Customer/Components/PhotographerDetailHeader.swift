@@ -14,21 +14,7 @@ struct PhotographerDetailHeader: View {
   let onMore: () -> Void
   
   var body: some View {
-    HStack {
-      Button(action: onBack) {
-        Image(systemName: "chevron.left")
-          .font(.system(size: 18, weight: .bold))
-          .foregroundStyle(.pBlack)
-      }
-      
-      Spacer()
-      
-      Text(name)
-        .typo(.pParagraph)
-        .foregroundStyle(.pBlack)
-      
-      Spacer()
-      
+    TempPicNavigationBar(title: name, onBack: onBack) {
       Button(action: onMore) {
         Image(systemName: "ellipsis")
           .rotationEffect(.degrees(90))
@@ -36,9 +22,6 @@ struct PhotographerDetailHeader: View {
           .foregroundStyle(.pBlack)
       }
     }
-    .padding(.horizontal, 16)
-    .frame(height: 44)
-    .background(.pWhite)
   }
 }
 
