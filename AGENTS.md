@@ -19,6 +19,7 @@
 
 - 레이어 경계를 유지한다.
 - 비즈니스 규칙은 가능한 `Domain`에 둔다.
+- `Domain` 엔티티에는 UI 표현 편의를 위한 문자열 조합, 포맷팅, 화면 전용 computed property를 넣지 않는다.
 - DTO는 `Networking`에만 두고, 외부에는 `Domain` 모델을 사용한다.
 - 구현 연결은 `DependencyInjection`에서 처리한다.
 - 화면 로직은 TCA Reducer에 두고, View는 표현과 액션 전달에 집중한다.
@@ -26,6 +27,7 @@
 ## 변경 가이드
 
 - 새 기능은 보통 `Domain → 구현체(Networking/Platform/Storage) → DependencyInjection → Features` 순서로 추가한다.
+- UI 전용 가공값이 필요하면 `Features`에서 `Entities+UI` 형태의 extension으로 분리한다.
 - 앱 초기 진입이나 전역 분기가 바뀔 때만 `PicplzApp`을 수정한다.
 - `Features`가 `Networking`의 구현 세부사항을 직접 알지 않도록 유지한다.
 - 플랫폼 SDK 접근은 `Platform`에 두고, `Features`에서 직접 다루지 않는다.
