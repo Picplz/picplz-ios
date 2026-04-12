@@ -115,12 +115,35 @@ public struct PhotographerReviewListFeature {
           photos: state.topReviewImages
         )))
 
-      case .likeButtonTapped, .reportButtonTapped, .delegate:
+      case .likeButtonTapped, .reportButtonTapped, .delegate, .onAppear, .fetchReviews, .reviewsResponse:
         return .none
       }
     }
     .ifLet(\.$sortModal, action: \.sortModal) {
       SortSelectFeature()
+    }
+  }
+}
+
+extension PhotographerReviewListFeature {
+  @Reducer
+  public struct SortSelectFeature {
+    @ObservableState
+    public struct State: Equatable {
+      public var selectedOrder: PhotographerReviewListFeature.SortOrder
+    }
+    
+    public enum Action: Equatable {
+      case selectOrder(PhotographerReviewListFeature.SortOrder)
+    }
+    
+    public var body: some ReducerOf<Self> {
+      Reduce { state, action in
+        switch action {
+        case .selectOrder:
+          return .none
+        }
+      }
     }
   }
 }

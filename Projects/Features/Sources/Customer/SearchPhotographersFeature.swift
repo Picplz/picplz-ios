@@ -6,6 +6,7 @@
 //
 
 import ComposableArchitecture
+import Domain
 import Foundation
 
 @Reducer
@@ -16,26 +17,26 @@ public struct SearchPhotographersFeature {
     public var photographers: [Photographer] = []
     public var searchResultState: SearchResultState = .idle
     public var sortOrder: SortOrder = .rating
-    
+
     @Presents var sortModal: SortSelectFeature.State?
-    
+
     public init() {}
   }
-  
+
   public enum SearchResultState: Equatable {
     case idle
     case searching
     case results
     case noResults
   }
-  
+
   public enum SortOrder: String, CaseIterable, Equatable {
     case rating = "별점순"
     case reviews = "리뷰많은순"
     case followers = "팔로워순"
   }
-  
-  public enum Action: BindableAction {
+
+  public enum Action: BindableAction, Equatable {
     case binding(BindingAction<State>)
     case backButtonTapped
     case clearButtonTapped
@@ -44,12 +45,26 @@ public struct SearchPhotographersFeature {
     case photographerTapped(UUID)
     case sortModal(PresentationAction<SortSelectFeature.Action>)
     case delegate(Delegate)
+
+    public static func == (lhs: Action, rhs: Action) -> Bool {
+      switch (lhs, rhs) {
+      case (.binding, .binding): return true
+      case (.backButtonTapped, .backButtonTapped): return true
+      case (.clearButtonTapped, .clearButtonTapped): return true
+      case (.searchButtonTapped, .searchButtonTapped): return true
+      case (.sortDropdownTapped, .sortDropdownTapped): return true
+      case let (.photographerTapped(l), .photographerTapped(r)): return l == r
+      case let (.sortModal(l), .sortModal(r)): return l == r
+      case let (.delegate(l), .delegate(r)): return l == r
+      default: return false
+      }
+    }
   }
-  
+
   public enum Delegate: Equatable {
     case pushPhotographerDetail(PhotographerDetail)
   }
-  
+
   public init() {}
   
   @Dependency(\.continuousClock) var clock
@@ -106,7 +121,7 @@ public struct SearchPhotographersFeature {
         
       case let .photographerTapped(id):
         // TODO: 실제 작가 상세 정보를 가져오는 API 연동 필요
-        return .send(.delegate(.pushPhotographerDetail(.mock)))
+        return .send(.delegate(.pushPhotographerDetail(PhotographerDetail.mock)))
 
       case .backButtonTapped, .binding, .delegate:
         return .none

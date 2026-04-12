@@ -21,7 +21,7 @@ extension CustomerHomeFeature {
 }
 
 extension CustomerHomeFeature.Path.State: Equatable {}
-extension CustomerHomeFeature.Path.Action: Equatable {}
+extension CustomerHomeFeature.Path.Action: Equatable {} // Type 'CustomerHomeFeature.Path.Action' does not conform to protocol 'Equatable'
 
 @Reducer
 public struct CustomerHomeFeature {
@@ -74,7 +74,7 @@ public struct CustomerHomeFeature {
     public let postDate: String
   }
   
-  public enum Action: BindableAction {
+  public enum Action: BindableAction, Equatable {
     case binding(BindingAction<State>)
     case searchBarTapped
     case locationTapped
@@ -84,6 +84,20 @@ public struct CustomerHomeFeature {
     
     case locationSelect(PresentationAction<LocationSelectFeature.Action>)
     case path(StackAction<Path.State, Path.Action>)
+
+    public static func == (lhs: Action, rhs: Action) -> Bool {
+      switch (lhs, rhs) {
+      case (.binding, .binding): return true
+      case (.searchBarTapped, .searchBarTapped): return true
+      case (.locationTapped, .locationTapped): return true
+      case (.notificationTapped, .notificationTapped): return true
+      case (.profileTapped, .profileTapped): return true
+      case let (.reportTapped(l), .reportTapped(r)): return l == r
+      case let (.locationSelect(l), .locationSelect(r)): return l == r
+      case let (.path(l), .path(r)): return l == r
+      default: return false
+      }
+    }
   }
   
   public init() {}
@@ -120,7 +134,7 @@ public struct CustomerHomeFeature {
       case .locationSelect:
         return .none
         
-      case .path(.element(id: _, action: .searchPhotographers(.backButtonTapped))):
+      case let .path(.element(id: _, action: .searchPhotographers(.backButtonTapped))):
         _ = state.path.popLast()
         return .none
 
@@ -128,7 +142,7 @@ public struct CustomerHomeFeature {
         state.path.append(.photographerDetail(PhotographerDetailFeature.State(photographer: photographer)))
         return .none
 
-      case .path(.element(id: _, action: .photographerDetail(.backButtonTapped))):
+      case let .path(.element(id: _, action: .photographerDetail(.backButtonTapped))):
         _ = state.path.popLast()
         return .none
 
@@ -136,7 +150,7 @@ public struct CustomerHomeFeature {
         state.path.append(.reviewList(reviewState))
         return .none
 
-      case .path(.element(id: _, action: .reviewList(.backButtonTapped))):
+      case let .path(.element(id: _, action: .reviewList(.backButtonTapped))):
         _ = state.path.popLast()
         return .none
 
@@ -144,7 +158,7 @@ public struct CustomerHomeFeature {
         state.path.append(.photoReviewList(PhotographerPhotoReviewListFeature.State(photographerId: id, photoReviews: photos)))
         return .none
 
-      case .path(.element(id: _, action: .photoReviewList(.backButtonTapped))):
+      case let .path(.element(id: _, action: .photoReviewList(.backButtonTapped))):
         _ = state.path.popLast()
         return .none
 
@@ -152,7 +166,7 @@ public struct CustomerHomeFeature {
         state.path.append(.photoDetail(PhotographerPhotoDetailFeature.State(images: images, currentIndex: index)))
         return .none
 
-      case .path(.element(id: _, action: .photoDetail(.backButtonTapped))):
+      case let .path(.element(id: _, action: .photoDetail(.backButtonTapped))):
         _ = state.path.popLast()
         return .none
         

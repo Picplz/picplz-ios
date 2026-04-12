@@ -157,7 +157,7 @@ struct ReviewSortSelectView: View {
   var body: some View {
     VStack(spacing: 0) {
       Capsule()
-        .fill(.pGrey2)
+        .fill(Color.pGrey2)
         .frame(width: 40, height: 4)
         .padding(.top, 8)
 
@@ -169,12 +169,12 @@ struct ReviewSortSelectView: View {
               Text(order.rawValue)
                 .typo(.pParagraph)
                 .foregroundStyle(
-                  store.selectedOrder == order ? .pBlack : .pGrey4
+                  store.selectedOrder == order ? Color.pBlack : Color.pGrey4
                 )
               Spacer()
               if store.selectedOrder == order {
                 Image(systemName: "checkmark")
-                  .foregroundStyle(.pBlack)
+                  .foregroundStyle(Color.pBlack)
               }
             }
             .padding(.horizontal, 24)
@@ -183,7 +183,7 @@ struct ReviewSortSelectView: View {
 
           if order != PhotographerReviewListFeature.SortOrder.allCases.last {
             Divider()
-              .background(.pGrey1)
+              .background(Color.pGrey1)
               .padding(.horizontal, 24)
           }
         }
@@ -192,7 +192,7 @@ struct ReviewSortSelectView: View {
 
       Spacer()
     }
-    .background(.pWhite)
+    .background(Color.pWhite)
   }
 }
 
