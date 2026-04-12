@@ -6,12 +6,10 @@
 //
 
 import SwiftUI
+import Domain
 
 struct PhotographerProfileSection: View {
-  let name: String
-  let followerCount: Int
-  let instagramId: String
-  let description: String
+  let photographer: PhotographerDetail
   let isExpanded: Bool
   let onFollow: () -> Void
   let onExpand: () -> Void
@@ -22,26 +20,36 @@ struct PhotographerProfileSection: View {
     VStack(alignment: .leading, spacing: 20) {
       HStack(alignment: .center, spacing: 8) {
         // Profile Image
-        Circle()
-          .stroke(.pGrey2)
-          .frame(width: 74, height: 74)
-          .overlay(
-            Image(systemName: "person.fill")
-              .font(.system(size: 30))
-              .foregroundStyle(.pGrey3)
-          )
+        Group {
+          if let data = photographer.profileImageData,
+             let uiImage = UIImage(data: data) {
+            Image(uiImage: uiImage)
+              .resizable()
+              .scaledToFill()
+          } else {
+            Circle()
+              .stroke(.pGrey2)
+              .overlay(
+                Image(systemName: "person.fill")
+                  .font(.system(size: 30))
+                  .foregroundStyle(.pGrey3)
+              )
+          }
+        }
+        .frame(width: 74, height: 74)
+        .clipShape(Circle())
         
         VStack(alignment: .leading, spacing: 10) {
           VStack(alignment: .leading, spacing: 0) {
             HStack(alignment: .center) {
-              Text(name)
+              Text(photographer.name)
                 .typo(.pSmallTitle)
                 .foregroundStyle(.pBlack)
               
               Spacer()
               
               HStack(spacing: 12) {
-                Text("\(followerCount)명")
+                Text("\(photographer.followerCount)명")
                   .typo(.pCaption)
                   .foregroundStyle(.pGrey4)
                 
@@ -86,19 +94,19 @@ struct PhotographerProfileSection: View {
               .fixedSize(horizontal: false, vertical: true)
             
             if isTruncated {
-              if !isExpanded {
-                Text("...더보기")
+              if isExpanded {
+                Text("접기")
                   .typo(.pInsideTag)
-                  .foregroundStyle(.pGrey6)
+                  .foregroundStyle(.pGreen120)
                   .padding(.leading, 4)
                   .background(Color.pWhite)
                   .onTapGesture {
                     onExpand()
                   }
               } else {
-                Text("접기")
+                Text("...더보기")
                   .typo(.pInsideTag)
-                  .foregroundStyle(.pGreen120)
+                  .foregroundStyle(.pGrey6)
                   .padding(.leading, 4)
                   .background(Color.pWhite)
                   .onTapGesture {
@@ -110,7 +118,7 @@ struct PhotographerProfileSection: View {
           .overlay(
             GeometryReader { proxy in
               Color.clear.onAppear {
-                determineTruncation(description: description, width: proxy.size.width)
+                determineTruncation(description: photographer.description, width: proxy.size.width)
               }
             }
           )
@@ -118,6 +126,14 @@ struct PhotographerProfileSection: View {
       }
     }
     .padding(.horizontal, 16)
+  }
+
+  private var instagramId: String {
+    photographer.instagramId
+  }
+
+  private var description: String {
+    photographer.description
   }
 
   private func determineTruncation(description: String, width: CGFloat) {
@@ -138,20 +154,14 @@ struct PhotographerProfileSection: View {
 #Preview {
   VStack {
     PhotographerProfileSection(
-      name: "유가영 작가",
-      followerCount: 112,
-      instagramId: "Gayoung",
-      description: "10/31 이후 예약 가능합니다. 어쩌고저쩌고 적으면 최대 두 줄까지 적을 수 있습니다. 어쩌고저쩌고... 아이고 쉽지 않다 하하하",
+      photographer: .mock,
       isExpanded: false,
       onFollow: {},
       onExpand: {}
     )
     Divider()
     PhotographerProfileSection(
-      name: "유가영 작가",
-      followerCount: 112,
-      instagramId: "Gayoung",
-      description: "10/31 이후 예약 가능합니다. 어쩌고저쩌고 적으면 최대 두 줄까지 적을 수 있습니다. 어쩌고저쩌고... 아이고 쉽지 않다 하하하",
+      photographer: .mock,
       isExpanded: true,
       onFollow: {},
       onExpand: {}

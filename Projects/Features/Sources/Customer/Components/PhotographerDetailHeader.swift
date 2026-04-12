@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Domain
 
 struct PhotographerDetailHeader: View {
   let name: String
@@ -42,5 +43,5 @@ struct PhotographerDetailHeader: View {
 }
 
 #Preview {
-  PhotographerDetailHeader(name: "유가영 작가", onBack: {}, onMore: {})
+  PhotographerDetailHeader(name: PhotographerDetail.mock.name, onBack: {}, onMore: {})
 }

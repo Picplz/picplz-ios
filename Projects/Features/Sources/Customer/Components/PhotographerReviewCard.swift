@@ -6,15 +6,10 @@
 //
 
 import SwiftUI
+import Domain
 
 struct PhotographerReviewCard: View {
-  let authorName: String
-  let rating: Double
-  let date: String
-  let content: String
-  let option: String
-  let location: String
-  let imagesData: [Data]
+  let review: PhotographerReview
   let onReport: () -> Void
   
   var body: some View {
@@ -31,7 +26,7 @@ struct PhotographerReviewCard: View {
             .typo(.pBoldParagraph)
             .foregroundStyle(.pBlack)
           
-          RatingView(rating: rating, starSize: 15, theme: .green)
+          RatingView(rating: review.rating, starSize: 15, theme: .green)
         }
         
         Spacer()
@@ -47,18 +42,18 @@ struct PhotographerReviewCard: View {
               .cornerRadius(5)
           }
           
-          Text(date)
+          Text(review.dateText)
             .typo(.pCaption)
             .foregroundStyle(.pBlack)
         }
       }
       
       // Images
-      if !imagesData.isEmpty {
+      if !review.imagesData.isEmpty {
         ScrollView(.horizontal, showsIndicators: false) {
           HStack(spacing: 1) {
-            ForEach(0..<imagesData.count, id: \.self) { index in
-              if let uiImage = UIImage(data: imagesData[index]) {
+            ForEach(0..<review.imagesData.count, id: \.self) { index in
+              if let uiImage = UIImage(data: review.imagesData[index]) {
                 Image(uiImage: uiImage)
                   .resizable()
                   .scaledToFill()
@@ -74,11 +69,11 @@ struct PhotographerReviewCard: View {
       // Info & Content
       VStack(alignment: .leading, spacing: 8) {
         VStack(alignment: .leading, spacing: 4) {
-          infoRow(label: "옵션", value: option)
-          infoRow(label: "촬영지", value: location)
+          infoRow(label: "옵션", value: review.option)
+          infoRow(label: "촬영지", value: review.location)
         }
         
-        Text(content)
+        Text(review.content)
           .typo(.pParagraph)
           .foregroundStyle(.pBlack)
       }
@@ -98,6 +93,10 @@ struct PhotographerReviewCard: View {
     }
     .padding(.horizontal, 16)
   }
+
+  private var authorName: String {
+    review.authorName
+  }
   
   private func infoRow(label: String, value: String) -> some View {
     HStack(spacing: 10) {
@@ -113,13 +112,7 @@ struct PhotographerReviewCard: View {
 
 #Preview {
   PhotographerReviewCard(
-    authorName: "합정동 불주먹",
-    rating: 4.5,
-    date: "2024.12.03",
-    content: "하나하나 신경써서 해주시고 잘 알려주세요 사진 처음찍거나 잘 못찍으시는 분들 하시면 후회 안하십니다!",
-    option: "남친생기는 프사",
-    location: "서울시 마포구 무대륙",
-    imagesData: [],
+    review: .mock,
     onReport: {}
   )
 }

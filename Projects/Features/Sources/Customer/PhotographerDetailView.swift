@@ -7,6 +7,7 @@
 
 import SwiftUI
 import ComposableArchitecture
+import Domain
 
 public struct PhotographerDetailView: View {
   let store: StoreOf<PhotographerDetailFeature>
@@ -36,10 +37,7 @@ public struct PhotographerDetailView: View {
         VStack(alignment: .leading, spacing: 0) {
           // Profile Section
           PhotographerProfileSection(
-            name: store.photographer.name,
-            followerCount: store.photographer.followerCount,
-            instagramId: store.photographer.instagramId,
-            description: store.photographer.description,
+            photographer: store.photographer,
             isExpanded: store.isDescriptionExpanded,
             onFollow: { store.send(.followButtonTapped) },
             onExpand: { store.send(.expandDescriptionTapped) }
@@ -54,13 +52,13 @@ public struct PhotographerDetailView: View {
           VStack(spacing: 8) {
             PhotographerInfoRow(
               label: "촬영지",
-              value: store.photographer.locations,
+              value: store.photographer.locationsText,
               isExpandable: true,
               isExpanded: store.isLocationExpanded,
               onExpand: { store.send(.expandLocationTapped) }
             )
-            PhotographerInfoRow(label: "키워드", value: store.photographer.keywords.joined(separator: ", "))
-            PhotographerInfoRow(label: "장비", value: store.photographer.equipments)
+            PhotographerInfoRow(label: "키워드", value: store.photographer.keywordsText)
+            PhotographerInfoRow(label: "장비", value: store.photographer.equipmentsText)
           }
           .padding(.vertical, 20)
           
@@ -72,18 +70,13 @@ public struct PhotographerDetailView: View {
           // Rating Section
           RatingSection(rating: store.photographer.rating, reviewCount: store.photographer.reviewCount)
           
-          // Review Items (Mock)
           VStack(spacing: 20) {
-            PhotographerReviewCard(
-              authorName: "합정동 불주먹",
-              rating: 5.0,
-              date: "2024.12.03",
-              content: "하나하나 신경써서 해주시고 잘 알려주세요 사진 처음찍거나 잘 못찍으시는 분들 하시면 후회 안하십니다!",
-              option: "남친생기는 프사",
-              location: "서울시 마포구 무대륙",
-              imagesData: [],
-              onReport: { store.send(.reportReviewTapped(UUID())) }
-            )
+            ForEach(store.photographer.reviews) { review in
+              PhotographerReviewCard(
+                review: review,
+                onReport: { store.send(.reportReviewTapped(review.id)) }
+              )
+            }
             
             Button(action: {}) {
               HStack(spacing: 4) {
@@ -105,7 +98,7 @@ public struct PhotographerDetailView: View {
             .padding(.horizontal, 16)
           
           // Portfolio Grid
-          PortfolioGrid(imagesData: []) {
+          PortfolioGrid(imagesData: store.photographer.portfolioImagesData) {
             // More action
           }
           
@@ -118,31 +111,16 @@ public struct PhotographerDetailView: View {
               .padding(.top, 40)
             
             VStack(spacing: 0) {
-              PhotographerPackageCard(
-                title: "남친 생기는 프사❤️",
-                price: "9,900원",
-                time: "15분 이내",
-                info: "여자친구 /남자친구 생기는 카톡프사 찍어드립니당~ 요즘 인스타그램 감성으로 이쁘게! 베스트컷 5개정도 같이 뽑아드려용!",
-                imageData: nil
-              )
-              .padding(.vertical, 12)
-              
-              Divider()
-                .background(.pGrey2)
-                .padding(.horizontal, 16)
-              
-              PhotographerPackageCard(
-                title: "웨딩 아이폰 스냅💍",
-                price: "12,900원",
-                time: "30분~1시간",
-                info: "비싼 아이폰 본식 스냅! 간단하고 빠르게 찍어드립니다~~ 하객이 찍은 것처럼 자연스럽게 찍어드립디당",
-                imageData: nil
-              )
-              .padding(.vertical, 12)
-              
-              Divider()
-                .background(.pGrey2)
-                .padding(.horizontal, 16)
+              ForEach(Array(store.photographer.packages.enumerated()), id: \.element.id) { index, package in
+                PhotographerPackageCard(package: package)
+                  .padding(.vertical, 12)
+
+                if index < store.photographer.packages.count - 1 {
+                  Divider()
+                    .background(.pGrey2)
+                    .padding(.horizontal, 16)
+                }
+              }
             }
           }
           
@@ -192,21 +170,7 @@ public struct PhotographerDetailView: View {
 #Preview("Blocked State") {
   PhotographerDetailView(
     store: Store(initialState: PhotographerDetailFeature.State(
-      photographer: PhotographerDetail(
-        id: UUID(),
-        name: "유가영 작가",
-        profileImageData: nil,
-        instagramId: "Gayoung",
-        followerCount: 112,
-        description: "차단된 작가입니다.",
-        locations: "정보 없음",
-        keywords: [],
-        equipments: "정보 없음",
-        rating: 0.0,
-        reviewCount: 0,
-        isBookable: false,
-        isBlocked: true
-      )
+      photographer: .blockedMock
     )) {
       PhotographerDetailFeature()
     }

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Domain
 
 struct PhotographerInfoRow: View {
   let label: String
@@ -51,8 +52,8 @@ struct PhotographerInfoRow: View {
 
 #Preview {
   VStack(spacing: 10) {
-    PhotographerInfoRow(label: "촬영지", value: "마포구, 동작구, 머머구 외 5개", isExpandable: true)
-    PhotographerInfoRow(label: "키워드", value: "#캐주얼, #고급미")
-    PhotographerInfoRow(label: "장비", value: "아이폰 16 PRO, 아이폰X, 갤럭시23 울트라")
+    PhotographerInfoRow(label: "촬영지", value: PhotographerDetail.mock.locationsText, isExpandable: true)
+    PhotographerInfoRow(label: "키워드", value: PhotographerDetail.mock.keywordsText)
+    PhotographerInfoRow(label: "장비", value: PhotographerDetail.mock.equipmentsText)
   }
 }
