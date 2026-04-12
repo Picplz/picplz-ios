@@ -31,16 +31,15 @@ public struct PhotographerPhotoReviewListView: View {
         LazyVGrid(columns: columns, spacing: 2) {
           ForEach(0..<store.photoReviews.count, id: \.self) { index in
             if let uiImage = UIImage(data: store.photoReviews[index]) {
-              ZStack {
-                Rectangle()
-                  .fill(.pGrey1)
-                
-                Image(uiImage: uiImage)
-                  .resizable()
-                  .scaledToFit()
-              }
-              .aspectRatio(1, contentMode: .fill)
-              .clipped()
+              Rectangle()
+                .fill(.pGrey1)
+                .overlay {
+                  Image(uiImage: uiImage)
+                    .resizable()
+                    .scaledToFill()
+                }
+                .aspectRatio(1, contentMode: .fill)
+                .clipped()
             }
           }
         }
