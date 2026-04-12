@@ -24,6 +24,12 @@ public struct PhotographerPhotoReviewListFeature {
   
   public enum Action: Equatable {
     case backButtonTapped
+    case imageTapped(Int)
+    case delegate(Delegate)
+  }
+  
+  public enum Delegate: Equatable {
+    case pushPhotoDetail(images: [Data], index: Int)
   }
   
   public init() {}
@@ -32,6 +38,10 @@ public struct PhotographerPhotoReviewListFeature {
     Reduce { state, action in
       switch action {
       case .backButtonTapped:
+        return .none
+      case let .imageTapped(index):
+        return .send(.delegate(.pushPhotoDetail(images: state.photoReviews, index: index)))
+      case .delegate:
         return .none
       }
     }

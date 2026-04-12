@@ -9,6 +9,20 @@ import ComposableArchitecture
 import Foundation
 import SwiftUI
 
+extension CustomerHomeFeature {
+  @Reducer
+  public enum Path {
+    case searchPhotographers(SearchPhotographersFeature)
+    case photographerDetail(PhotographerDetailFeature)
+    case reviewList(PhotographerReviewListFeature)
+    case photoReviewList(PhotographerPhotoReviewListFeature)
+    case photoDetail(PhotographerPhotoDetailFeature)
+  }
+}
+
+extension CustomerHomeFeature.Path.State: Equatable {}
+extension CustomerHomeFeature.Path.Action: Equatable {}
+
 @Reducer
 public struct CustomerHomeFeature {
   @ObservableState
@@ -107,7 +121,39 @@ public struct CustomerHomeFeature {
         return .none
         
       case .path(.element(id: _, action: .searchPhotographers(.backButtonTapped))):
-        state.path.removeLast()
+        _ = state.path.popLast()
+        return .none
+
+      case let .path(.element(id: _, action: .searchPhotographers(.delegate(.pushPhotographerDetail(photographer))))):
+        state.path.append(.photographerDetail(PhotographerDetailFeature.State(photographer: photographer)))
+        return .none
+
+      case .path(.element(id: _, action: .photographerDetail(.backButtonTapped))):
+        _ = state.path.popLast()
+        return .none
+
+      case let .path(.element(id: _, action: .photographerDetail(.delegate(.pushReviewList(reviewState))))):
+        state.path.append(.reviewList(reviewState))
+        return .none
+
+      case .path(.element(id: _, action: .reviewList(.backButtonTapped))):
+        _ = state.path.popLast()
+        return .none
+
+      case let .path(.element(id: _, action: .reviewList(.delegate(.pushPhotoReviewList(id, photos))))):
+        state.path.append(.photoReviewList(PhotographerPhotoReviewListFeature.State(photographerId: id, photoReviews: photos)))
+        return .none
+
+      case .path(.element(id: _, action: .photoReviewList(.backButtonTapped))):
+        _ = state.path.popLast()
+        return .none
+
+      case let .path(.element(id: _, action: .photoReviewList(.delegate(.pushPhotoDetail(images, index))))):
+        state.path.append(.photoDetail(PhotographerPhotoDetailFeature.State(images: images, currentIndex: index)))
+        return .none
+
+      case .path(.element(id: _, action: .photoDetail(.backButtonTapped))):
+        _ = state.path.popLast()
         return .none
         
       case .path:
@@ -118,12 +164,5 @@ public struct CustomerHomeFeature {
       LocationSelectFeature()
     }
     .forEach(\.path, action: \.path)
-  }
-}
-
-extension CustomerHomeFeature {
-  @Reducer(state: .equatable)
-  public enum Path {
-    case searchPhotographers(SearchPhotographersFeature)
   }
 }

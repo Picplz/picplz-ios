@@ -73,6 +73,14 @@ public struct CustomerHomeView: View {
       switch store.case {
       case let .searchPhotographers(searchStore):
         SearchPhotographersView(store: searchStore)
+      case let .photographerDetail(detailStore):
+        PhotographerDetailView(store: detailStore)
+      case let .reviewList(reviewStore):
+        PhotographerReviewListView(store: reviewStore)
+      case let .photoReviewList(photoReviewStore):
+        PhotographerPhotoReviewListView(store: photoReviewStore)
+      case let .photoDetail(photoDetailStore):
+        PhotographerPhotoDetailView(store: photoDetailStore)
       }
     }
   }

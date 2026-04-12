@@ -20,7 +20,6 @@ public struct PhotographerReviewListFeature {
     public var reviews: [PhotographerReview]
     public var topReviewImages: [Data]
     public var sortOrder: SortOrder = .recommended
-    public var path = StackState<Path.State>()
     
     @Presents var sortModal: SortSelectFeature.State?
     
@@ -48,12 +47,16 @@ public struct PhotographerReviewListFeature {
     case reportButtonTapped(UUID)
     case sortModal(PresentationAction<SortSelectFeature.Action>)
     case photoReviewButtonTapped
-    case path(StackAction<Path.State, Path.Action>)
+    case delegate(Delegate)
     
     // TODO: 페이지네이션 및 소팅 관련 액션 추가
     case onAppear
     case fetchReviews(isNextPage: Bool)
     case reviewsResponse(Result<[PhotographerReview], ReviewError>)
+  }
+
+  public enum Delegate: Equatable {
+    case pushPhotoReviewList(photographerId: UUID, photos: [Data])
   }
 
   public enum ReviewError: Error, Equatable {
@@ -65,11 +68,6 @@ public struct PhotographerReviewListFeature {
     case recommended = "추천순"
     case newest = "최신순"
     case mostLiked = "좋아요순"
-  }
-  
-  @Reducer
-  public enum Path {
-    case photoReviewList(PhotographerPhotoReviewListFeature)
   }
   
   public init() {}
@@ -112,49 +110,17 @@ public struct PhotographerReviewListFeature {
         
       case .photoReviewButtonTapped:
         // TODO: 전체 사진 리뷰를 가져오는 API 연동 필요. 현재는 topReviewImages를 기반으로 넘김
-        state.path.append(.photoReviewList(PhotographerPhotoReviewListFeature.State(
+        return .send(.delegate(.pushPhotoReviewList(
           photographerId: state.photographerId,
-          photoReviews: state.topReviewImages
+          photos: state.topReviewImages
         )))
-        return .none
 
-      case let .path(.element(id: _, action: .photoReviewList(.backButtonTapped))):
-        _ = state.path.popLast()
-        return .none
-
-      case .likeButtonTapped, .reportButtonTapped, .path:
+      case .likeButtonTapped, .reportButtonTapped, .delegate:
         return .none
       }
     }
     .ifLet(\.$sortModal, action: \.sortModal) {
       SortSelectFeature()
     }
-    .forEach(\.path, action: \.path)
   }
 }
-
-extension PhotographerReviewListFeature {
-  @Reducer
-  public struct SortSelectFeature {
-    @ObservableState
-    public struct State: Equatable {
-      public var selectedOrder: SortOrder
-    }
-    
-    public enum Action: Equatable {
-      case selectOrder(SortOrder)
-    }
-    
-    public var body: some ReducerOf<Self> {
-      Reduce { state, action in
-        switch action {
-        case .selectOrder:
-          return .none
-        }
-      }
-    }
-  }
-}
-
-extension PhotographerReviewListFeature.Path.State: Equatable {}
-extension PhotographerReviewListFeature.Path.Action: Equatable {}

@@ -17,7 +17,6 @@ public struct PhotographerDetailFeature {
     public var photographer: PhotographerDetail
     public var isDescriptionExpanded: Bool = false
     public var isLocationExpanded: Bool = false
-    public var path = StackState<Path.State>()
     
     public init(photographer: PhotographerDetail = .mock) {
       self.photographer = photographer
@@ -34,12 +33,11 @@ public struct PhotographerDetailFeature {
     case unblockButtonTapped
     case reportReviewTapped(UUID)
     case reviewListButtonTapped
-    case path(StackAction<Path.State, Path.Action>)
+    case delegate(Delegate)
   }
   
-  @Reducer
-  public enum Path {
-    case reviewList(PhotographerReviewListFeature)
+  public enum Delegate: Equatable {
+    case pushReviewList(PhotographerReviewListFeature.State)
   }
   
   public init() {}
@@ -60,28 +58,19 @@ public struct PhotographerDetailFeature {
         return .none
         
       case .reviewListButtonTapped:
-        state.path.append(.reviewList(PhotographerReviewListFeature.State(
+        return .send(.delegate(.pushReviewList(PhotographerReviewListFeature.State(
           photographerId: state.photographer.id,
           photographerName: state.photographer.name,
           rating: state.photographer.rating,
           reviewCount: state.photographer.reviewCount,
           reviews: state.photographer.reviews,
           topReviewImages: Array(state.photographer.reviews.flatMap { $0.imagesData }.prefix(10))
-        )))
-        return .none
-        
-      case let .path(.element(id: _, action: .reviewList(.backButtonTapped))):
-        _ = state.path.popLast()
-        return .none
+        ))))
         
       case .backButtonTapped, .moreButtonTapped, .followButtonTapped, 
-           .reserveButtonTapped, .reportReviewTapped, .path:
+           .reserveButtonTapped, .reportReviewTapped, .delegate:
         return .none
       }
     }
-    .forEach(\.path, action: \.path)
   }
 }
-
-extension PhotographerDetailFeature.Path.State: Equatable {}
-extension PhotographerDetailFeature.Path.Action: Equatable {}

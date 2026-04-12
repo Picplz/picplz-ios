@@ -9,7 +9,7 @@ import SwiftUI
 import ComposableArchitecture
 
 public struct PhotographerPhotoReviewListView: View {
-  let store: StoreOf<PhotographerPhotoReviewListFeature>
+  @Bindable var store: StoreOf<PhotographerPhotoReviewListFeature>
   
   public init(store: StoreOf<PhotographerPhotoReviewListFeature>) {
     self.store = store
@@ -31,15 +31,17 @@ public struct PhotographerPhotoReviewListView: View {
         LazyVGrid(columns: columns, spacing: 2) {
           ForEach(0..<store.photoReviews.count, id: \.self) { index in
             if let uiImage = UIImage(data: store.photoReviews[index]) {
-              Rectangle()
-                .fill(.pGrey1)
-                .overlay {
-                  Image(uiImage: uiImage)
-                    .resizable()
-                    .scaledToFill()
-                }
-                .aspectRatio(1, contentMode: .fill)
-                .clipped()
+              Button(action: { store.send(.imageTapped(index)) }) {
+                Rectangle()
+                  .fill(.pGrey1)
+                  .overlay {
+                    Image(uiImage: uiImage)
+                      .resizable()
+                      .scaledToFill()
+                  }
+                  .aspectRatio(1, contentMode: .fill)
+                  .clipped()
+              }
             }
           }
         }

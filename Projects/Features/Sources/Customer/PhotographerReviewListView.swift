@@ -17,142 +17,135 @@ public struct PhotographerReviewListView: View {
   }
 
   public var body: some View {
-    NavigationStack(path: $store.scope(state: \.path, action: \.path)) {
-      VStack(spacing: 0) {
-        // Header
-        TempPicNavigationBar(title: "리뷰") {
-          store.send(.backButtonTapped)
-        }
+    VStack(spacing: 0) {
+      // Header
+      TempPicNavigationBar(title: "리뷰") {
+        store.send(.backButtonTapped)
+      }
 
-        ScrollView {
-          VStack(alignment: .leading, spacing: 0) {
-            // Rating Summary Section
-            VStack(alignment: .leading, spacing: 8) {
-              Text("촬영 만족도")
-                .typo(.pSmallTitle)
+      ScrollView {
+        VStack(alignment: .leading, spacing: 0) {
+          // Rating Summary Section
+          VStack(alignment: .leading, spacing: 8) {
+            Text("촬영 만족도")
+              .typo(.pSmallTitle)
+              .foregroundStyle(.pBlack)
+
+            HStack(spacing: 4) {
+              RatingView(rating: store.rating, starSize: 20, theme: .green)
+
+              Text(String(format: "%.1f", store.rating))
+                .typo(.pBoldParagraph)
                 .foregroundStyle(.pBlack)
+            }
+          }
+          .padding(.horizontal, 16)
+          .padding(.vertical, 20)
 
-              HStack(spacing: 4) {
-                RatingView(rating: store.rating, starSize: 20, theme: .green)
-
-                Text(String(format: "%.1f", store.rating))
-                  .typo(.pBoldParagraph)
-                  .foregroundStyle(.pBlack)
-              }
+          // Review Images Section
+          VStack(alignment: .leading, spacing: 12) {
+            HStack(spacing: 4) {
+              Text("리뷰")
+                .typo(.pBoldParagraph)
+                .foregroundStyle(.pBlack)
+              Text("\(store.reviewCount)")
+                .typo(.pParagraph)
+                .foregroundStyle(.pBlack)
             }
             .padding(.horizontal, 16)
-            .padding(.vertical, 20)
 
-            // Review Images Section
-            VStack(alignment: .leading, spacing: 12) {
-              HStack(spacing: 4) {
-                Text("리뷰")
-                  .typo(.pBoldParagraph)
-                  .foregroundStyle(.pBlack)
-                Text("\(store.reviewCount)")
-                  .typo(.pParagraph)
-                  .foregroundStyle(.pBlack)
-              }
-              .padding(.horizontal, 16)
+            if !store.topReviewImages.isEmpty {
+              HStack(spacing: 1) {
+                let images = Array(store.topReviewImages.prefix(4))
+                let hasMore = store.topReviewImages.count >= 5
 
-              if !store.topReviewImages.isEmpty {
-                HStack(spacing: 1) {
-                  let images = Array(store.topReviewImages.prefix(4))
-                  let hasMore = store.topReviewImages.count >= 5
+                ForEach(Array(images.enumerated()), id: \.offset) {
+                  index,
+                  data in
+                  Rectangle()
+                    .aspectRatio(1, contentMode: .fit)
+                    .overlay {
+                      ZStack {
+                        if let uiImage = UIImage(data: data) {
+                          Image(uiImage: uiImage)
+                            .resizable()
+                            .scaledToFill()
+                            .clipped()
+                        } else {
+                          Color.gray.opacity(0.2)
+                        }
 
-                  ForEach(Array(images.enumerated()), id: \.offset) {
-                    index,
-                    data in
-                    Rectangle()
-                      .aspectRatio(1, contentMode: .fit)
-                      .overlay {
-                        ZStack {
-                          if let uiImage = UIImage(data: data) {
-                            Image(uiImage: uiImage)
-                              .resizable()
-                              .scaledToFill()
-                              .clipped()
-                          } else {
-                            Color.gray.opacity(0.2)
-                          }
-
-                          if index == 3 && hasMore {
-                            Color.black.opacity(0.4)
-                              .overlay(
-                                Text("+\(store.topReviewImages.count - 4)")
-                                  .typo(.pBoldParagraph)
-                                  .foregroundStyle(.pWhite)
-                              )
-                              .contentShape(Rectangle())
-                              .onTapGesture {
-                                store.send(.photoReviewButtonTapped)
-                              }
-                          }
+                        if index == 3 && hasMore {
+                          Color.black.opacity(0.4)
+                            .overlay(
+                              Text("+\(store.topReviewImages.count - 4)")
+                                .typo(.pBoldParagraph)
+                                .foregroundStyle(.pWhite)
+                            )
+                            .contentShape(Rectangle())
+                            .onTapGesture {
+                              store.send(.photoReviewButtonTapped)
+                            }
                         }
                       }
-                      .clipped()
-                  }
-                }
-                .padding(.horizontal, 16)
-              }
-            }
-            .padding(.bottom, 20)
-
-            // Section Divider
-            Rectangle()
-              .fill(.pGrey1)
-              .frame(height: 10)
-
-            // Sorting Dropdown
-            HStack {
-              Button(action: { store.send(.sortDropdownTapped) }) {
-                HStack(spacing: 4) {
-                  Text(store.sortOrder.rawValue)
-                    .typo(.pCaption)
-                    .foregroundStyle(.pGrey5)
-
-                  Image(systemName: "chevron.down")
-                    .font(.system(size: 8))
-                    .foregroundStyle(.pGrey5)
+                    }
+                    .clipped()
                 }
               }
-              Spacer()
+              .padding(.horizontal, 16)
             }
-            .padding(.horizontal, 16)
-            .padding(.vertical, 20)
-
-            // Review List
-            VStack(spacing: 20) {
-              ForEach(store.reviews) { review in
-                PhotographerReviewCard(
-                  review: review,
-                  onReport: { store.send(.reportButtonTapped(review.id)) },
-                  onLike: { store.send(.likeButtonTapped(review.id)) }
-                )
-
-                Divider()
-                  .background(.pGrey2)
-                  .padding(.horizontal, 16)
-              }
-            }
-            .padding(.bottom, 40)
           }
+          .padding(.bottom, 20)
+
+          // Section Divider
+          Rectangle()
+            .fill(.pGrey1)
+            .frame(height: 10)
+
+          // Sorting Dropdown
+          HStack {
+            Button(action: { store.send(.sortDropdownTapped) }) {
+              HStack(spacing: 4) {
+                Text(store.sortOrder.rawValue)
+                  .typo(.pCaption)
+                  .foregroundStyle(.pGrey5)
+
+                Image(systemName: "chevron.down")
+                  .font(.system(size: 8))
+                  .foregroundStyle(.pGrey5)
+              }
+            }
+            Spacer()
+          }
+          .padding(.horizontal, 16)
+          .padding(.vertical, 20)
+
+          // Review List
+          VStack(spacing: 20) {
+            ForEach(store.reviews) { review in
+              PhotographerReviewCard(
+                review: review,
+                onReport: { store.send(.reportButtonTapped(review.id)) },
+                onLike: { store.send(.likeButtonTapped(review.id)) }
+              )
+
+              Divider()
+                .background(.pGrey2)
+                .padding(.horizontal, 16)
+            }
+          }
+          .padding(.bottom, 40)
         }
       }
-      .background(.pWhite)
-      .navigationBarHidden(true)
-      .sheet(
-        item: $store.scope(state: \.sortModal, action: \.sortModal)
-      ) { sortStore in
-        ReviewSortSelectView(store: sortStore)
-          .presentationDetents([.height(240)])
-          .presentationDragIndicator(.visible)
-      }
-    } destination: { store in
-      switch store.case {
-      case .photoReviewList(let photoReviewStore):
-        PhotographerPhotoReviewListView(store: photoReviewStore)
-      }
+    }
+    .background(.pWhite)
+    .navigationBarHidden(true)
+    .sheet(
+      item: $store.scope(state: \.sortModal, action: \.sortModal)
+    ) { sortStore in
+      ReviewSortSelectView(store: sortStore)
+        .presentationDetents([.height(240)])
+        .presentationDragIndicator(.visible)
     }
   }
 }

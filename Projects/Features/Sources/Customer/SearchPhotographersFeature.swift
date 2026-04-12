@@ -43,6 +43,11 @@ public struct SearchPhotographersFeature {
     case sortDropdownTapped
     case photographerTapped(UUID)
     case sortModal(PresentationAction<SortSelectFeature.Action>)
+    case delegate(Delegate)
+  }
+  
+  public enum Delegate: Equatable {
+    case pushPhotographerDetail(PhotographerDetail)
   }
   
   public init() {}
@@ -99,7 +104,11 @@ public struct SearchPhotographersFeature {
       case .sortModal:
         return .none
         
-      case .backButtonTapped, .photographerTapped, .binding:
+      case let .photographerTapped(id):
+        // TODO: 실제 작가 상세 정보를 가져오는 API 연동 필요
+        return .send(.delegate(.pushPhotographerDetail(.mock)))
+
+      case .backButtonTapped, .binding, .delegate:
         return .none
       }
     }
