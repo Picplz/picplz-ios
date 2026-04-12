@@ -75,7 +75,7 @@ public extension PhotographerDetail {
     equipments: ["아이폰 16 PRO", "아이폰X", "갤럭시23 울트라"],
     rating: 4.5,
     reviewCount: 32,
-    reviews: [.mock],
+    reviews: PhotographerReview.mocks,
     portfolioImagesData: [],
     packages: [.profile, .wedding],
     isBookable: true,
