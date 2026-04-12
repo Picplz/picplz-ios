@@ -11,6 +11,9 @@ import Domain
 struct PhotographerReviewCard: View {
   let review: PhotographerReview
   let onReport: () -> Void
+  let onLike: () -> Void
+  
+  @State private var isExpanded: Bool = false
   
   var body: some View {
     VStack(alignment: .leading, spacing: 16) {
@@ -18,11 +21,11 @@ struct PhotographerReviewCard: View {
       HStack(spacing: 8) {
         Circle()
           .fill(.pGrey2)
-          .stroke(.pBlack)
+          .stroke(.pBlack, lineWidth: 1)
           .frame(width: 36, height: 36)
         
         VStack(alignment: .leading, spacing: 2) {
-          Text(authorName)
+          Text(review.authorName)
             .typo(.pBoldParagraph)
             .foregroundStyle(.pBlack)
           
@@ -44,7 +47,7 @@ struct PhotographerReviewCard: View {
           
           Text(review.dateText)
             .typo(.pCaption)
-            .foregroundStyle(.pBlack)
+            .foregroundStyle(.pGrey4)
         }
       }
       
@@ -73,31 +76,39 @@ struct PhotographerReviewCard: View {
           infoRow(label: "촬영지", value: review.location)
         }
         
-        Text(review.content)
-          .typo(.pParagraph)
-          .foregroundStyle(.pBlack)
-      }
-      
-      // Like (Placeholder)
-      HStack {
-        Spacer()
-        HStack(spacing: 4) {
-          Image(systemName: "hand.thumbsup.fill")
-            .font(.system(size: 14))
-            .foregroundStyle(.pGrey2)
-          Text("4")
+        ZStack(alignment: .bottomTrailing) {
+          Text(review.content)
             .typo(.pParagraph)
             .foregroundStyle(.pBlack)
+            .lineLimit(isExpanded ? nil : 2)
+          
+          if !isExpanded && review.content.count > 40 { // Simple heuristic for truncation
+            Button(action: { isExpanded = true }) {
+              Text("...더보기")
+                .typo(.pParagraph)
+                .foregroundStyle(.pBlack)
+                .background(.pWhite)
+            }
+          }
+        }
+      }
+      
+      // Like
+      HStack {
+        Spacer()
+        Button(action: onLike) {
+          HStack(spacing: 4) {
+            Image(.thumbsUp)
+            Text("\(review.likeCount)")
+              .typo(.pParagraph)
+              .foregroundStyle(.pBlack)
+          }
         }
       }
     }
     .padding(.horizontal, 16)
   }
 
-  private var authorName: String {
-    review.authorName
-  }
-  
   private func infoRow(label: String, value: String) -> some View {
     HStack(spacing: 10) {
       Text(label)
@@ -113,6 +124,7 @@ struct PhotographerReviewCard: View {
 #Preview {
   PhotographerReviewCard(
     review: .mock,
-    onReport: {}
+    onReport: {},
+    onLike: {}
   )
 }
