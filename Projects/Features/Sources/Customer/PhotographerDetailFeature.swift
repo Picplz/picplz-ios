@@ -66,7 +66,7 @@ public struct PhotographerDetailFeature {
           rating: state.photographer.rating,
           reviewCount: state.photographer.reviewCount,
           reviews: state.photographer.reviews,
-          allReviewImages: state.photographer.reviews.flatMap { $0.imagesData }
+          topReviewImages: Array(state.photographer.reviews.flatMap { $0.imagesData }.prefix(10))
         )))
         return .none
         

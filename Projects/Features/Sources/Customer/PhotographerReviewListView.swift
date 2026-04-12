@@ -55,39 +55,46 @@ public struct PhotographerReviewListView: View {
               }
               .padding(.horizontal, 16)
               
-              if !store.topReviewImages.isEmpty {
-                ScrollView(.horizontal, showsIndicators: false) {
-                  HStack(spacing: 1) {
-                    let images = Array(store.topReviewImages.prefix(4))
-                    let hasMore = store.topReviewImages.count >= 5
-                    
-                    ForEach(0..<images.count, id: \.self) { index in
-                      if let uiImage = UIImage(data: images[index]) {
-                        ZStack {
-                          Image(uiImage: uiImage)
-                            .resizable()
-                            .scaledToFill()
-                            .frame(width: 85, height: 85)
-                            .clipped()
-                          
-                          if index == 3 && hasMore {
-                            Button(action: { store.send(.photoReviewButtonTapped) }) {
-                              Rectangle()
-                                .fill(.pBlack.opacity(0.4))
-                                .overlay(
-                                  Text("+\(store.topReviewImages.count - 3)")
-                                    .typo(.pBoldParagraph)
-                                    .foregroundStyle(.pWhite)
-                                )
-                            }
-                          }
+            if !store.topReviewImages.isEmpty {
+              HStack(spacing: 1) {
+                let images = Array(store.topReviewImages.prefix(4))
+                let hasMore = store.topReviewImages.count >= 5
+                
+                ForEach(0..<images.count, id: \.self) { index in
+                  if let uiImage = UIImage(data: images[index]) {
+                    ZStack {
+                      Image(uiImage: uiImage)
+                        .resizable()
+                        .scaledToFill()
+                        .frame(maxWidth: .infinity)
+                        .aspectRatio(1, contentMode: .fill)
+                        .clipped()
+                      
+                      if index == 3 && hasMore {
+                        Button(action: { store.send(.photoReviewButtonTapped) }) {
+                          Rectangle()
+                            .fill(.pBlack.opacity(0.4))
+                            .overlay(
+                              Text("+\(store.topReviewImages.count - 3)")
+                                .typo(.pBoldParagraph)
+                                .foregroundStyle(.pWhite)
+                            )
                         }
                       }
                     }
                   }
-                  .padding(.horizontal, 16)
+                }
+                
+                if images.count < 4 {
+                  ForEach(0..<(4 - images.count), id: \.self) { _ in
+                    Color.clear
+                      .frame(maxWidth: .infinity)
+                      .aspectRatio(1, contentMode: .fill)
+                  }
                 }
               }
+              .padding(.horizontal, 16)
+            }
             }
             .padding(.bottom, 20)
             
