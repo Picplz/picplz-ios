@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - DI 방식 개선
 - 모듈 의존 관계 개선
+- 작가 상세 화면의 더미 데이터를 Domain 엔티티 기반 렌더링으로 정리하고 프리뷰 목 데이터를 static mock으로 통합
 
 ### Deprecated
 
