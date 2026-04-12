@@ -18,8 +18,9 @@ public struct PhotographerReviewListFeature {
     public var rating: Double
     public var reviewCount: Int
     public var reviews: [PhotographerReview]
-    public var allReviewImages: [Data]
+    public var topReviewImages: [Data]
     public var sortOrder: SortOrder = .recommended
+    public var path = StackState<Path.State>()
     
     @Presents var sortModal: SortSelectFeature.State?
     
@@ -29,14 +30,14 @@ public struct PhotographerReviewListFeature {
       rating: Double,
       reviewCount: Int,
       reviews: [PhotographerReview],
-      allReviewImages: [Data]
+      topReviewImages: [Data]
     ) {
       self.photographerId = photographerId
       self.photographerName = photographerName
       self.rating = rating
       self.reviewCount = reviewCount
       self.reviews = reviews
-      self.allReviewImages = allReviewImages
+      self.topReviewImages = topReviewImages
     }
   }
   
@@ -46,6 +47,8 @@ public struct PhotographerReviewListFeature {
     case likeButtonTapped(UUID)
     case reportButtonTapped(UUID)
     case sortModal(PresentationAction<SortSelectFeature.Action>)
+    case photoReviewButtonTapped
+    case path(StackAction<Path.State, Path.Action>)
     
     // TODO: 페이지네이션 및 소팅 관련 액션 추가
     case onAppear
@@ -62,6 +65,11 @@ public struct PhotographerReviewListFeature {
     case recommended = "추천순"
     case newest = "최신순"
     case mostLiked = "좋아요순"
+  }
+  
+  @Reducer
+  public enum Path {
+    case photoReviewList(PhotographerPhotoReviewListFeature)
   }
   
   public init() {}
@@ -102,13 +110,26 @@ public struct PhotographerReviewListFeature {
       case .sortModal:
         return .none
         
-      case .likeButtonTapped, .reportButtonTapped:
+      case .photoReviewButtonTapped:
+        // TODO: 전체 사진 리뷰를 가져오는 API 연동 필요. 현재는 topReviewImages를 기반으로 넘김
+        state.path.append(.photoReviewList(PhotographerPhotoReviewListFeature.State(
+          photographerId: state.photographerId,
+          photoReviews: state.topReviewImages
+        )))
+        return .none
+
+      case let .path(.element(id: _, action: .photoReviewList(.backButtonTapped))):
+        _ = state.path.popLast()
+        return .none
+
+      case .likeButtonTapped, .reportButtonTapped, .path:
         return .none
       }
     }
     .ifLet(\.$sortModal, action: \.sortModal) {
       SortSelectFeature()
     }
+    .forEach(\.path, action: \.path)
   }
 }
 
@@ -134,3 +155,6 @@ extension PhotographerReviewListFeature {
     }
   }
 }
+
+extension PhotographerReviewListFeature.Path.State: Equatable {}
+extension PhotographerReviewListFeature.Path.Action: Equatable {}
