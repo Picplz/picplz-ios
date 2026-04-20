@@ -195,6 +195,13 @@ struct MyPageView: View {
                 ) {
                     ReviewDetailView(store: store)
                 }
+            case .packageEdit:
+                if let store = store.scope(
+                    state: \.packageEdit,
+                    action: \.packageEdit
+                ) {
+                    PackageEditView(store: store)
+                }
             }
         }
     }
