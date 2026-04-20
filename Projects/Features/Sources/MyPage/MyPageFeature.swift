@@ -204,13 +204,17 @@ public struct MyPageFeature {
             case .path(.element(id: _, action: .reviewDetail(.confirmDelete))):
                 _ = state.path.popLast()
                 return .none
+            case .path(.element(id: _, action: .packageEdit(.addPackageTapped))):
+                state.path.append(.packageAdd(PackageAddFeature.State()))
+                return .none
             case .path(.element(id: _, action: .profileEdit(.backButtonTapped))),
              .path(.element(id: _, action: .pastShootings(.backButtonTapped))),
              .path(.element(id: _, action: .settings(.backButtonTapped))),
              .path(.element(id: _, action: .followedArtists(.backButtonTapped))),
              .path(.element(id: _, action: .myReviews(.backButtonTapped))),
              .path(.element(id: _, action: .reviewDetail(.backButtonTapped))),
-             .path(.element(id: _, action: .packageEdit(.backButtonTapped))):
+             .path(.element(id: _, action: .packageEdit(.backButtonTapped))),
+             .path(.element(id: _, action: .packageAdd(.backButtonTapped))):
                 _ = state.path.popLast()
                 return .none
             case .path:
@@ -233,6 +237,7 @@ public struct MyPageFeature {
             case myReviews(MyReviewsFeature.State)
             case reviewDetail(ReviewDetailFeature.State)
             case packageEdit(PackageEditFeature.State)
+            case packageAdd(PackageAddFeature.State)
         }
 
         public enum Action {
@@ -243,6 +248,7 @@ public struct MyPageFeature {
             case myReviews(MyReviewsFeature.Action)
             case reviewDetail(ReviewDetailFeature.Action)
             case packageEdit(PackageEditFeature.Action)
+            case packageAdd(PackageAddFeature.Action)
         }
 
         public init() {}
@@ -268,6 +274,9 @@ public struct MyPageFeature {
             }
             Scope(state: \.packageEdit, action: \.packageEdit) {
                 PackageEditFeature()
+            }
+            Scope(state: \.packageAdd, action: \.packageAdd) {
+                PackageAddFeature()
             }
         }
     }

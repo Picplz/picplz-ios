@@ -202,6 +202,13 @@ struct MyPageView: View {
                 ) {
                     PackageEditView(store: store)
                 }
+            case .packageAdd:
+                if let store = store.scope(
+                    state: \.packageAdd,
+                    action: \.packageAdd
+                ) {
+                    PackageAddView(store: store)
+                }
             }
         }
     }
