@@ -355,9 +355,33 @@ struct MyPageView: View {
                 ],
                 keywords: ["#개구장", "#디짐", "#맥주감성", "#감성스냅", "#우정샷", "#커플샷"],
                 equipments: ["아이폰 16 PRO", "아이폰 X", "캐논 5D", "소니 A7", "라이카 M11"],
-                packages: [],
-                portfolios: [],
-                satisfactionRating: 0.0
+                packages: [
+                    MyPageFeature.ShootingPackage(
+                        id: "1",
+                        title: "남친 생기는 프사♥",
+                        price: 9900,
+                        coverImageURL: nil,
+                        shootingDuration: "15분 이내",
+                        detail: "여자친구 /남자친구 생기는 카톡포사 찍어드립니당~ 요즘 인스타그램 감성으로 이쁘게!\n사용기기: 아이폰 X / 아이폰 16pro\n베스트컷 5개정도 길이 뽑아드려요!"
+                    ),
+                    MyPageFeature.ShootingPackage(
+                        id: "2",
+                        title: "여친 생기는 프사📸",
+                        price: 15000,
+                        coverImageURL: nil,
+                        shootingDuration: "30분 이내",
+                        detail: "감성 넘치는 프로필 사진 찍어드립니다!\n사용기기: 캐논 5D\n베스트컷 10장 보정 포함"
+                    )
+                ],
+                portfolios: [
+                    MyPageFeature.PortfolioImage(id: "1", imageURL: ""),
+                    MyPageFeature.PortfolioImage(id: "2", imageURL: ""),
+                    MyPageFeature.PortfolioImage(id: "3", imageURL: ""),
+                    MyPageFeature.PortfolioImage(id: "4", imageURL: ""),
+                    MyPageFeature.PortfolioImage(id: "5", imageURL: ""),
+                    MyPageFeature.PortfolioImage(id: "6", imageURL: "")
+                ],
+                satisfactionRating: 4.5
             )
         ) {
             MyPageFeature()
