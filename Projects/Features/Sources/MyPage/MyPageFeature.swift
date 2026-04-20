@@ -24,6 +24,20 @@ public struct MyPageFeature {
         public let location: String               // 촬영 장소
     }
 
+    public struct ShootingPackage: Equatable, Identifiable, Hashable {
+        public let id: String
+        public let title: String
+        public let price: Int
+        public let coverImageURL: String?
+        public let shootingDuration: String
+        public let detail: String
+    }
+
+    public struct PortfolioImage: Equatable, Identifiable, Hashable {
+        public let id: String
+        public let imageURL: String
+    }
+
     @ObservableState
     public struct State: Equatable {
         var hasPhotographerInfo: Bool = false      // 작가 정보 존재 여부
@@ -40,8 +54,10 @@ public struct MyPageFeature {
         var activeRegions: [String] = []           // 주 촬영지 목록
         var keywords: [String] = []                // 키워드 목록 (# 포함 저장)
         var equipments: [String] = []              // 장비 목록
-        var hasPackages: Bool = false              // 등록된 촬영 패키지 존재 여부
-        var hasPortfolios: Bool = false            // 등록된 포트폴리오 존재 여부
+        var packages: [ShootingPackage] = []        // 촬영 패키지 목록
+        var hasPackages: Bool { !packages.isEmpty }
+        var portfolios: [PortfolioImage] = []        // 포트폴리오 이미지 목록
+        var hasPortfolios: Bool { !portfolios.isEmpty }
         var satisfactionRating: Double = 0.0       // 촬영 만족도 (0.0 ~ 5.0)
 
         var path = StackState<Path.State>()
@@ -58,8 +74,8 @@ public struct MyPageFeature {
             activeRegions: [String] = [],
             keywords: [String] = [],
             equipments: [String] = [],
-            hasPackages: Bool = false,
-            hasPortfolios: Bool = false,
+            packages: [ShootingPackage] = [],
+            portfolios: [PortfolioImage] = [],
             satisfactionRating: Double = 0.0
         ) {
             self.hasPhotographerInfo = hasPhotographerInfo
@@ -73,8 +89,8 @@ public struct MyPageFeature {
             self.activeRegions = activeRegions
             self.keywords = keywords
             self.equipments = equipments
-            self.hasPackages = hasPackages
-            self.hasPortfolios = hasPortfolios
+            self.packages = packages
+            self.portfolios = portfolios
             self.satisfactionRating = satisfactionRating
         }
     }

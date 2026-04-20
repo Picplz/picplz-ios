@@ -355,8 +355,8 @@ struct MyPageView: View {
                 ],
                 keywords: ["#개구장", "#디짐", "#맥주감성", "#감성스냅", "#우정샷", "#커플샷"],
                 equipments: ["아이폰 16 PRO", "아이폰 X", "캐논 5D", "소니 A7", "라이카 M11"],
-                hasPackages: false,
-                hasPortfolios: false,
+                packages: [],
+                portfolios: [],
                 satisfactionRating: 0.0
             )
         ) {
