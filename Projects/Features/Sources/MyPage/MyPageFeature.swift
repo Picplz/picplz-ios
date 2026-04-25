@@ -196,7 +196,7 @@ public struct MyPageFeature {
                 ))
                 return .none
             case .portfolioEditTapped:
-                // TODO: 포트폴리오 편집 화면 네비게이션 연결
+                state.path.append(.portfolioAdd(PortfolioAddFeature.State()))
                 return .none
             case .path(.element(id: _, action: .myReviews(.reviewTapped(let review)))):
                 state.path.append(.reviewDetail(ReviewDetailFeature.State(review: review)))
@@ -214,7 +214,8 @@ public struct MyPageFeature {
              .path(.element(id: _, action: .myReviews(.backButtonTapped))),
              .path(.element(id: _, action: .reviewDetail(.backButtonTapped))),
              .path(.element(id: _, action: .packageEdit(.backButtonTapped))),
-             .path(.element(id: _, action: .packageAdd(.backButtonTapped))):
+             .path(.element(id: _, action: .packageAdd(.backButtonTapped))),
+             .path(.element(id: _, action: .portfolioAdd(.backButtonTapped))):
                 _ = state.path.popLast()
                 return .none
             case .path:
@@ -238,6 +239,7 @@ public struct MyPageFeature {
             case reviewDetail(ReviewDetailFeature.State)
             case packageEdit(PackageEditFeature.State)
             case packageAdd(PackageAddFeature.State)
+            case portfolioAdd(PortfolioAddFeature.State)
         }
 
         public enum Action {
@@ -249,6 +251,7 @@ public struct MyPageFeature {
             case reviewDetail(ReviewDetailFeature.Action)
             case packageEdit(PackageEditFeature.Action)
             case packageAdd(PackageAddFeature.Action)
+            case portfolioAdd(PortfolioAddFeature.Action)
         }
 
         public init() {}
@@ -277,6 +280,9 @@ public struct MyPageFeature {
             }
             Scope(state: \.packageAdd, action: \.packageAdd) {
                 PackageAddFeature()
+            }
+            Scope(state: \.portfolioAdd, action: \.portfolioAdd) {
+                PortfolioAddFeature()
             }
         }
     }

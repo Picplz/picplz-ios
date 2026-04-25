@@ -209,6 +209,13 @@ struct MyPageView: View {
                 ) {
                     PackageAddView(store: store)
                 }
+            case .portfolioAdd:
+                if let store = store.scope(
+                    state: \.portfolioAdd,
+                    action: \.portfolioAdd
+                ) {
+                    PortfolioAddView(store: store)
+                }
             }
         }
     }
