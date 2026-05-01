@@ -264,20 +264,25 @@ struct PhotographerMyPageView: View {
                 let columns = Array(repeating: GridItem(.flexible(), spacing: 4), count: 3)
                 LazyVGrid(columns: columns, spacing: 4) {
                     ForEach(store.portfolios) { portfolio in
-                        AsyncImage(url: URL(string: portfolio.imageURL)) { phase in
-                            switch phase {
-                            case .success(let image):
-                                image
-                                    .resizable()
-                                    .scaledToFill()
-                            default:
-                                Rectangle()
-                                    .fill(Color(.pGrey2))
+                        Button {
+                            store.send(.portfolioThumbnailTapped)
+                        } label: {
+                            AsyncImage(url: URL(string: portfolio.imageURLs.first ?? "")) { phase in
+                                switch phase {
+                                case .success(let image):
+                                    image
+                                        .resizable()
+                                        .scaledToFill()
+                                default:
+                                    Rectangle()
+                                        .fill(Color(.pGrey2))
+                                }
                             }
+                            .frame(minHeight: 0)
+                            .aspectRatio(1, contentMode: .fit)
+                            .clipped()
                         }
-                        .frame(minHeight: 0)
-                        .aspectRatio(1, contentMode: .fit)
-                        .clipped()
+                        .buttonStyle(.plain)
                     }
                 }
             } else {
@@ -441,10 +446,10 @@ struct PhotographerMyPageView: View {
                         )
                     ],
                     portfolios: [
-                        MyPageFeature.PortfolioImage(id: "1", imageURL: ""),
-                        MyPageFeature.PortfolioImage(id: "2", imageURL: ""),
-                        MyPageFeature.PortfolioImage(id: "3", imageURL: ""),
-                        MyPageFeature.PortfolioImage(id: "4", imageURL: "")
+                        MyPageFeature.Portfolio(id: "1", title: "경복궁 스타벅스", date: Date()),
+                        MyPageFeature.Portfolio(id: "2", title: "홍익대학교 홍문관", date: Date()),
+                        MyPageFeature.Portfolio(id: "3", title: "한강공원", date: Date()),
+                        MyPageFeature.Portfolio(id: "4", title: "남산타워", date: Date())
                     ],
                     satisfactionRating: 4.8
                 )

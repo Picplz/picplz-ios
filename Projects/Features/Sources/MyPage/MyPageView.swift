@@ -216,6 +216,13 @@ struct MyPageView: View {
                 ) {
                     PortfolioAddView(store: store)
                 }
+            case .portfolioList:
+                if let store = store.scope(
+                    state: \.portfolioList,
+                    action: \.portfolioList
+                ) {
+                    PortfolioListView(store: store)
+                }
             }
         }
     }
@@ -395,12 +402,12 @@ struct MyPageView: View {
                     )
                 ],
                 portfolios: [
-                    MyPageFeature.PortfolioImage(id: "1", imageURL: ""),
-                    MyPageFeature.PortfolioImage(id: "2", imageURL: ""),
-                    MyPageFeature.PortfolioImage(id: "3", imageURL: ""),
-                    MyPageFeature.PortfolioImage(id: "4", imageURL: ""),
-                    MyPageFeature.PortfolioImage(id: "5", imageURL: ""),
-                    MyPageFeature.PortfolioImage(id: "6", imageURL: "")
+                    MyPageFeature.Portfolio(id: "1", title: "경복궁 스타벅스", date: Date()),
+                    MyPageFeature.Portfolio(id: "2", title: "홍익대학교 홍문관", date: Date()),
+                    MyPageFeature.Portfolio(id: "3", title: "한강공원", date: Date()),
+                    MyPageFeature.Portfolio(id: "4", title: "남산타워", date: Date()),
+                    MyPageFeature.Portfolio(id: "5", title: "성수동 카페", date: Date()),
+                    MyPageFeature.Portfolio(id: "6", title: "서울숲", date: Date())
                 ],
                 satisfactionRating: 4.5
             )

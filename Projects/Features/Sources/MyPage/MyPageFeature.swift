@@ -33,9 +33,26 @@ public struct MyPageFeature {
         public let detail: String
     }
 
-    public struct PortfolioImage: Equatable, Identifiable, Hashable {
+    public struct Portfolio: Equatable, Identifiable, Hashable {
         public let id: String
-        public let imageURL: String
+        public let title: String              // 메인 타이틀 (장소 이름 등)
+        public let locationDetail: String?    // 부제 - 상세 주소 (선택)
+        public let date: Date                 // 촬영 날짜 (필수)
+        public let imageURLs: [String]        // 사진 URL들 (캐러셀)
+
+        public init(
+            id: String,
+            title: String,
+            locationDetail: String? = nil,
+            date: Date,
+            imageURLs: [String] = []
+        ) {
+            self.id = id
+            self.title = title
+            self.locationDetail = locationDetail
+            self.date = date
+            self.imageURLs = imageURLs
+        }
     }
 
     @ObservableState
@@ -56,7 +73,7 @@ public struct MyPageFeature {
         var equipments: [String] = []              // 장비 목록
         var packages: [ShootingPackage] = []        // 촬영 패키지 목록
         var hasPackages: Bool { !packages.isEmpty }
-        var portfolios: [PortfolioImage] = []        // 포트폴리오 이미지 목록
+        var portfolios: [Portfolio] = []        // 포트폴리오 이미지 목록
         var hasPortfolios: Bool { !portfolios.isEmpty }
         var satisfactionRating: Double = 0.0       // 촬영 만족도 (0.0 ~ 5.0)
 
@@ -75,7 +92,7 @@ public struct MyPageFeature {
             keywords: [String] = [],
             equipments: [String] = [],
             packages: [ShootingPackage] = [],
-            portfolios: [PortfolioImage] = [],
+            portfolios: [Portfolio] = [],
             satisfactionRating: Double = 0.0
         ) {
             self.hasPhotographerInfo = hasPhotographerInfo
@@ -116,6 +133,7 @@ public struct MyPageFeature {
         case settlementTapped                   // 정산 내역 화면으로 이동
         case packagesEditTapped                 // 촬영 패키지 편집
         case portfolioEditTapped                // 포트폴리오 편집
+        case portfolioThumbnailTapped           // 포트폴리오 그리드 썸네일 탭 → 목록 화면
 
         case path(StackAction<Path.State, Path.Action>)
     }
@@ -198,6 +216,73 @@ public struct MyPageFeature {
             case .portfolioEditTapped:
                 state.path.append(.portfolioAdd(PortfolioAddFeature.State()))
                 return .none
+            case .portfolioThumbnailTapped:
+                state.path.append(.portfolioList(
+                    PortfolioListFeature.State(portfolios: state.portfolios)
+                ))
+                return .none
+            case let .path(.element(id: id, action: .portfolioAdd(.registerButtonTapped))):
+                guard case let .portfolioAdd(addState) = state.path[id: id],
+                      let shootingDate = addState.shootingDate else {
+                    return .none
+                }
+                if let editingId = addState.editingId {
+                    // 수정 모드: 기존 항목 업데이트 + portfolioAdd pop + portfolioList 동기화
+                    if let idx = state.portfolios.firstIndex(where: { $0.id == editingId }) {
+                        let existing = state.portfolios[idx]
+                        state.portfolios[idx] = Portfolio(
+                            id: existing.id,
+                            title: addState.location ?? existing.title,
+                            locationDetail: existing.locationDetail,
+                            date: shootingDate,
+                            imageURLs: existing.imageURLs  // TODO: 이미지 업로드 연동 시 selectedImages 반영
+                        )
+                    }
+                    _ = state.path.popLast()
+                    if let topId = state.path.ids.last,
+                       case .portfolioList(var listState) = state.path[id: topId] {
+                        listState.portfolios = state.portfolios
+                        listState.toast = ToastItem(message: "포트폴리오가 수정되었습니다.")
+                        state.path[id: topId] = .portfolioList(listState)
+                    }
+                    return .none
+                } else {
+                    // 신규 등록: 새 항목 prepend + portfolioAdd pop + portfolioList push
+                    let newPortfolio = Portfolio(
+                        id: UUID().uuidString,
+                        title: addState.location ?? "",
+                        locationDetail: nil,
+                        date: shootingDate,
+                        imageURLs: []  // TODO: 이미지 업로드 연동 시 URL로 교체
+                    )
+                    state.portfolios.insert(newPortfolio, at: 0)
+                    _ = state.path.popLast()
+                    state.path.append(.portfolioList(
+                        PortfolioListFeature.State(
+                            portfolios: state.portfolios,
+                            toast: ToastItem(message: "포트폴리오가 등록되었습니다.")
+                        )
+                    ))
+                    return .none
+                }
+            case let .path(.element(id: pathId, action: .portfolioList(.confirmDelete))):
+                if case let .portfolioList(listState) = state.path[id: pathId] {
+                    state.portfolios = listState.portfolios
+                }
+                // 마지막 포트폴리오까지 삭제되면 portfolioList를 닫고 MyPage로 복귀
+                if state.portfolios.isEmpty {
+                    _ = state.path.popLast()
+                }
+                return .none
+            case let .path(.element(id: _, action: .portfolioList(.editTapped(portfolio)))):
+                state.path.append(.portfolioAdd(
+                    PortfolioAddFeature.State(
+                        editingId: portfolio.id,
+                        shootingDate: portfolio.date,
+                        location: portfolio.title.isEmpty ? nil : portfolio.title
+                    )
+                ))
+                return .none
             case .path(.element(id: _, action: .myReviews(.reviewTapped(let review)))):
                 state.path.append(.reviewDetail(ReviewDetailFeature.State(review: review)))
                 return .none
@@ -215,7 +300,8 @@ public struct MyPageFeature {
              .path(.element(id: _, action: .reviewDetail(.backButtonTapped))),
              .path(.element(id: _, action: .packageEdit(.backButtonTapped))),
              .path(.element(id: _, action: .packageAdd(.backButtonTapped))),
-             .path(.element(id: _, action: .portfolioAdd(.exitConfirmed))):
+             .path(.element(id: _, action: .portfolioAdd(.exitConfirmed))),
+             .path(.element(id: _, action: .portfolioList(.backButtonTapped))):
                 _ = state.path.popLast()
                 return .none
             case .path:
@@ -240,6 +326,7 @@ public struct MyPageFeature {
             case packageEdit(PackageEditFeature.State)
             case packageAdd(PackageAddFeature.State)
             case portfolioAdd(PortfolioAddFeature.State)
+            case portfolioList(PortfolioListFeature.State)
         }
 
         public enum Action {
@@ -252,6 +339,7 @@ public struct MyPageFeature {
             case packageEdit(PackageEditFeature.Action)
             case packageAdd(PackageAddFeature.Action)
             case portfolioAdd(PortfolioAddFeature.Action)
+            case portfolioList(PortfolioListFeature.Action)
         }
 
         public init() {}
@@ -283,6 +371,9 @@ public struct MyPageFeature {
             }
             Scope(state: \.portfolioAdd, action: \.portfolioAdd) {
                 PortfolioAddFeature()
+            }
+            Scope(state: \.portfolioList, action: \.portfolioList) {
+                PortfolioListFeature()
             }
         }
     }
