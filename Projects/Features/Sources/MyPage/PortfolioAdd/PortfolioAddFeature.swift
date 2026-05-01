@@ -36,6 +36,7 @@ public struct PortfolioAddFeature {
 
     @ObservableState
     public struct State: Equatable, Hashable {
+        var editingId: String? = nil   // nil = 신규 등록, 값 있음 = 수정 모드
         var selectedImages: [SelectedImage] = []
         var shootingDate: Date? = nil
         var location: String? = nil
@@ -43,10 +44,19 @@ public struct PortfolioAddFeature {
         var hasShownReorderGuide: Bool = false
         var isDatePickerPresented: Bool = false
         var pendingDate: Date = Date()
+        var isExitAlertPresented: Bool = false
         @Presents var locationSearch: LocationSearchFeature.State?
 
+        var isEditMode: Bool { editingId != nil }
+
         var isFormValid: Bool {
-            !selectedImages.isEmpty
+            // 수정 모드에서는 기존 이미지가 유지되므로 selectedImages가 비어도 OK
+            let hasImages = !selectedImages.isEmpty || isEditMode
+            return hasImages && shootingDate != nil
+        }
+
+        var hasInput: Bool {
+            !selectedImages.isEmpty || shootingDate != nil || location != nil
         }
 
         var shootingDateText: String? {
@@ -58,10 +68,12 @@ public struct PortfolioAddFeature {
         }
 
         public init(
+            editingId: String? = nil,
             selectedImages: [SelectedImage] = [],
             shootingDate: Date? = nil,
             location: String? = nil
         ) {
+            self.editingId = editingId
             self.selectedImages = selectedImages
             self.shootingDate = shootingDate
             self.location = location
@@ -72,6 +84,7 @@ public struct PortfolioAddFeature {
     public enum Action: BindableAction {
         case binding(BindingAction<State>)
         case backButtonTapped
+        case exitConfirmed
         case imagesSelected([SelectedImage])
         case removeImage(String)
         case moveImage(from: Int, to: Int)
@@ -92,6 +105,13 @@ public struct PortfolioAddFeature {
             case .binding:
                 return .none
             case .backButtonTapped:
+                if state.hasInput {
+                    state.isExitAlertPresented = true
+                    return .none
+                }
+                return .send(.exitConfirmed)
+            case .exitConfirmed:
+                state.isExitAlertPresented = false
                 return .none
             case let .imagesSelected(images):
                 let previousCount = state.selectedImages.count

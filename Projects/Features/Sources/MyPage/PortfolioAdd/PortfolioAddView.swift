@@ -18,7 +18,7 @@ struct PortfolioAddView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            SubNavigationBar(title: "포트폴리오 등록") {
+            SubNavigationBar(title: store.isEditMode ? "포트폴리오 수정" : "포트폴리오 등록") {
                 store.send(.backButtonTapped)
             }
 
@@ -60,6 +60,14 @@ struct PortfolioAddView: View {
                 .presentationDetents([.large])
                 .presentationDragIndicator(.hidden)
         }
+        .picAlert(
+            isPresented: $store.isExitAlertPresented,
+            title: store.isEditMode ? "포트폴리오 수정을 중단하시겠어요?" : "포트폴리오 등록을 중단하시겠어요?",
+            message: "나가기를 누르면\n입력한 내용은 저장되지 않아요.",
+            cancelText: "취소",
+            confirmText: "나가기",
+            onConfirm: { store.send(.exitConfirmed) }
+        )
     }
 
     // MARK: - 사진 추가
@@ -129,19 +137,19 @@ struct PortfolioAddView: View {
 
                 Spacer()
 
-                if let dateText = store.shootingDateText {
-                    HStack(spacing: 4) {
-                        Image(systemName: "calendar")
-                            .font(.system(size: 14))
-                            .foregroundStyle(.pGrey4)
+                HStack(spacing: 8) {
+                    if let dateText = store.shootingDateText {
+                        HStack(spacing: 4) {
+                            Image(.calendarCheck)
 
-                        Text(dateText)
-                            .typo(.pParagraph)
-                            .foregroundStyle(.pGrey4)
+                            Text(dateText)
+                                .typo(.pParagraph)
+                                .foregroundStyle(.pBlack)
+                        }
                     }
-                }
 
-                Image(.rightGoBlack)
+                    Image(.rightGoBlack)
+                }
             }
         }
         .buttonStyle(.plain)
@@ -160,13 +168,19 @@ struct PortfolioAddView: View {
 
                 Spacer()
 
-                if let location = store.location {
-                    Text(location)
-                        .typo(.pParagraph)
-                        .foregroundStyle(.pGrey4)
-                }
+                HStack(spacing: 8) {
+                    if let location = store.location {
+                        HStack(spacing: 4) {
+                            Image(.locationBlackPin)
 
-                Image(.rightGoBlack)
+                            Text(location)
+                                .typo(.pParagraph)
+                                .foregroundStyle(.pBlack)
+                        }
+                    }
+
+                    Image(.rightGoBlack)
+                }
             }
         }
         .buttonStyle(.plain)
@@ -175,7 +189,7 @@ struct PortfolioAddView: View {
     // MARK: - 등록하기 버튼
 
     private var registerButton: some View {
-        Button1(title: "등록하기", isActive: store.isFormValid) {
+        Button1(title: store.isEditMode ? "수정하기" : "등록하기", isActive: store.isFormValid) {
             store.send(.registerButtonTapped)
         }
         .padding(.bottom, 16)

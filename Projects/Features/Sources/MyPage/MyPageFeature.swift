@@ -215,7 +215,7 @@ public struct MyPageFeature {
              .path(.element(id: _, action: .reviewDetail(.backButtonTapped))),
              .path(.element(id: _, action: .packageEdit(.backButtonTapped))),
              .path(.element(id: _, action: .packageAdd(.backButtonTapped))),
-             .path(.element(id: _, action: .portfolioAdd(.backButtonTapped))):
+             .path(.element(id: _, action: .portfolioAdd(.exitConfirmed))):
                 _ = state.path.popLast()
                 return .none
             case .path:

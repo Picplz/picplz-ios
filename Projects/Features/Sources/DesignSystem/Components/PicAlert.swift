@@ -63,7 +63,7 @@ struct PicAlert: View {
                         onCancel()
                     } label: {
                         Text(cancelText)
-                            .typo(.pBoldParagraph)
+                            .typo(.pButtonNormalLabel)
                             .foregroundStyle(.pBlack)
                             .frame(maxWidth: .infinity)
                             .padding(.vertical, 14)
@@ -74,7 +74,7 @@ struct PicAlert: View {
                         onConfirm()
                     } label: {
                         Text(confirmText)
-                            .typo(.pBoldParagraph)
+                            .typo(.pButtonNormalLabel)
                             .foregroundStyle(.pWhite)
                             .frame(maxWidth: .infinity)
                             .padding(.vertical, 14)
