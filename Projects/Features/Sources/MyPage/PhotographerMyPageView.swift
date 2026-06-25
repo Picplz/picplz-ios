@@ -123,27 +123,29 @@ struct PhotographerMyPageView: View {
                 }
 
                 // 패키지 등록 전에는 프로필 미리보기 비활성화 (회색 배경 + disabled)
+                // 활성 상태에서는 좌측 "프로필 수정" 버튼과 동일한 스타일 (투명 배경 + pGrey3 테두리)
                 Button {
                     store.send(.profilePreviewTapped)
                 } label: {
                     HStack(spacing: 4) {
                         Text("프로필 미리보기")
                             .typo(.pBoldParagraph)
-                            .foregroundStyle(.pGrey5)
+                            .foregroundStyle(store.hasPackages ? .pGrey6 : .pGrey3)
                         Image(systemName: "chevron.right")
                             .font(.system(size: 12))
-                            .foregroundStyle(.pGrey5)
+                            .foregroundStyle(store.hasPackages ? .pGrey6 : .pGrey3)
                     }
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 10)
-                    .background(store.hasPackages ? Color.clear : Color(.pGrey2))
+                    .background(
+                        RoundedRectangle(cornerRadius: 5)
+                            .fill(store.hasPackages ? Color.clear : Color(.pGrey2))
+                    )
                     .overlay(
                         RoundedRectangle(cornerRadius: 5)
                             .stroke(store.hasPackages ? Color(.pGrey3) : Color.clear, lineWidth: 1)
                     )
-                    .clipShape(RoundedRectangle(cornerRadius: 5))
                 }
-                .buttonStyle(.plain)
                 .disabled(!store.hasPackages)
             }
         }
@@ -413,6 +415,34 @@ struct PhotographerMyPageView: View {
                     packages: [],
                     portfolios: [],
                     satisfactionRating: 4.0
+                )
+            ) {
+                MyPageFeature()
+            }
+        )
+    }
+}
+
+#Preview("미리보기 비활성") {
+    ScrollView {
+        PhotographerMyPageView(
+            store: Store(
+                initialState: MyPageFeature.State(
+                    hasPhotographerInfo: true,
+                    isPhotographerMode: true,
+                    nickname: "가영포토",
+                    instagramUsername: "gayoung.photo",
+                    photographerBio: "안녕하세요, 유가영 작가입니다.",
+                    followerCount: 1234,
+                    activeRegions: ["서울 마포구", "서울 용산구", "서울 강남구"],
+                    keywords: ["#감성스냅", "#우정샷", "#커플샷"],
+                    equipments: ["캐논 5D", "소니 A7"],
+                    packages: [],  // 패키지 0개 → 프로필 미리보기 비활성
+                    portfolios: [
+                        MyPageFeature.Portfolio(id: "1", title: "경복궁 스타벅스", date: Date()),
+                        MyPageFeature.Portfolio(id: "2", title: "홍익대학교 홍문관", date: Date())
+                    ],
+                    satisfactionRating: 4.8
                 )
             ) {
                 MyPageFeature()

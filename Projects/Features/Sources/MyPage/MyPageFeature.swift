@@ -76,6 +76,8 @@ public struct MyPageFeature {
         var portfolios: [Portfolio] = []        // 포트폴리오 이미지 목록
         var hasPortfolios: Bool { !portfolios.isEmpty }
         var satisfactionRating: Double = 0.0       // 촬영 만족도 (0.0 ~ 5.0)
+        var isAcceptingReservation: Bool = true    // 예약 가능 여부
+        var reviews: [MyReviewsFeature.MyReview] = []  // 작가가 받은 리뷰
 
         var path = StackState<Path.State>()
 
@@ -93,7 +95,9 @@ public struct MyPageFeature {
             equipments: [String] = [],
             packages: [ShootingPackage] = [],
             portfolios: [Portfolio] = [],
-            satisfactionRating: Double = 0.0
+            satisfactionRating: Double = 0.0,
+            isAcceptingReservation: Bool = true,
+            reviews: [MyReviewsFeature.MyReview] = []
         ) {
             self.hasPhotographerInfo = hasPhotographerInfo
             self.isPhotographerMode = isPhotographerMode
@@ -109,6 +113,8 @@ public struct MyPageFeature {
             self.packages = packages
             self.portfolios = portfolios
             self.satisfactionRating = satisfactionRating
+            self.isAcceptingReservation = isAcceptingReservation
+            self.reviews = reviews
         }
     }
 
@@ -185,7 +191,23 @@ public struct MyPageFeature {
                 return .none
 
             case .profilePreviewTapped:
-                // TODO: 작가 프로필 미리보기 화면 네비게이션 연결
+                state.path.append(.photographerDetail(
+                    PhotographerDetailFeature.State(
+                        nickname: state.nickname,
+                        profileImageURL: state.profileImageURL,
+                        instagramUsername: state.instagramUsername,
+                        photographerBio: state.photographerBio,
+                        followerCount: state.followerCount,
+                        activeRegions: state.activeRegions,
+                        keywords: state.keywords,
+                        equipments: state.equipments,
+                        satisfactionRating: state.satisfactionRating,
+                        reviews: state.reviews,
+                        portfolios: state.portfolios,
+                        packages: state.packages,
+                        isAcceptingReservation: state.isAcceptingReservation
+                    )
+                ))
                 return .none
             case .instagramLinkTapped:
                 guard let username = state.instagramUsername?.trimmingCharacters(in: .whitespaces),
@@ -301,7 +323,8 @@ public struct MyPageFeature {
              .path(.element(id: _, action: .packageEdit(.backButtonTapped))),
              .path(.element(id: _, action: .packageAdd(.backButtonTapped))),
              .path(.element(id: _, action: .portfolioAdd(.exitConfirmed))),
-             .path(.element(id: _, action: .portfolioList(.backButtonTapped))):
+             .path(.element(id: _, action: .portfolioList(.backButtonTapped))),
+             .path(.element(id: _, action: .photographerDetail(.backButtonTapped))):
                 _ = state.path.popLast()
                 return .none
             case .path:
@@ -327,6 +350,7 @@ public struct MyPageFeature {
             case packageAdd(PackageAddFeature.State)
             case portfolioAdd(PortfolioAddFeature.State)
             case portfolioList(PortfolioListFeature.State)
+            case photographerDetail(PhotographerDetailFeature.State)
         }
 
         public enum Action {
@@ -340,6 +364,7 @@ public struct MyPageFeature {
             case packageAdd(PackageAddFeature.Action)
             case portfolioAdd(PortfolioAddFeature.Action)
             case portfolioList(PortfolioListFeature.Action)
+            case photographerDetail(PhotographerDetailFeature.Action)
         }
 
         public init() {}
@@ -374,6 +399,9 @@ public struct MyPageFeature {
             }
             Scope(state: \.portfolioList, action: \.portfolioList) {
                 PortfolioListFeature()
+            }
+            Scope(state: \.photographerDetail, action: \.photographerDetail) {
+                PhotographerDetailFeature()
             }
         }
     }
