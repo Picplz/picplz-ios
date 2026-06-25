@@ -24,6 +24,37 @@ public struct MyPageFeature {
         public let location: String               // 촬영 장소
     }
 
+    public struct ShootingPackage: Equatable, Identifiable, Hashable {
+        public let id: String
+        public let title: String
+        public let price: Int
+        public let coverImageURL: String?
+        public let shootingDuration: String
+        public let detail: String
+    }
+
+    public struct Portfolio: Equatable, Identifiable, Hashable {
+        public let id: String
+        public let title: String              // 메인 타이틀 (장소 이름 등)
+        public let locationDetail: String?    // 부제 - 상세 주소 (선택)
+        public let date: Date                 // 촬영 날짜 (필수)
+        public let imageURLs: [String]        // 사진 URL들 (캐러셀)
+
+        public init(
+            id: String,
+            title: String,
+            locationDetail: String? = nil,
+            date: Date,
+            imageURLs: [String] = []
+        ) {
+            self.id = id
+            self.title = title
+            self.locationDetail = locationDetail
+            self.date = date
+            self.imageURLs = imageURLs
+        }
+    }
+
     @ObservableState
     public struct State: Equatable {
         var hasPhotographerInfo: Bool = false      // 작가 정보 존재 여부
@@ -40,9 +71,13 @@ public struct MyPageFeature {
         var activeRegions: [String] = []           // 주 촬영지 목록
         var keywords: [String] = []                // 키워드 목록 (# 포함 저장)
         var equipments: [String] = []              // 장비 목록
-        var hasPackages: Bool = false              // 등록된 촬영 패키지 존재 여부
-        var hasPortfolios: Bool = false            // 등록된 포트폴리오 존재 여부
+        var packages: [ShootingPackage] = []        // 촬영 패키지 목록
+        var hasPackages: Bool { !packages.isEmpty }
+        var portfolios: [Portfolio] = []        // 포트폴리오 이미지 목록
+        var hasPortfolios: Bool { !portfolios.isEmpty }
         var satisfactionRating: Double = 0.0       // 촬영 만족도 (0.0 ~ 5.0)
+        var isAcceptingReservation: Bool = true    // 예약 가능 여부
+        var reviews: [MyReviewsFeature.MyReview] = []  // 작가가 받은 리뷰
 
         var path = StackState<Path.State>()
 
@@ -58,9 +93,11 @@ public struct MyPageFeature {
             activeRegions: [String] = [],
             keywords: [String] = [],
             equipments: [String] = [],
-            hasPackages: Bool = false,
-            hasPortfolios: Bool = false,
-            satisfactionRating: Double = 0.0
+            packages: [ShootingPackage] = [],
+            portfolios: [Portfolio] = [],
+            satisfactionRating: Double = 0.0,
+            isAcceptingReservation: Bool = true,
+            reviews: [MyReviewsFeature.MyReview] = []
         ) {
             self.hasPhotographerInfo = hasPhotographerInfo
             self.isPhotographerMode = isPhotographerMode
@@ -73,9 +110,11 @@ public struct MyPageFeature {
             self.activeRegions = activeRegions
             self.keywords = keywords
             self.equipments = equipments
-            self.hasPackages = hasPackages
-            self.hasPortfolios = hasPortfolios
+            self.packages = packages
+            self.portfolios = portfolios
             self.satisfactionRating = satisfactionRating
+            self.isAcceptingReservation = isAcceptingReservation
+            self.reviews = reviews
         }
     }
 
@@ -100,6 +139,7 @@ public struct MyPageFeature {
         case settlementTapped                   // 정산 내역 화면으로 이동
         case packagesEditTapped                 // 촬영 패키지 편집
         case portfolioEditTapped                // 포트폴리오 편집
+        case portfolioThumbnailTapped           // 포트폴리오 그리드 썸네일 탭 → 목록 화면
 
         case path(StackAction<Path.State, Path.Action>)
     }
@@ -151,7 +191,23 @@ public struct MyPageFeature {
                 return .none
 
             case .profilePreviewTapped:
-                // TODO: 작가 프로필 미리보기 화면 네비게이션 연결
+                state.path.append(.photographerDetail(
+                    PhotographerDetailFeature.State(
+                        nickname: state.nickname,
+                        profileImageURL: state.profileImageURL,
+                        instagramUsername: state.instagramUsername,
+                        photographerBio: state.photographerBio,
+                        followerCount: state.followerCount,
+                        activeRegions: state.activeRegions,
+                        keywords: state.keywords,
+                        equipments: state.equipments,
+                        satisfactionRating: state.satisfactionRating,
+                        reviews: state.reviews,
+                        portfolios: state.portfolios,
+                        packages: state.packages,
+                        isAcceptingReservation: state.isAcceptingReservation
+                    )
+                ))
                 return .none
             case .instagramLinkTapped:
                 guard let username = state.instagramUsername?.trimmingCharacters(in: .whitespaces),
@@ -175,10 +231,79 @@ public struct MyPageFeature {
                 // TODO: 정산 내역 화면 네비게이션 연결
                 return .none
             case .packagesEditTapped:
-                // TODO: 촬영 패키지 편집 화면 네비게이션 연결
+                state.path.append(.packageEdit(
+                    PackageEditFeature.State(packages: state.packages)
+                ))
                 return .none
             case .portfolioEditTapped:
-                // TODO: 포트폴리오 편집 화면 네비게이션 연결
+                state.path.append(.portfolioAdd(PortfolioAddFeature.State()))
+                return .none
+            case .portfolioThumbnailTapped:
+                state.path.append(.portfolioList(
+                    PortfolioListFeature.State(portfolios: state.portfolios)
+                ))
+                return .none
+            case let .path(.element(id: id, action: .portfolioAdd(.registerButtonTapped))):
+                guard case let .portfolioAdd(addState) = state.path[id: id],
+                      let shootingDate = addState.shootingDate else {
+                    return .none
+                }
+                if let editingId = addState.editingId {
+                    // 수정 모드: 기존 항목 업데이트 + portfolioAdd pop + portfolioList 동기화
+                    if let idx = state.portfolios.firstIndex(where: { $0.id == editingId }) {
+                        let existing = state.portfolios[idx]
+                        state.portfolios[idx] = Portfolio(
+                            id: existing.id,
+                            title: addState.location ?? existing.title,
+                            locationDetail: existing.locationDetail,
+                            date: shootingDate,
+                            imageURLs: existing.imageURLs  // TODO: 이미지 업로드 연동 시 selectedImages 반영
+                        )
+                    }
+                    _ = state.path.popLast()
+                    if let topId = state.path.ids.last,
+                       case .portfolioList(var listState) = state.path[id: topId] {
+                        listState.portfolios = state.portfolios
+                        listState.toast = ToastItem(message: "포트폴리오가 수정되었습니다.")
+                        state.path[id: topId] = .portfolioList(listState)
+                    }
+                    return .none
+                } else {
+                    // 신규 등록: 새 항목 prepend + portfolioAdd pop + portfolioList push
+                    let newPortfolio = Portfolio(
+                        id: UUID().uuidString,
+                        title: addState.location ?? "",
+                        locationDetail: nil,
+                        date: shootingDate,
+                        imageURLs: []  // TODO: 이미지 업로드 연동 시 URL로 교체
+                    )
+                    state.portfolios.insert(newPortfolio, at: 0)
+                    _ = state.path.popLast()
+                    state.path.append(.portfolioList(
+                        PortfolioListFeature.State(
+                            portfolios: state.portfolios,
+                            toast: ToastItem(message: "포트폴리오가 등록되었습니다.")
+                        )
+                    ))
+                    return .none
+                }
+            case let .path(.element(id: pathId, action: .portfolioList(.confirmDelete))):
+                if case let .portfolioList(listState) = state.path[id: pathId] {
+                    state.portfolios = listState.portfolios
+                }
+                // 마지막 포트폴리오까지 삭제되면 portfolioList를 닫고 MyPage로 복귀
+                if state.portfolios.isEmpty {
+                    _ = state.path.popLast()
+                }
+                return .none
+            case let .path(.element(id: _, action: .portfolioList(.editTapped(portfolio)))):
+                state.path.append(.portfolioAdd(
+                    PortfolioAddFeature.State(
+                        editingId: portfolio.id,
+                        shootingDate: portfolio.date,
+                        location: portfolio.title.isEmpty ? nil : portfolio.title
+                    )
+                ))
                 return .none
             case .path(.element(id: _, action: .myReviews(.reviewTapped(let review)))):
                 state.path.append(.reviewDetail(ReviewDetailFeature.State(review: review)))
@@ -186,12 +311,20 @@ public struct MyPageFeature {
             case .path(.element(id: _, action: .reviewDetail(.confirmDelete))):
                 _ = state.path.popLast()
                 return .none
+            case .path(.element(id: _, action: .packageEdit(.addPackageTapped))):
+                state.path.append(.packageAdd(PackageAddFeature.State()))
+                return .none
             case .path(.element(id: _, action: .profileEdit(.backButtonTapped))),
              .path(.element(id: _, action: .pastShootings(.backButtonTapped))),
              .path(.element(id: _, action: .settings(.backButtonTapped))),
              .path(.element(id: _, action: .followedArtists(.backButtonTapped))),
              .path(.element(id: _, action: .myReviews(.backButtonTapped))),
-             .path(.element(id: _, action: .reviewDetail(.backButtonTapped))):
+             .path(.element(id: _, action: .reviewDetail(.backButtonTapped))),
+             .path(.element(id: _, action: .packageEdit(.backButtonTapped))),
+             .path(.element(id: _, action: .packageAdd(.backButtonTapped))),
+             .path(.element(id: _, action: .portfolioAdd(.exitConfirmed))),
+             .path(.element(id: _, action: .portfolioList(.backButtonTapped))),
+             .path(.element(id: _, action: .photographerDetail(.backButtonTapped))):
                 _ = state.path.popLast()
                 return .none
             case .path:
@@ -213,6 +346,11 @@ public struct MyPageFeature {
             case followedArtists(FollowedArtistsFeature.State)
             case myReviews(MyReviewsFeature.State)
             case reviewDetail(ReviewDetailFeature.State)
+            case packageEdit(PackageEditFeature.State)
+            case packageAdd(PackageAddFeature.State)
+            case portfolioAdd(PortfolioAddFeature.State)
+            case portfolioList(PortfolioListFeature.State)
+            case photographerDetail(PhotographerDetailFeature.State)
         }
 
         public enum Action {
@@ -222,6 +360,11 @@ public struct MyPageFeature {
             case followedArtists(FollowedArtistsFeature.Action)
             case myReviews(MyReviewsFeature.Action)
             case reviewDetail(ReviewDetailFeature.Action)
+            case packageEdit(PackageEditFeature.Action)
+            case packageAdd(PackageAddFeature.Action)
+            case portfolioAdd(PortfolioAddFeature.Action)
+            case portfolioList(PortfolioListFeature.Action)
+            case photographerDetail(PhotographerDetailFeature.Action)
         }
 
         public init() {}
@@ -244,6 +387,21 @@ public struct MyPageFeature {
             }
             Scope(state: \.reviewDetail, action: \.reviewDetail) {
                 ReviewDetailFeature()
+            }
+            Scope(state: \.packageEdit, action: \.packageEdit) {
+                PackageEditFeature()
+            }
+            Scope(state: \.packageAdd, action: \.packageAdd) {
+                PackageAddFeature()
+            }
+            Scope(state: \.portfolioAdd, action: \.portfolioAdd) {
+                PortfolioAddFeature()
+            }
+            Scope(state: \.portfolioList, action: \.portfolioList) {
+                PortfolioListFeature()
+            }
+            Scope(state: \.photographerDetail, action: \.photographerDetail) {
+                PhotographerDetailFeature()
             }
         }
     }

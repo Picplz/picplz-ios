@@ -123,27 +123,29 @@ struct PhotographerMyPageView: View {
                 }
 
                 // 패키지 등록 전에는 프로필 미리보기 비활성화 (회색 배경 + disabled)
+                // 활성 상태에서는 좌측 "프로필 수정" 버튼과 동일한 스타일 (투명 배경 + pGrey3 테두리)
                 Button {
                     store.send(.profilePreviewTapped)
                 } label: {
                     HStack(spacing: 4) {
                         Text("프로필 미리보기")
                             .typo(.pBoldParagraph)
-                            .foregroundStyle(.pGrey5)
+                            .foregroundStyle(store.hasPackages ? .pGrey6 : .pGrey3)
                         Image(systemName: "chevron.right")
                             .font(.system(size: 12))
-                            .foregroundStyle(.pGrey5)
+                            .foregroundStyle(store.hasPackages ? .pGrey6 : .pGrey3)
                     }
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 10)
-                    .background(store.hasPackages ? Color.clear : Color(.pGrey2))
+                    .background(
+                        RoundedRectangle(cornerRadius: 5)
+                            .fill(store.hasPackages ? Color.clear : Color(.pGrey2))
+                    )
                     .overlay(
                         RoundedRectangle(cornerRadius: 5)
                             .stroke(store.hasPackages ? Color(.pGrey3) : Color.clear, lineWidth: 1)
                     )
-                    .clipShape(RoundedRectangle(cornerRadius: 5))
                 }
-                .buttonStyle(.plain)
                 .disabled(!store.hasPackages)
             }
         }
@@ -233,8 +235,9 @@ struct PhotographerMyPageView: View {
             }
 
             if store.hasPackages {
-                // TODO: 패키지 카드 리스트 렌더링
-                EmptyView()
+                ForEach(store.packages) { package in
+                    PackageCardView(package: package)
+                }
             } else {
                 emptyStateCard(
                     description: "아직 등록하신 패키지가 없습니다.\n우측 상단의 편집을 눌러\n새로운 패키지를 추가해 보세요."
@@ -260,8 +263,30 @@ struct PhotographerMyPageView: View {
             }
 
             if store.hasPortfolios {
-                // TODO: 포트폴리오 그리드 렌더링
-                EmptyView()
+                let columns = Array(repeating: GridItem(.flexible(), spacing: 4), count: 3)
+                LazyVGrid(columns: columns, spacing: 4) {
+                    ForEach(store.portfolios) { portfolio in
+                        Button {
+                            store.send(.portfolioThumbnailTapped)
+                        } label: {
+                            AsyncImage(url: URL(string: portfolio.imageURLs.first ?? "")) { phase in
+                                switch phase {
+                                case .success(let image):
+                                    image
+                                        .resizable()
+                                        .scaledToFill()
+                                default:
+                                    Rectangle()
+                                        .fill(Color(.pGrey2))
+                                }
+                            }
+                            .frame(minHeight: 0)
+                            .aspectRatio(1, contentMode: .fit)
+                            .clipped()
+                        }
+                        .buttonStyle(.plain)
+                    }
+                }
             } else {
                 emptyStateCard(
                     description: "아직 등록하신 포트폴리오가 없습니다.\n우측 상단의 편집을 눌러\n사진을 추가해 보세요."
@@ -387,9 +412,37 @@ struct PhotographerMyPageView: View {
                     ],
                     keywords: ["#개구장", "#디짐", "#맥주감성", "#감성스냅", "#우정샷", "#커플샷"],
                     equipments: ["아이폰 16 PRO", "아이폰 X", "캐논 5D", "소니 A7", "라이카 M11"],
-                    hasPackages: false,
-                    hasPortfolios: false,
+                    packages: [],
+                    portfolios: [],
                     satisfactionRating: 4.0
+                )
+            ) {
+                MyPageFeature()
+            }
+        )
+    }
+}
+
+#Preview("미리보기 비활성") {
+    ScrollView {
+        PhotographerMyPageView(
+            store: Store(
+                initialState: MyPageFeature.State(
+                    hasPhotographerInfo: true,
+                    isPhotographerMode: true,
+                    nickname: "가영포토",
+                    instagramUsername: "gayoung.photo",
+                    photographerBio: "안녕하세요, 유가영 작가입니다.",
+                    followerCount: 1234,
+                    activeRegions: ["서울 마포구", "서울 용산구", "서울 강남구"],
+                    keywords: ["#감성스냅", "#우정샷", "#커플샷"],
+                    equipments: ["캐논 5D", "소니 A7"],
+                    packages: [],  // 패키지 0개 → 프로필 미리보기 비활성
+                    portfolios: [
+                        MyPageFeature.Portfolio(id: "1", title: "경복궁 스타벅스", date: Date()),
+                        MyPageFeature.Portfolio(id: "2", title: "홍익대학교 홍문관", date: Date())
+                    ],
+                    satisfactionRating: 4.8
                 )
             ) {
                 MyPageFeature()
@@ -412,8 +465,22 @@ struct PhotographerMyPageView: View {
                     activeRegions: ["서울 마포구", "서울 용산구", "서울 강남구"],
                     keywords: ["#감성스냅", "#우정샷", "#커플샷"],
                     equipments: ["캐논 5D", "소니 A7"],
-                    hasPackages: true,
-                    hasPortfolios: true,
+                    packages: [
+                        MyPageFeature.ShootingPackage(
+                            id: "1",
+                            title: "남친 생기는 프사♥",
+                            price: 9900,
+                            coverImageURL: nil,
+                            shootingDuration: "15분 이내",
+                            detail: "여자친구 /남자친구 생기는 카톡포사 찍어드립니당~ 요즘 인스타그램 감성으로 이쁘게!\n사용기기: 아이폰 X / 아이폰 16pro\n베스트컷 5개정도 길이 뽑아드려요!"
+                        )
+                    ],
+                    portfolios: [
+                        MyPageFeature.Portfolio(id: "1", title: "경복궁 스타벅스", date: Date()),
+                        MyPageFeature.Portfolio(id: "2", title: "홍익대학교 홍문관", date: Date()),
+                        MyPageFeature.Portfolio(id: "3", title: "한강공원", date: Date()),
+                        MyPageFeature.Portfolio(id: "4", title: "남산타워", date: Date())
+                    ],
                     satisfactionRating: 4.8
                 )
             ) {
