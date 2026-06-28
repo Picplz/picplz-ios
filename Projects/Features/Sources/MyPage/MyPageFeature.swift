@@ -191,8 +191,8 @@ public struct MyPageFeature {
                 return .none
 
             case .profilePreviewTapped:
-                state.path.append(.photographerDetail(
-                    PhotographerDetailFeature.State(
+                state.path.append(.profilePreview(
+                    ProfilePreviewFeature.State(
                         nickname: state.nickname,
                         profileImageURL: state.profileImageURL,
                         instagramUsername: state.instagramUsername,
@@ -324,7 +324,7 @@ public struct MyPageFeature {
              .path(.element(id: _, action: .packageAdd(.backButtonTapped))),
              .path(.element(id: _, action: .portfolioAdd(.exitConfirmed))),
              .path(.element(id: _, action: .portfolioList(.backButtonTapped))),
-             .path(.element(id: _, action: .photographerDetail(.backButtonTapped))):
+             .path(.element(id: _, action: .profilePreview(.backButtonTapped))):
                 _ = state.path.popLast()
                 return .none
             case .path:
@@ -350,7 +350,7 @@ public struct MyPageFeature {
             case packageAdd(PackageAddFeature.State)
             case portfolioAdd(PortfolioAddFeature.State)
             case portfolioList(PortfolioListFeature.State)
-            case photographerDetail(PhotographerDetailFeature.State)
+            case profilePreview(ProfilePreviewFeature.State)
         }
 
         public enum Action {
@@ -364,7 +364,7 @@ public struct MyPageFeature {
             case packageAdd(PackageAddFeature.Action)
             case portfolioAdd(PortfolioAddFeature.Action)
             case portfolioList(PortfolioListFeature.Action)
-            case photographerDetail(PhotographerDetailFeature.Action)
+            case profilePreview(ProfilePreviewFeature.Action)
         }
 
         public init() {}
@@ -400,8 +400,8 @@ public struct MyPageFeature {
             Scope(state: \.portfolioList, action: \.portfolioList) {
                 PortfolioListFeature()
             }
-            Scope(state: \.photographerDetail, action: \.photographerDetail) {
-                PhotographerDetailFeature()
+            Scope(state: \.profilePreview, action: \.profilePreview) {
+                ProfilePreviewFeature()
             }
         }
     }

@@ -223,12 +223,12 @@ struct MyPageView: View {
                 ) {
                     PortfolioListView(store: store)
                 }
-            case .photographerDetail:
+            case .profilePreview:
                 if let store = store.scope(
-                    state: \.photographerDetail,
-                    action: \.photographerDetail
+                    state: \.profilePreview,
+                    action: \.profilePreview
                 ) {
-                    PhotographerDetailView(store: store)
+                    ProfilePreviewView(store: store)
                 }
             }
         }
