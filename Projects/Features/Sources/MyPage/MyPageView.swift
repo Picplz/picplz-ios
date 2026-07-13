@@ -185,6 +185,12 @@ public struct MyPageView: View {
                 ) {
                     NotificationSettingView(store: store)
                 }
+            case .accountManageSetting:
+                if let store = store.scope(
+                    state: \.accountManageSetting,
+                    action: \.accountManageSetting) {
+                    AccountManageView(store: store)
+                }
             case .followedArtists:
                 if let store = store.scope(
                     state: \.followedArtists,

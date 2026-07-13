@@ -317,10 +317,14 @@ public struct MyPageFeature {
             case .path(.element(id: _, action: .settings(.notificationSettingTapped))):
                 state.path.append(.notificationSetting(NotificationSettingFeature.State()))
                 return .none
+            case .path(.element(id: _, action: .settings(.accountManagementTapped))):
+                state.path.append(.accountManageSetting(AccountManageFeature.State()))
+                return .none
             case .path(.element(id: _, action: .profileEdit(.backButtonTapped))),
              .path(.element(id: _, action: .pastShootings(.backButtonTapped))),
              .path(.element(id: _, action: .settings(.backButtonTapped))),
              .path(.element(id: _, action: .notificationSetting(.backButtonTapped))),
+             .path(.element(id: _, action: .accountManageSetting(.backButtonTapped))),
              .path(.element(id: _, action: .followedArtists(.backButtonTapped))),
              .path(.element(id: _, action: .myReviews(.backButtonTapped))),
              .path(.element(id: _, action: .reviewDetail(.backButtonTapped))),
@@ -348,6 +352,7 @@ public struct MyPageFeature {
             case pastShootings(PastShootingsFeature.State)
             case settings(SettingsFeature.State)
             case notificationSetting(NotificationSettingFeature.State)
+            case accountManageSetting(AccountManageFeature.State)
             case followedArtists(FollowedArtistsFeature.State)
             case myReviews(MyReviewsFeature.State)
             case reviewDetail(ReviewDetailFeature.State)
@@ -363,6 +368,7 @@ public struct MyPageFeature {
             case pastShootings(PastShootingsFeature.Action)
             case settings(SettingsFeature.Action)
             case notificationSetting(NotificationSettingFeature.Action)
+            case accountManageSetting(AccountManageFeature.Action)
             case followedArtists(FollowedArtistsFeature.Action)
             case myReviews(MyReviewsFeature.Action)
             case reviewDetail(ReviewDetailFeature.Action)
@@ -387,6 +393,9 @@ public struct MyPageFeature {
             }
             Scope(state: \.notificationSetting, action: \.notificationSetting) {
                 NotificationSettingFeature()
+            }
+            Scope(state: \.accountManageSetting, action: \.accountManageSetting) {
+                AccountManageFeature()
             }
             Scope(state: \.followedArtists, action: \.followedArtists) {
                 FollowedArtistsFeature()
