@@ -16,6 +16,7 @@ struct SettingsView: View {
             SubNavigationBar(title: "설정") {
                 store.send(.backButtonTapped)
             }
+            .padding(.horizontal, 16)
             
             ScrollView {
                 VStack(spacing: 10) {

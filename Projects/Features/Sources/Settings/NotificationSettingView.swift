@@ -16,7 +16,8 @@ struct NotificationSettingView: View {
             SubNavigationBar(title: "알림 설정") {
                 store.send(.backButtonTapped)
             }
-
+            .padding(.horizontal, 16)
+            
             ScrollView {
                 VStack(spacing: 10) {
                     serviceSection
