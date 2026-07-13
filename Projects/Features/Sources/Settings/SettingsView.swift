@@ -63,6 +63,7 @@ struct SettingsView: View {
                 .background(.pGrey1)
             }
         }
+        .background(.pWhite)
         .navigationBarHidden(true)
     }
     

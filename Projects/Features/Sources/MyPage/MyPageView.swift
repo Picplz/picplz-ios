@@ -8,10 +8,14 @@
 import SwiftUI
 import ComposableArchitecture
 
-struct MyPageView: View {
+public struct MyPageView: View {
     @Bindable var store: StoreOf<MyPageFeature>
 
-    var body: some View {
+    public init(store: StoreOf<MyPageFeature>) {
+        self.store = store
+    }
+
+    public var body: some View {
         NavigationStack(path: $store.scope(state: \.path, action: \.path)) {
             VStack {
                 // 네비게이션 바
@@ -173,6 +177,13 @@ struct MyPageView: View {
                     action: \.settings
                 ) {
                     SettingsView(store: store)
+                }
+            case .notificationSetting:
+                if let store = store.scope(
+                    state: \.notificationSetting,
+                    action: \.notificationSetting
+                ) {
+                    NotificationSettingView(store: store)
                 }
             case .followedArtists:
                 if let store = store.scope(
