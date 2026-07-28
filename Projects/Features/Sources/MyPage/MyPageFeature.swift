@@ -314,9 +314,37 @@ public struct MyPageFeature {
             case .path(.element(id: _, action: .packageEdit(.addPackageTapped))):
                 state.path.append(.packageAdd(PackageAddFeature.State()))
                 return .none
+            case .path(.element(id: _, action: .settings(.notificationSettingTapped))):
+                state.path.append(.notificationSetting(NotificationSettingFeature.State()))
+                return .none
+            case .path(.element(id: _, action: .settings(.accountManagementTapped))):
+                state.path.append(.accountManageSetting(AccountManageFeature.State()))
+                return .none
+            case .path(.element(id: _, action: .accountManageSetting(.withdrawTapped))):
+                state.path.append(.withdraw(WithdrawFeature.State()))
+                return .none
+            case .path(.element(id: _, action: .settings(.inquiryTapped))):
+                state.path.append(.inquiry(InquiryFeature.State()))
+                return .none
+            case .path(.element(id: _, action: .settings(.noticeTapped))):
+                state.path.append(.noticeDetail(NoticeDetailFeature.State()))
+                return .none
+            case .path(.element(id: _, action: .settings(.termsAndPoliciesTapped))):
+                state.path.append(.terms(TermsFeature.State()))
+                return .none
+            case let .path(.element(id: _, action: .terms(.termsRowTapped(item)))):
+                state.path.append(.termsDetail(TermsDetailFeature.State(item: item)))
+                return .none
             case .path(.element(id: _, action: .profileEdit(.backButtonTapped))),
              .path(.element(id: _, action: .pastShootings(.backButtonTapped))),
              .path(.element(id: _, action: .settings(.backButtonTapped))),
+             .path(.element(id: _, action: .notificationSetting(.backButtonTapped))),
+             .path(.element(id: _, action: .accountManageSetting(.backButtonTapped))),
+             .path(.element(id: _, action: .withdraw(.backButtonTapped))),
+             .path(.element(id: _, action: .inquiry(.backButtonTapped))),
+             .path(.element(id: _, action: .noticeDetail(.backButtonTapped))),
+             .path(.element(id: _, action: .terms(.backButtonTapped))),
+             .path(.element(id: _, action: .termsDetail(.backButtonTapped))),
              .path(.element(id: _, action: .followedArtists(.backButtonTapped))),
              .path(.element(id: _, action: .myReviews(.backButtonTapped))),
              .path(.element(id: _, action: .reviewDetail(.backButtonTapped))),
@@ -343,6 +371,13 @@ public struct MyPageFeature {
             case profileEdit(ProfileEditFeature.State)
             case pastShootings(PastShootingsFeature.State)
             case settings(SettingsFeature.State)
+            case notificationSetting(NotificationSettingFeature.State)
+            case accountManageSetting(AccountManageFeature.State)
+            case withdraw(WithdrawFeature.State)
+            case inquiry(InquiryFeature.State)
+            case noticeDetail(NoticeDetailFeature.State)
+            case terms(TermsFeature.State)
+            case termsDetail(TermsDetailFeature.State)
             case followedArtists(FollowedArtistsFeature.State)
             case myReviews(MyReviewsFeature.State)
             case reviewDetail(ReviewDetailFeature.State)
@@ -357,6 +392,13 @@ public struct MyPageFeature {
             case profileEdit(ProfileEditFeature.Action)
             case pastShootings(PastShootingsFeature.Action)
             case settings(SettingsFeature.Action)
+            case notificationSetting(NotificationSettingFeature.Action)
+            case accountManageSetting(AccountManageFeature.Action)
+            case withdraw(WithdrawFeature.Action)
+            case inquiry(InquiryFeature.Action)
+            case noticeDetail(NoticeDetailFeature.Action)
+            case terms(TermsFeature.Action)
+            case termsDetail(TermsDetailFeature.Action)
             case followedArtists(FollowedArtistsFeature.Action)
             case myReviews(MyReviewsFeature.Action)
             case reviewDetail(ReviewDetailFeature.Action)
@@ -378,6 +420,27 @@ public struct MyPageFeature {
             }
             Scope(state: \.settings, action: \.settings) {
                 SettingsFeature()
+            }
+            Scope(state: \.notificationSetting, action: \.notificationSetting) {
+                NotificationSettingFeature()
+            }
+            Scope(state: \.accountManageSetting, action: \.accountManageSetting) {
+                AccountManageFeature()
+            }
+            Scope(state: \.withdraw, action: \.withdraw) {
+                WithdrawFeature()
+            }
+            Scope(state: \.inquiry, action: \.inquiry) {
+                InquiryFeature()
+            }
+            Scope(state: \.noticeDetail, action: \.noticeDetail) {
+                NoticeDetailFeature()
+            }
+            Scope(state: \.terms, action: \.terms) {
+                TermsFeature()
+            }
+            Scope(state: \.termsDetail, action: \.termsDetail) {
+                TermsDetailFeature()
             }
             Scope(state: \.followedArtists, action: \.followedArtists) {
                 FollowedArtistsFeature()

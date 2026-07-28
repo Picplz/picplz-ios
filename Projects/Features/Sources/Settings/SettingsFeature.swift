@@ -12,19 +12,36 @@ import Foundation
 public struct SettingsFeature {
     @ObservableState
     public struct State: Equatable, Hashable {
-        public init() {}
+        var appVersion: String = "1.0.0"
+        var isLatestVersion: Bool = true
     }
-
-    public enum Action: Hashable {
+    
+    public enum Action {
         case backButtonTapped
+        case notificationSettingTapped
+        case accountManagementTapped
+        case authorApplicationTapped
+        case inquiryTapped
+        case noticeTapped
+        case termsAndPoliciesTapped
     }
-
-    public init() {}
-
-    public var body: some ReducerOf<SettingsFeature> {
+    
+    public var body: some ReducerOf<Self> {
         Reduce { state, action in
             switch action {
             case .backButtonTapped:
+                return .none
+            case .notificationSettingTapped:
+                return .none
+            case .accountManagementTapped:
+                return .none
+            case .authorApplicationTapped:
+                return .none
+            case .inquiryTapped:
+                return .none
+            case .noticeTapped:
+                return .none
+            case .termsAndPoliciesTapped:
                 return .none
             }
         }

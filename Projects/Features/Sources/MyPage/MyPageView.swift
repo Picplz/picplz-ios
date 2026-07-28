@@ -8,10 +8,14 @@
 import SwiftUI
 import ComposableArchitecture
 
-struct MyPageView: View {
+public struct MyPageView: View {
     @Bindable var store: StoreOf<MyPageFeature>
 
-    var body: some View {
+    public init(store: StoreOf<MyPageFeature>) {
+        self.store = store
+    }
+
+    public var body: some View {
         NavigationStack(path: $store.scope(state: \.path, action: \.path)) {
             VStack {
                 // 네비게이션 바
@@ -173,6 +177,54 @@ struct MyPageView: View {
                     action: \.settings
                 ) {
                     SettingsView(store: store)
+                }
+            case .notificationSetting:
+                if let store = store.scope(
+                    state: \.notificationSetting,
+                    action: \.notificationSetting
+                ) {
+                    NotificationSettingView(store: store)
+                }
+            case .accountManageSetting:
+                if let store = store.scope(
+                    state: \.accountManageSetting,
+                    action: \.accountManageSetting) {
+                    AccountManageView(store: store)
+                }
+            case .withdraw:
+                if let store = store.scope(
+                    state: \.withdraw,
+                    action: \.withdraw
+                ) {
+                    WithdrawView(store: store)
+                }
+            case .inquiry:
+                if let store = store.scope(
+                    state: \.inquiry,
+                    action: \.inquiry
+                ) {
+                    InquiryView(store: store)
+                }
+            case .noticeDetail:
+                if let store = store.scope(
+                    state: \.noticeDetail,
+                    action: \.noticeDetail
+                ) {
+                    NoticeDetailView(store: store)
+                }
+            case .terms:
+                if let store = store.scope(
+                    state: \.terms,
+                    action: \.terms
+                ) {
+                    TermsView(store: store)
+                }
+            case .termsDetail:
+                if let store = store.scope(
+                    state: \.termsDetail,
+                    action: \.termsDetail
+                ) {
+                    TermsDetailView(store: store)
                 }
             case .followedArtists:
                 if let store = store.scope(

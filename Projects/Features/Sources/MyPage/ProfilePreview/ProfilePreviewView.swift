@@ -1,13 +1,13 @@
 //
-//  PhotographerDetailView.swift
+//  ProfilePreviewView.swift
 //  Features
 //
 
 import ComposableArchitecture
 import SwiftUI
 
-struct PhotographerDetailView: View {
-    @Bindable var store: StoreOf<PhotographerDetailFeature>
+struct ProfilePreviewView: View {
+    @Bindable var store: StoreOf<ProfilePreviewFeature>
 
     var body: some View {
         VStack(spacing: 0) {
@@ -449,9 +449,9 @@ struct PhotographerDetailView: View {
 }
 
 #Preview("예약 가능") {
-    PhotographerDetailView(
+    ProfilePreviewView(
         store: Store(
-            initialState: PhotographerDetailFeature.State(
+            initialState: ProfilePreviewFeature.State(
                 nickname: "유가영 작가",
                 profileImageURL: nil,
                 instagramUsername: "Gayoung",
@@ -514,15 +514,15 @@ struct PhotographerDetailView: View {
                 isAcceptingReservation: true
             )
         ) {
-            PhotographerDetailFeature()
+            ProfilePreviewFeature()
         }
     )
 }
 
 #Preview("예약 불가") {
-    PhotographerDetailView(
+    ProfilePreviewView(
         store: Store(
-            initialState: PhotographerDetailFeature.State(
+            initialState: ProfilePreviewFeature.State(
                 nickname: "유가영 작가",
                 profileImageURL: nil,
                 instagramUsername: "Gayoung",
@@ -539,7 +539,7 @@ struct PhotographerDetailView: View {
                 isAcceptingReservation: false
             )
         ) {
-            PhotographerDetailFeature()
+            ProfilePreviewFeature()
         }
     )
 }

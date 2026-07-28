@@ -7,7 +7,7 @@ import ComposableArchitecture
 import Foundation
 
 @Reducer
-public struct PhotographerDetailFeature {
+public struct ProfilePreviewFeature {
 
     @ObservableState
     public struct State: Equatable, Hashable {
@@ -77,7 +77,7 @@ public struct PhotographerDetailFeature {
 
     public init() {}
 
-    public var body: some ReducerOf<PhotographerDetailFeature> {
+    public var body: some ReducerOf<ProfilePreviewFeature> {
         Reduce { state, action in
             switch action {
             case .backButtonTapped,
